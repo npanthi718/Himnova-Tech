@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 120" fill="none" width="100%" height="100%">
+  <defs>
+    <!-- Brand Cyan & Cobalt Gradients -->
+    <linearGradient id="globe-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="50%" stop-color="#06B6D4"/>
+      <stop offset="100%" stop-color="#0EA5E9"/>
+    </linearGradient>
+    <linearGradient id="orbit-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0EA5E9"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+    <filter id="glow-light" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Left Logo Icon: Globe with Orbit Arrow & Integrated Gear Node -->
+  <g transform="translate(10, 10)">
+    <!-- Base Globe Sphere -->
+    <circle cx="50" cy="50" r="38" fill="url(#globe-grad)" />
+    
+    <!-- Globe Latitude/Longitude Grid Lines -->
+    <ellipse cx="50" cy="50" rx="38" ry="16" stroke="#FFFFFF" stroke-width="1.8" stroke-dasharray="3 3" opacity="0.65" />
+    <ellipse cx="50" cy="50" rx="18" ry="38" stroke="#FFFFFF" stroke-width="1.8" stroke-dasharray="3 3" opacity="0.65" />
+    <line x1="12" y1="50" x2="88" y2="50" stroke="#FFFFFF" stroke-width="2" opacity="0.8" />
+    <line x1="50" y1="12" x2="50" y2="88" stroke="#FFFFFF" stroke-width="2" opacity="0.8" />
+
+    <!-- Ascending Orbiting Chevron Arrow (Representing Cloud Intelligence Shift) -->
+    <path d="M 12 70 C 15 25, 75 15, 92 38" stroke="url(#orbit-grad)" stroke-width="6" stroke-linecap="round" fill="none" filter="url(#glow-light)" />
+    <!-- Arrow Head -->
+    <path d="M 82 28 L 95 38 L 94 22 Z" fill="#38BDF8" />
+    
+    <!-- Core Neural Node Dot -->
+    <circle cx="50" cy="50" r="7" fill="#FFFFFF" />
+    <circle cx="50" cy="50" r="4" fill="#0284C7" />
+  </g>
+
+  <!-- Typography Alignment -->
+  <g transform="translate(118, 0)">
+    <!-- Brand Title: HIMNOVA TECHNOLOGIES -->
+    <text x="0" y="58" font-family="'Outfit', 'Inter', system-ui, sans-serif" font-size="36" font-weight="900" letter-spacing="0.5" fill="currentColor">
+      HIMNOVA
+    </text>
+    <text x="0" y="82" font-family="'Inter', system-ui, sans-serif" font-size="14" font-weight="800" letter-spacing="4" fill="#06B6D4">
+      TECHNOLOGIES
+    </text>
+
+    <!-- Motto Subtext: The Next Era of Cloud Intelligence. -->
+    <text x="0" y="98" font-family="'Inter', system-ui, sans-serif" font-size="9.5" font-weight="600" letter-spacing="1" fill="#0EA5E9" opacity="0.9">
+      The Next Era of Cloud Intelligence.
+    </text>
+  </g>
+</svg>

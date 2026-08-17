@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Default Dark Mode Styling */
+  html.dark body {
+    background-color: #0B0F19;
+    color: #F8FAFC;
+  }
+
+  /* Light Mode Overrides */
+  html.light body {
+    background-color: #F8FAFC;
+    color: #0F172A;
+  }
+
+  body {
+    @apply font-sans antialiased selection:bg-brand-cyan/30 selection:text-brand-cyan transition-colors duration-300;
+    overflow-x: hidden;
+  }
+
+  /* Custom Sleek Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0B0F19;
+  }
+
+  .light ::-webkit-scrollbar-track {
+    background: #F1F5F9;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #1E293B;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .light ::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #06B6D4;
+  }
+}
+
+@layer utilities {
+  .bg-grid-pattern {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .light .bg-grid-pattern {
+    background-image: radial-gradient(rgba(15, 23, 42, 0.08) 1px, transparent 1px);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+  }
+}
