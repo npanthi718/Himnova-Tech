@@ -85,11 +85,12 @@ export const Navbar: React.FC = () => {
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center gap-1 rounded-full border border-slate-200 bg-white/90 dark:border-white/10 dark:bg-alpine-900/60 px-4 py-1.5 backdrop-blur-md shadow-sm dark:shadow-inner">
             {siteData.navLinks.map((link) => {
-              const isActive = link.href.startsWith("#") ? activeHash === link.href : pathname === link.href;
+              const targetHref = link.href.startsWith("#") && pathname !== "/" ? `/${link.href}` : link.href;
+              const isActive = link.href.startsWith("#") ? (pathname === "/" && activeHash === link.href) : pathname === link.href;
               return (
                 <Link
                   key={link.href}
-                  href={link.href}
+                  href={targetHref}
                   className={`relative px-4 py-2 text-xs font-bold tracking-wider uppercase transition-colors rounded-full ${
                     isActive
                       ? "text-brand-cyan dark:text-brand-cyan"
@@ -112,7 +113,7 @@ export const Navbar: React.FC = () => {
           {/* Right Actions: Theme Switcher & Get in Touch CTA */}
           <div className="hidden sm:flex items-center gap-3 shrink-0">
             <ThemeToggle />
-            <Link href="#contact">
+            <Link href={pathname === "/" ? "#contact" : "/#contact"}>
               <Button size="sm" icon={<ArrowUpRight className="h-4 w-4" />}>
                 Contact Us
               </Button>
@@ -141,21 +142,22 @@ export const Navbar: React.FC = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden overflow-hidden border-b border-white/10 dark:bg-alpine-950/95 light:bg-white/95 backdrop-blur-2xl"
+            className="lg:hidden overflow-hidden border-b border-slate-200 dark:border-white/10 bg-white/95 dark:bg-alpine-950/95 backdrop-blur-2xl"
           >
             <div className="mx-auto max-w-7xl px-6 py-6 space-y-4">
               <nav className="flex flex-col space-y-2">
                 {siteData.navLinks.map((link) => {
-                  const isActive = link.href.startsWith("#") ? activeHash === link.href : pathname === link.href;
+                  const targetHref = link.href.startsWith("#") && pathname !== "/" ? `/${link.href}` : link.href;
+                  const isActive = link.href.startsWith("#") ? (pathname === "/" && activeHash === link.href) : pathname === link.href;
                   return (
                     <Link
                       key={link.href}
-                      href={link.href}
+                      href={targetHref}
                       onClick={() => setMobileMenuOpen(false)}
                       className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-bold tracking-wide uppercase transition-all ${
                         isActive
                           ? "bg-brand-cyan/15 text-brand-cyan border border-brand-cyan/30"
-                          : "text-slate-300 dark:text-slate-300 light:text-slate-700 hover:bg-white/5"
+                          : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5"
                       }`}
                     >
                       <span>{link.label}</span>
@@ -165,8 +167,8 @@ export const Navbar: React.FC = () => {
                 })}
               </nav>
 
-              <div className="pt-4 border-t border-white/10">
-                <Link href="#contact" onClick={() => setMobileMenuOpen(false)}>
+              <div className="pt-4 border-t border-slate-200 dark:border-white/10">
+                <Link href={pathname === "/" ? "#contact" : "/#contact"} onClick={() => setMobileMenuOpen(false)}>
                   <Button className="w-full" size="md" icon={<ArrowUpRight className="h-4 w-4" />}>
                     Contact Us
                   </Button>

@@ -3,8 +3,19 @@ import { ProjectsModule } from "@/modules/ProjectsModule";
 import { Badge } from "@/components/ui/Badge";
 
 export const metadata = {
-  title: "Delivered Projects | Himnova Technologies",
-  description: "Explore 8 real-world production projects delivered by Himnova Technologies across health tech, peer learning, AI chat, ERP systems, and computer vision.",
+  title: "Delivered Software & AI Projects | Himnova Technologies",
+  description:
+    "Explore production software projects delivered by Himnova Technologies (www.himnovatech.com): Enterprise ERPs, HealthTech, AI Assistants, and Scalable Web Platforms.",
+  keywords: [
+    "Delivered Software Projects",
+    "Himnova Portfolio",
+    "Enterprise Software Case Studies",
+    "AI Development Projects",
+    "Web Development Portfolio",
+  ],
+  alternates: {
+    canonical: "https://www.himnovatech.com/projects",
+  },
 };
 
 export default function ProjectsPage() {

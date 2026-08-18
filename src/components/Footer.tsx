@@ -3,10 +3,13 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { siteData } from "@/config/siteData";
 import { MapPin, Mail, Phone, Github, Linkedin, Twitter, Facebook } from "lucide-react";
 
 export const Footer: React.FC = () => {
+  const pathname = usePathname();
+  const getFooterHref = (href: string) => (href.startsWith("#") && pathname !== "/" ? `/${href}` : href);
   return (
     <footer className="relative border-t border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-alpine-950 text-slate-700 dark:text-slate-400 overflow-hidden">
       {/* Top glowing separator */}
@@ -69,7 +72,7 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2.5 text-sm">
               {siteData.footerLinks.company.map((item) => (
                 <li key={item.label}>
-                  <Link href={item.href} className="hover:text-brand-cyan transition-colors text-slate-700 dark:text-slate-300">
+                  <Link href={getFooterHref(item.href)} className="hover:text-brand-cyan transition-colors text-slate-700 dark:text-slate-300">
                     {item.label}
                   </Link>
                 </li>
@@ -83,7 +86,7 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2.5 text-sm">
               {siteData.footerLinks.services.map((item) => (
                 <li key={item.label}>
-                  <Link href={item.href} className="hover:text-brand-cyan transition-colors text-slate-700 dark:text-slate-300">
+                  <Link href={getFooterHref(item.href)} className="hover:text-brand-cyan transition-colors text-slate-700 dark:text-slate-300">
                     {item.label}
                   </Link>
                 </li>
@@ -97,7 +100,7 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2.5 text-sm">
               {siteData.footerLinks.legal.map((item) => (
                 <li key={item.label}>
-                  <Link href={item.href} className="hover:text-brand-cyan transition-colors text-slate-700 dark:text-slate-300">
+                  <Link href={getFooterHref(item.href)} className="hover:text-brand-cyan transition-colors text-slate-700 dark:text-slate-300">
                     {item.label}
                   </Link>
                 </li>

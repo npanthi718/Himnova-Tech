@@ -3,8 +3,21 @@ import { ServicesModule } from "@/modules/ServicesModule";
 import { Badge } from "@/components/ui/Badge";
 
 export const metadata = {
-  title: "Services & Solutions | Himnova Technologies",
-  description: "Explore Himnova's 6 core technological offerings in cloud DevOps, enterprise software, agentic AI, mobile engineering, and cybersecurity.",
+  title: "14 Specialized IT Services & Software Solutions | Himnova Technologies",
+  description:
+    "Explore 14 specialized IT services by Himnova Technologies: Custom Software Development, Cloud DevOps, Web Applications, Mobile App Development, Agentic AI, and 24/7 IT Support.",
+  keywords: [
+    "IT Services Nepal",
+    "Software Development Services",
+    "Custom Software Solutions",
+    "Cloud DevOps Engineering",
+    "Web Application Development",
+    "Mobile App Development",
+    "Agentic AI Services",
+  ],
+  alternates: {
+    canonical: "https://www.himnovatech.com/services",
+  },
 };
 
 export default function ServicesPage() {

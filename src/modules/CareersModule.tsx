@@ -52,6 +52,7 @@ export const CareersModule: React.FC = () => {
     currentLocation: "",
     yearsExperience: "",
     linkedInUrl: "",
+    appliedPosition: siteData.careers[0]?.role || "General Application",
     professionalSummary: "",
   });
 
@@ -150,6 +151,7 @@ export const CareersModule: React.FC = () => {
         currentLocation: "",
         yearsExperience: "",
         linkedInUrl: "",
+        appliedPosition: siteData.careers[0]?.role || "General Application",
         professionalSummary: "",
       });
       setResumeFile(null);
@@ -198,6 +200,7 @@ export const CareersModule: React.FC = () => {
                   icon={<Mail className="h-4 w-4" />}
                   onClick={() => {
                     setSelectedRole(null);
+                    setFormData((prev) => ({ ...prev, appliedPosition: "General Application" }));
                     setIsApplyModalOpen(true);
                   }}
                 >
@@ -232,8 +235,8 @@ export const CareersModule: React.FC = () => {
                           <Clock className="h-4 w-4 text-brand-teal" />
                           {career.experience}
                         </span>
-                        <span className="flex items-center gap-1.5">
-                          <DollarSign className="h-4 w-4 text-emerald-500" />
+                        <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-semibold">
+                          <DollarSign className="h-4 w-4 text-emerald-500 shrink-0" />
                           {career.salaryRange}
                         </span>
                       </div>
@@ -248,6 +251,7 @@ export const CareersModule: React.FC = () => {
                         icon={<ArrowUpRight className="h-4 w-4" />}
                         onClick={() => {
                           setSelectedRole(career);
+                          setFormData((prev) => ({ ...prev, appliedPosition: career.role }));
                           setIsApplyModalOpen(true);
                         }}
                       >
@@ -311,7 +315,12 @@ export const CareersModule: React.FC = () => {
               </Button>
               <Button
                 icon={<ArrowUpRight className="h-4 w-4" />}
-                onClick={() => setIsApplyModalOpen(true)}
+                onClick={() => {
+                  if (selectedRole) {
+                    setFormData((prev) => ({ ...prev, appliedPosition: selectedRole.role }));
+                  }
+                  setIsApplyModalOpen(true);
+                }}
               >
                 Proceed to Application
               </Button>
@@ -324,10 +333,38 @@ export const CareersModule: React.FC = () => {
         <Modal
           isOpen={isApplyModalOpen}
           onClose={() => setIsApplyModalOpen(false)}
-          title={`Apply for: ${selectedRole?.role || "General Application"}`}
+          title={`Job Application: ${formData.appliedPosition || selectedRole?.role || "General Application"}`}
           maxWidth="lg"
         >
           <form ref={formRef} onSubmit={handleApplySubmit} className="space-y-4">
+            
+            {/* Position Applied For Selector */}
+            <div className="w-full space-y-1.5">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                Position Applied For *
+              </label>
+              <select
+                value={formData.appliedPosition}
+                onChange={(e) => setFormData({ ...formData, appliedPosition: e.target.value })}
+                className="w-full rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-cyan/50
+                  bg-white border border-slate-300 text-slate-900
+                  dark:bg-alpine-850 dark:border-white/10 dark:text-white"
+              >
+                {siteData.careers.length > 0 ? (
+                  <>
+                    {siteData.careers.map((career) => (
+                      <option key={career.id} value={career.role}>
+                        {career.role} — ({career.department})
+                      </option>
+                    ))}
+                    <option value="General Application">General Application (Future Openings)</option>
+                  </>
+                ) : (
+                  <option value="General Application">General Application (No Active Positions)</option>
+                )}
+              </select>
+            </div>
+
             <Input
               label="Full Name *"
               placeholder="e.g. Sushil Sharma"

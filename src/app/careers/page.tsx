@@ -3,8 +3,19 @@ import { CareersModule } from "@/modules/CareersModule";
 import { Badge } from "@/components/ui/Badge";
 
 export const metadata = {
-  title: "Careers & Open Positions | Himnova Technologies",
-  description: "Join Himnova Technologies in Kathmandu or remotely. Explore open roles in full-stack engineering, AI/ML research, and product design.",
+  title: "Careers & Tech Openings | Himnova Technologies",
+  description:
+    "Explore open tech careers at Himnova Technologies (www.himnovatech.com): Software Sales, Full-Stack Developers, Marketing Officers, and Engineering Internships.",
+  keywords: [
+    "Tech Jobs Nepal",
+    "Software Developer Careers",
+    "IT Engineering Openings",
+    "Software Sales Jobs",
+    "Marketing Jobs Kathmandu",
+  ],
+  alternates: {
+    canonical: "https://www.himnovatech.com/careers",
+  },
 };
 
 export default function CareersPage() {

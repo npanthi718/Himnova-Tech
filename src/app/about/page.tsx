@@ -7,8 +7,19 @@ import { Card } from "@/components/ui/Card";
 import { Building2, Globe2, ShieldCheck, Cpu } from "lucide-react";
 
 export const metadata = {
-  title: "About Us | Himnova Technologies",
-  description: "Learn about Himnova Technologies Private Limited - South Asia's premier cloud intelligence and agentic software laboratory.",
+  title: "About Himnova Technologies | Premier IT & Software Engineering Company",
+  description:
+    "Learn about Himnova Technologies Private Limited (www.himnovatech.com): Enterprise IT company, software development leadership, vision, and engineering pillars.",
+  keywords: [
+    "About Himnova Technologies",
+    "IT Company Kathmandu",
+    "Software Engineering Agency",
+    "Tech Software Exports",
+    "Corporate Profile",
+  ],
+  alternates: {
+    canonical: "https://www.himnovatech.com/about",
+  },
 };
 
 export default function AboutPage() {
