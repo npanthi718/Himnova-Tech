@@ -19,12 +19,10 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://himnova.tech"),
-  title: siteData.meta.title,
-  description: siteData.meta.description,
-  keywords: siteData.meta.keywords,
-  alternates: {
-    canonical: siteData.meta.url,
+  title: "Himnova Technologies | The Next Era of Cloud Intelligence",
+  description: "Enterprise custom software, cloud migration, and IT engineering solutions.",
+  verification: {
+    google: "dzV4NBxryD6nX7UbNwa56FrdQ1jgXwzHwgIDbo0SEco",
   },
   robots: {
     index: true,
