@@ -8,10 +8,16 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { ArrowRight, Sparkles, Shield, Cpu, Cloud, Terminal } from "lucide-react";
 import { motion } from "framer-motion";
+import { ParallaxBackground } from "@/components/animations/ParallaxLayer";
 
 export const HeroModule: React.FC = () => {
   return (
-    <section id="home" className="relative min-h-[92vh] flex items-center justify-center pt-28 pb-20 sm:pb-24 overflow-hidden bg-hero-glow light:bg-gradient-to-b light:from-slate-50 light:to-white">
+    <section id="home" className="relative min-h-[92vh] flex items-center justify-center pt-28 pb-20 sm:pb-24 overflow-hidden bg-slate-50 dark:bg-alpine-950">
+      <ParallaxBackground
+        speed={0.15}
+        className="absolute inset-0 bg-hero-glow opacity-80"
+      />
+
       <div className="absolute inset-0">
         <Image
           src="/images/office-hero.png"
@@ -19,12 +25,12 @@ export const HeroModule: React.FC = () => {
           fill
           priority
           sizes="100vw"
-          className="object-cover opacity-10 dark:opacity-15"
+          className="object-cover opacity-5 dark:opacity-15"
         />
       </div>
 
       {/* Background Animated Particle Grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] light:bg-[linear-gradient(to_right,rgba(15,23,42,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.04)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(15,23,42,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.05)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 
       {/* Floating Ambient Glowing Spheres */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-brand-cyan/15 rounded-full blur-[140px] pointer-events-none" />
@@ -54,10 +60,10 @@ export const HeroModule: React.FC = () => {
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl sm:text-6xl lg:text-7xl font-extrabold font-display tracking-tight text-white light:text-slate-900 leading-[1.1]"
+              className="text-4xl sm:text-6xl lg:text-7xl font-extrabold font-display tracking-tight text-slate-900 dark:text-white leading-[1.1]"
             >
               Architecting <br />
-              <span className="bg-gradient-to-r from-brand-cyan via-teal-300 to-sky-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-brand-cyan via-teal-400 to-sky-500 bg-clip-text text-transparent">
                 Cloud Intelligence
               </span>{" "}
               & AI Pipelines
@@ -68,7 +74,7 @@ export const HeroModule: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-base sm:text-lg lg:text-xl text-slate-300 dark:text-slate-400 light:text-slate-700 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
+              className="text-base sm:text-lg lg:text-xl text-slate-700 dark:text-slate-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal"
             >
               {siteData.company.tagline}
             </motion.p>
@@ -97,15 +103,15 @@ export const HeroModule: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.5 }}
-              className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-8 border-t border-white/10 light:border-slate-200"
+              className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-8 border-t border-slate-200 dark:border-white/10"
             >
               {siteData.company.stats.map((stat, idx) => (
                 <div key={idx} className="space-y-1">
                   <div className="text-2xl sm:text-3xl md:text-4xl font-extrabold font-display text-slate-900 dark:text-white tracking-tight">
                     {stat.value}
                   </div>
-                  <div className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-medium">
-                    {stat.label} <span className="text-brand-cyan font-semibold">({stat.suffix})</span>
+                  <div className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-semibold">
+                    {stat.label} <span className="text-brand-cyan font-bold">({stat.suffix})</span>
                   </div>
                 </div>
               ))}
@@ -120,16 +126,16 @@ export const HeroModule: React.FC = () => {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="lg:col-span-5 relative"
           >
-            <div className="relative mx-auto max-w-md lg:max-w-none rounded-3xl border border-white/15 dark:bg-alpine-900/90 light:bg-white/95 p-6 shadow-2xl backdrop-blur-2xl overflow-hidden group">
+            <div className="relative mx-auto max-w-md lg:max-w-none rounded-3xl border border-slate-200 dark:border-white/15 bg-white/95 dark:bg-alpine-900/90 p-6 shadow-2xl backdrop-blur-2xl overflow-hidden group">
               
               {/* Header Bar */}
-              <div className="flex items-center justify-between pb-4 border-b border-white/10">
+              <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-white/10">
                 <div className="flex items-center gap-2">
                   <div className="h-3 w-3 rounded-full bg-red-500/80" />
                   <div className="h-3 w-3 rounded-full bg-yellow-500/80" />
                   <div className="h-3 w-3 rounded-full bg-green-500/80" />
                 </div>
-                <div className="flex items-center gap-1.5 text-xs text-slate-400 light:text-slate-600 font-mono">
+                <div className="flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-400 font-mono">
                   <Terminal className="h-3.5 w-3.5 text-brand-cyan" />
                   <span>himnova-cloud-v2.4.0</span>
                 </div>
@@ -137,25 +143,25 @@ export const HeroModule: React.FC = () => {
 
               {/* Console / Pipeline Mock Content */}
               <div className="py-6 space-y-4 font-mono text-xs">
-                <div className="flex items-center justify-between p-3 rounded-xl bg-alpine-850/80 light:bg-slate-100 border border-white/5 light:border-slate-200">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-slate-100 dark:bg-alpine-850/80 border border-slate-200 dark:border-white/5">
                   <div className="flex items-center gap-3">
                     <Cloud className="h-5 w-5 text-brand-cyan animate-bounce-slow" />
                     <div>
-                      <p className="font-semibold text-white light:text-slate-900">Kubernetes Autoscaler</p>
-                      <p className="text-[10px] text-slate-400 light:text-slate-600">AWS us-east-1 & Kathmandu Node</p>
+                      <p className="font-semibold text-slate-900 dark:text-white">Kubernetes Autoscaler</p>
+                      <p className="text-[10px] text-slate-600 dark:text-slate-400">AWS us-east-1 & Kathmandu Node</p>
                     </div>
                   </div>
-                  <span className="text-emerald-400 font-semibold px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30">
+                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30">
                     ACTIVE
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between p-3 rounded-xl bg-alpine-850/80 light:bg-slate-100 border border-white/5 light:border-slate-200">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-slate-100 dark:bg-alpine-850/80 border border-slate-200 dark:border-white/5">
                   <div className="flex items-center gap-3">
-                    <Cpu className="h-5 w-5 text-purple-400" />
+                    <Cpu className="h-5 w-5 text-purple-500 dark:text-purple-400" />
                     <div>
-                      <p className="font-semibold text-white light:text-slate-900">LangGraph Agent Pipeline</p>
-                      <p className="text-[10px] text-slate-400 light:text-slate-600">RAG Vector Search (Qdrant)</p>
+                      <p className="font-semibold text-slate-900 dark:text-white">LangGraph Agent Pipeline</p>
+                      <p className="text-[10px] text-slate-600 dark:text-slate-400">RAG Vector Search (Qdrant)</p>
                     </div>
                   </div>
                   <span className="text-brand-cyan font-semibold px-2 py-0.5 rounded bg-brand-cyan/10 border border-brand-cyan/30">
@@ -163,15 +169,15 @@ export const HeroModule: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between p-3 rounded-xl bg-alpine-850/80 light:bg-slate-100 border border-white/5 light:border-slate-200">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-slate-100 dark:bg-alpine-850/80 border border-slate-200 dark:border-white/5">
                   <div className="flex items-center gap-3">
-                    <Shield className="h-5 w-5 text-cyan-400" />
+                    <Shield className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
                     <div>
-                      <p className="font-semibold text-white light:text-slate-900">Zero-Trust Audit Engine</p>
-                      <p className="text-[10px] text-slate-400 light:text-slate-600">SOC2 Compliance Monitor</p>
+                      <p className="font-semibold text-slate-900 dark:text-white">Zero-Trust Audit Engine</p>
+                      <p className="text-[10px] text-slate-600 dark:text-slate-400">SOC2 Compliance Monitor</p>
                     </div>
                   </div>
-                  <span className="text-emerald-400 font-semibold px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30">
+                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30">
                     SECURED
                   </span>
                 </div>
@@ -179,7 +185,7 @@ export const HeroModule: React.FC = () => {
 
               {/* Glowing Bottom Status */}
               <div className="p-4 rounded-xl bg-gradient-to-r from-brand-cyan/20 to-brand-teal/10 border border-brand-cyan/30 flex items-center justify-between">
-                <span className="text-xs font-semibold text-white light:text-slate-900">Global Cloud Export Hub</span>
+                <span className="text-xs font-semibold text-slate-900 dark:text-white">Global Cloud Export Hub</span>
                 <span className="text-[11px] font-bold text-brand-cyan tracking-wider uppercase">Kathmandu, Nepal</span>
               </div>
 

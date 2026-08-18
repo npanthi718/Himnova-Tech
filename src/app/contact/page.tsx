@@ -100,10 +100,10 @@ export default function ContactPage() {
       {/* Header Banner */}
       <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center space-y-6">
         <Badge variant="cyan">Direct Line to Architecture Team</Badge>
-        <h1 className="text-4xl sm:text-6xl font-extrabold font-display tracking-tight text-white">
+        <h1 className="text-4xl sm:text-6xl font-extrabold font-display tracking-tight text-slate-900 dark:text-white">
           Initiate Technical Consultation
         </h1>
-        <p className="text-slate-400 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed">
+        <p className="text-slate-700 dark:text-slate-300 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed">
           Have an inquiry regarding cloud migration, agentic AI pipelines, or custom enterprise software? Our lead architects respond within 24 hours.
         </p>
       </section>
@@ -120,40 +120,40 @@ export default function ContactPage() {
                   <MapPin className="h-6 w-6" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-white">Kathmandu Headquarters</h3>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">Kathmandu Headquarters</h3>
                   <p className="text-xs text-brand-cyan font-semibold">{siteData.company.legalName}</p>
                 </div>
               </div>
 
-              <div className="space-y-3 text-xs sm:text-sm text-slate-300">
-                <p className="font-semibold text-white">{siteData.company.headquarters.address}</p>
-                <p className="text-slate-400">{siteData.company.headquarters.landmark}</p>
-                <p className="text-slate-400">{siteData.company.headquarters.city}, {siteData.company.headquarters.country}</p>
+              <div className="space-y-3 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                <p className="font-semibold text-slate-900 dark:text-white">{siteData.company.headquarters.address}</p>
+                <p className="text-slate-600 dark:text-slate-400">{siteData.company.headquarters.landmark}</p>
+                <p className="text-slate-600 dark:text-slate-400">{siteData.company.headquarters.city}, {siteData.company.headquarters.country}</p>
               </div>
 
-              <div className="pt-4 border-t border-white/10 space-y-3 text-xs sm:text-sm">
-                <div className="flex items-center gap-3 text-slate-300">
+              <div className="pt-4 border-t border-slate-200 dark:border-white/10 space-y-3 text-xs sm:text-sm">
+                <div className="flex items-center gap-3 text-slate-700 dark:text-slate-300">
                   <Mail className="h-4 w-4 text-brand-cyan shrink-0" />
                   <span>{siteData.company.contact.email}</span>
                 </div>
-                <div className="flex items-center gap-3 text-slate-300">
+                <div className="flex items-center gap-3 text-slate-700 dark:text-slate-300">
                   <Phone className="h-4 w-4 text-brand-teal shrink-0" />
                   <span>{siteData.company.contact.phonePrimary}</span>
                 </div>
-                <div className="flex items-center gap-3 text-slate-300">
-                  <Clock className="h-4 w-4 text-purple-400 shrink-0" />
+                <div className="flex items-center gap-3 text-slate-700 dark:text-slate-300">
+                  <Clock className="h-4 w-4 text-purple-500 shrink-0" />
                   <span>Mon - Fri: 9:00 AM - 6:00 PM NPT</span>
                 </div>
               </div>
             </Card>
 
             {/* SLA Commitment Card */}
-            <Card className="p-6 space-y-4 bg-gradient-to-br from-alpine-900 to-brand-cyan/10 border-brand-teal/30">
+            <Card className="p-6 space-y-4 bg-gradient-to-br from-brand-cyan/10 to-brand-teal/5 border-brand-teal/30">
               <div className="flex items-center gap-3">
                 <ShieldCheck className="h-6 w-6 text-brand-cyan" />
-                <h4 className="text-sm font-bold text-white">Zero-Trust Confidentiality SLA</h4>
+                <h4 className="text-sm font-bold text-slate-900 dark:text-white">Zero-Trust Confidentiality SLA</h4>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
                 All communications and project specifications shared with Himnova Technologies are automatically covered under our standard Enterprise Non-Disclosure Agreement (NDA).
               </p>
             </Card>

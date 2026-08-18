@@ -96,7 +96,7 @@ export const ContactModule: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="section-padding relative overflow-hidden dark:bg-alpine-950 light:bg-slate-50 border-t dark:border-white/5 light:border-slate-200">
+    <section id="contact" className="section-padding relative overflow-hidden bg-white dark:bg-alpine-950 border-t border-slate-200 dark:border-white/5">
       <ParallaxBackground
         speed={0.15}
         className="absolute inset-0 bg-hero-glow opacity-80"

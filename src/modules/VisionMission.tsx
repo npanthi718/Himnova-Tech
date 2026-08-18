@@ -11,7 +11,7 @@ export const VisionMission: React.FC = () => {
   const { vision, mission } = siteData.visionMission;
 
   return (
-    <section id="about" className="section-padding relative overflow-hidden dark:bg-alpine-950 light:bg-slate-50">
+    <section id="about" className="section-padding relative overflow-hidden bg-slate-50 dark:bg-alpine-950">
       <ParallaxBackground
         speed={0.12}
         className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(6,182,212,0.08),transparent_50%)]"

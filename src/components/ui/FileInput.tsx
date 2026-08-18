@@ -23,14 +23,17 @@ export const FileInput: React.FC<FileInputProps> = ({
   onChange,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [internalError, setInternalError] = React.useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInternalError(null);
     const file = e.target.files?.[0] ?? null;
     if (!file) {
       onChange(null);
       return;
     }
     if (file.size > maxSizeMB * 1024 * 1024) {
+      setInternalError(`File size exceeds maximum limit of ${maxSizeMB}MB`);
       onChange(null);
       if (inputRef.current) inputRef.current.value = "";
       return;
@@ -44,12 +47,14 @@ export const FileInput: React.FC<FileInputProps> = ({
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
+  const displayError = error || internalError;
+
   return (
     <div className="w-full space-y-1.5">
       {label && (
-        <label className="block text-xs font-medium uppercase tracking-wider text-slate-600 dark:text-slate-400">
+        <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300">
           {label}
-          {optional && <span className="normal-case text-slate-500 ml-1">(Optional)</span>}
+          {optional && <span className="normal-case text-slate-500 font-normal ml-1">(Optional)</span>}
         </label>
       )}
 
@@ -59,34 +64,35 @@ export const FileInput: React.FC<FileInputProps> = ({
           onClick={() => inputRef.current?.click()}
           className={`w-full rounded-xl border-2 border-dashed px-4 py-6 text-center transition-all duration-200
             hover:border-brand-cyan/60 hover:bg-brand-cyan/5
-            dark:border-white/15 dark:bg-alpine-850/50
-            light:border-slate-300 light:bg-slate-50
-            ${error ? "border-red-500" : ""}`}
+            bg-white border-slate-300 text-slate-700
+            dark:bg-alpine-850/50 dark:border-white/15 dark:text-slate-300
+            ${displayError ? "border-red-500" : ""}`}
         >
           <Upload className="h-6 w-6 mx-auto mb-2 text-brand-cyan" />
-          <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
-            Click to upload or drag & drop
+          <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
+            Click to upload or drag & drop file
           </p>
-          <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             PDF, DOC, DOCX — max {maxSizeMB}MB
           </p>
         </button>
       ) : (
         <div className="flex items-center gap-3 rounded-xl border px-4 py-3
-          dark:bg-alpine-850 dark:border-white/10
-          light:bg-slate-50 light:border-slate-300">
+          bg-slate-50 border-slate-300
+          dark:bg-alpine-850 dark:border-white/10">
           <FileText className="h-5 w-5 text-brand-cyan shrink-0" />
           <div className="flex-1 min-w-0 text-left">
             <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{value.name}</p>
-            <p className="text-xs text-slate-500">{formatSize(value.size)}</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">{formatSize(value.size)}</p>
           </div>
           <button
             type="button"
             onClick={() => {
+              setInternalError(null);
               onChange(null);
               if (inputRef.current) inputRef.current.value = "";
             }}
-            className="rounded-lg p-1.5 text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+            className="rounded-lg p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-500/10 transition-colors"
             aria-label="Remove file"
           >
             <X className="h-4 w-4" />
@@ -102,7 +108,7 @@ export const FileInput: React.FC<FileInputProps> = ({
         className="hidden"
       />
 
-      {error && <p className="text-xs text-red-500 font-medium">{error}</p>}
+      {displayError && <p className="text-xs text-red-500 font-medium">{displayError}</p>}
     </div>
   );
 };

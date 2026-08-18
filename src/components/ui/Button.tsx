@@ -32,11 +32,11 @@ export const Button: React.FC<ButtonProps> = ({
     primary:
       "bg-gradient-to-r from-brand-teal to-brand-cyan text-white shadow-lg shadow-brand-cyan/25 hover:shadow-brand-cyan/40 hover:brightness-110 active:scale-[0.98]",
     secondary:
-      "bg-alpine-850 dark:bg-alpine-850 light:bg-frost-200 text-slate-100 dark:text-white light:text-slate-900 border border-white/10 dark:border-white/10 light:border-slate-300 hover:border-brand-cyan/50 hover:bg-alpine-800",
+      "bg-slate-200 text-slate-900 border border-slate-300 hover:bg-slate-300 dark:bg-alpine-850 dark:text-white dark:border-white/10 dark:hover:bg-alpine-800",
     outline:
-      "bg-transparent text-slate-200 dark:text-slate-200 light:text-slate-800 border border-white/20 dark:border-white/20 light:border-slate-300 hover:border-brand-teal hover:text-brand-cyan hover:bg-brand-cyan/5",
+      "bg-transparent text-slate-800 border border-slate-300 hover:border-brand-teal hover:text-brand-cyan hover:bg-brand-cyan/5 dark:text-slate-200 dark:border-white/20",
     ghost:
-      "bg-transparent text-slate-400 dark:text-slate-400 light:text-slate-600 hover:text-brand-cyan hover:bg-slate-800/40",
+      "bg-transparent text-slate-700 hover:text-brand-cyan hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800/40",
   };
 
   return (

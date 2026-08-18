@@ -3,7 +3,6 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
-  outputFileTracing: false,
   images: {
     formats: ["image/avif", "image/webp"],
   },

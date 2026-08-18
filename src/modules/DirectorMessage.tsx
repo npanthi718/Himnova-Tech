@@ -13,7 +13,7 @@ export const DirectorMessage: React.FC = () => {
   const { name, title, avatar, quote, paragraphs } = siteData.directorMessage;
 
   return (
-    <section id="director" className="section-padding relative overflow-hidden dark:bg-alpine-950 light:bg-slate-50">
+    <section id="director" className="section-padding relative overflow-hidden bg-white dark:bg-alpine-950">
       <ParallaxBackground
         speed={0.1}
         className="absolute inset-0 bg-[radial-gradient(ellipse_at_right,rgba(14,165,233,0.08),transparent_55%)]"

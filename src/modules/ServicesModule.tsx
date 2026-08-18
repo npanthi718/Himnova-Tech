@@ -52,7 +52,7 @@ export const ServicesModule: React.FC = () => {
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
 
   return (
-    <section id="services" className="section-padding relative overflow-hidden dark:bg-alpine-950 light:bg-frost-50">
+    <section id="services" className="section-padding relative overflow-hidden bg-slate-50 dark:bg-alpine-950 border-t border-slate-200 dark:border-white/5">
       <ParallaxBackground
         speed={0.1}
         className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-brand-cyan/10 rounded-full blur-[160px]"
@@ -86,7 +86,7 @@ export const ServicesModule: React.FC = () => {
                     
                     {/* Top Row: Icon & Arrow */}
                     <div className="flex items-center justify-between">
-                      <div className="rounded-xl bg-brand-cyan/10 dark:bg-brand-cyan/15 light:bg-brand-cobalt/10 border border-brand-cyan/30 p-3 text-brand-cyan group-hover:scale-110 group-hover:bg-brand-cyan group-hover:text-white transition-all duration-300">
+                      <div className="rounded-xl bg-brand-cyan/15 border border-brand-cyan/30 p-3 text-brand-cyan group-hover:scale-110 group-hover:bg-brand-cyan group-hover:text-white transition-all duration-300">
                         <IconComponent className="h-5 w-5" />
                       </div>
                       <span className="text-slate-400 group-hover:text-brand-cyan group-hover:translate-x-1 transition-all">
@@ -99,18 +99,18 @@ export const ServicesModule: React.FC = () => {
                       {service.title}
                     </h3>
 
-                    <p className="text-sm font-semibold text-brand-cyan dark:text-brand-cyan light:text-brand-cobalt">
+                    <p className="text-sm font-semibold text-brand-cyan">
                       {service.shortDescription}
                     </p>
 
-                    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-3">
+                    <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed line-clamp-3">
                       {service.fullDetails}
                     </p>
 
                   </div>
 
                   {/* Footer Bar */}
-                  <div className="pt-4 mt-4 border-t border-slate-200 dark:border-white/10 flex items-center justify-between text-xs font-bold text-slate-500 group-hover:text-brand-cyan transition-colors">
+                  <div className="pt-4 mt-4 border-t border-slate-200 dark:border-white/10 flex items-center justify-between text-xs font-bold text-slate-600 dark:text-slate-400 group-hover:text-brand-cyan transition-colors">
                     <span>Explore Specifications</span>
                     <Sparkles className="h-3.5 w-3.5 text-brand-cyan opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>

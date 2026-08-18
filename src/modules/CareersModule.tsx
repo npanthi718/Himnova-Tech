@@ -169,7 +169,7 @@ export const CareersModule: React.FC = () => {
   };
 
   return (
-    <section id="careers" className="section-padding relative overflow-hidden dark:bg-alpine-950 light:bg-slate-50">
+    <section id="careers" className="section-padding relative overflow-hidden bg-white dark:bg-alpine-950 border-t border-slate-200 dark:border-white/5">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <RevealOnScroll className="text-center max-w-3xl mx-auto space-y-5 mb-14 sm:mb-16">
           <Badge variant="teal">Careers & Engineering Culture</Badge>

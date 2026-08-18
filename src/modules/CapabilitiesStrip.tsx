@@ -17,6 +17,7 @@ import {
   Share2,
   BarChart3,
   ShieldCheck,
+  Sparkles,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { ParallaxBackground } from "@/components/animations/ParallaxLayer";
@@ -56,22 +57,22 @@ function CapabilityCard({
 
   return (
     <div
-      className="flex items-center gap-4 mx-4 px-6 py-4 rounded-2xl shrink-0
-        dark:bg-alpine-900/70 dark:border-white/10
-        light:bg-white light:border-slate-200 light:shadow-md
-        border backdrop-blur-sm min-w-[280px] sm:min-w-[320px]"
+      className="flex items-center gap-4 mx-3 px-6 py-4 rounded-2xl shrink-0
+        bg-white border border-slate-200 shadow-md shadow-slate-200/50
+        dark:bg-alpine-900/85 dark:border-white/10 dark:shadow-black/50
+        backdrop-blur-md min-w-[280px] sm:min-w-[320px] transition-all hover:scale-105"
     >
       <div
-        className="rounded-xl p-3 bg-brand-cyan/15 border border-brand-cyan/30 text-brand-cyan animate-icon-pulse"
-        style={{ animationDelay: `${index * 0.3}s` }}
+        className="rounded-xl p-3 bg-brand-cyan/15 border border-brand-cyan/30 text-brand-cyan dark:text-brand-cyan animate-icon-pulse shrink-0"
+        style={{ animationDelay: `${index * 0.25}s` }}
       >
         <Icon className="h-6 w-6" />
       </div>
       <div>
-        <p className="text-sm font-bold text-slate-900 dark:text-white">{label}</p>
-        <p className="text-lg sm:text-xl font-extrabold font-display text-brand-cyan">
-          {metric}
-          <span className="text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400 ml-1.5">
+        <p className="text-sm font-bold text-slate-900 dark:text-white leading-tight">{label}</p>
+        <p className="text-lg sm:text-xl font-extrabold font-display text-brand-cyan flex items-baseline gap-1 mt-0.5">
+          <span>{metric}</span>
+          <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">
             {unit}
           </span>
         </p>
@@ -86,7 +87,7 @@ export const CapabilitiesStrip: React.FC = () => {
   const row2 = [...items.slice().reverse(), ...items.slice().reverse()];
 
   return (
-    <section className="relative section-padding overflow-hidden dark:bg-alpine-950 light:bg-gradient-to-b light:from-slate-100 light:to-white border-y dark:border-white/5 light:border-slate-200">
+    <section className="relative section-padding overflow-hidden bg-slate-50 dark:bg-alpine-950 border-y border-slate-200 dark:border-white/5">
       <ParallaxBackground
         speed={0.2}
         className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.12),transparent_60%)]"
@@ -94,9 +95,10 @@ export const CapabilitiesStrip: React.FC = () => {
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-10 sm:mb-14">
         <RevealOnScroll className="text-center max-w-3xl mx-auto space-y-4">
-          <p className="text-xs font-bold uppercase tracking-widest text-brand-cyan">
-            Enterprise Capabilities
-          </p>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-cyan/10 border border-brand-cyan/30 text-brand-cyan text-xs font-bold uppercase tracking-widest">
+            <Sparkles className="h-3.5 w-3.5" />
+            <span>Enterprise Capabilities</span>
+          </div>
           <h2 className="section-heading">
             Built for <span className="text-brand-cyan">Scale</span>, Engineered for Trust
           </h2>
@@ -136,12 +138,12 @@ export const CapabilitiesStrip: React.FC = () => {
             {siteData.company.stats.map((stat, idx) => (
               <div
                 key={idx}
-                className="glass-panel gradient-border p-5 sm:p-6 text-center space-y-1"
+                className="glass-panel gradient-border p-5 sm:p-6 text-center space-y-1 hover:border-brand-cyan/40 transition-all"
               >
                 <p className="text-2xl sm:text-3xl md:text-4xl font-extrabold font-display text-slate-900 dark:text-white">
                   {stat.value}
                 </p>
-                <p className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400">
+                <p className="text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300">
                   {stat.label}
                 </p>
                 {stat.suffix && (

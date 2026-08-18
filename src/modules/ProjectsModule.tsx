@@ -24,7 +24,7 @@ export const ProjectsModule: React.FC = () => {
       : siteData.projects.filter((p) => p.category === selectedCategory);
 
   return (
-    <section id="projects" className="section-padding relative overflow-hidden dark:bg-alpine-950 light:bg-slate-50">
+    <section id="projects" className="section-padding relative overflow-hidden bg-white dark:bg-alpine-950 border-t border-slate-200 dark:border-white/5">
       <ParallaxBackground
         speed={0.12}
         className="absolute top-1/4 right-10 w-[500px] h-[300px] bg-brand-teal/10 rounded-full blur-[140px]"
@@ -54,7 +54,7 @@ export const ProjectsModule: React.FC = () => {
               className={`px-4 py-2 text-xs font-bold rounded-full transition-all duration-300 ${
                 selectedCategory === cat
                   ? "bg-brand-cyan text-white shadow-lg shadow-brand-cyan/25"
-                  : "bg-alpine-900/40 dark:bg-alpine-900/60 light:bg-white text-slate-400 dark:text-slate-400 light:text-slate-700 border border-white/10 light:border-slate-200 hover:border-brand-cyan/50"
+                  : "bg-slate-100 text-slate-700 border border-slate-300 hover:border-brand-cyan/50 dark:bg-alpine-900/60 dark:text-slate-300 dark:border-white/10"
               }`}
             >
               {cat}
