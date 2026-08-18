@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 const config: Config = {
   darkMode: "class",
@@ -39,8 +40,14 @@ const config: Config = {
       },
       animation: {
         "pulse-slow": "pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "bounce-slow": "bounce 3s ease-in-out infinite",
         "float": "float 8s ease-in-out infinite",
         "glow": "glow 3s ease-in-out infinite alternate",
+        "marquee": "marquee 40s linear infinite",
+        "marquee-reverse": "marquee-reverse 40s linear infinite",
+        "fade-up": "fade-up 0.6s ease-out forwards",
+        "shimmer": "shimmer 3s ease-in-out infinite",
+        "icon-pulse": "icon-pulse 2.5s ease-in-out infinite",
       },
       keyframes: {
         float: {
@@ -51,10 +58,34 @@ const config: Config = {
           "0%": { boxShadow: "0 0 15px rgba(6, 182, 212, 0.2)" },
           "100%": { boxShadow: "0 0 35px rgba(6, 182, 212, 0.5)" },
         },
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+        "marquee-reverse": {
+          "0%": { transform: "translateX(-50%)" },
+          "100%": { transform: "translateX(0)" },
+        },
+        "fade-up": {
+          "0%": { opacity: "0", transform: "translateY(24px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        shimmer: {
+          "0%, 100%": { opacity: "0.5" },
+          "50%": { opacity: "1" },
+        },
+        "icon-pulse": {
+          "0%, 100%": { transform: "scale(1)", opacity: "0.85" },
+          "50%": { transform: "scale(1.08)", opacity: "1" },
+        },
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(({ addVariant }) => {
+      addVariant("light", ".light &");
+    }),
+  ],
 };
 
 export default config;

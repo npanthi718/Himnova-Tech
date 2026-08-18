@@ -4,58 +4,54 @@ import React from "react";
 import { siteData } from "@/config/siteData";
 import { Card } from "@/components/ui/Card";
 import { Eye, Target, CheckCircle2 } from "lucide-react";
-import { motion } from "framer-motion";
+import { RevealOnScroll, StaggerContainer, StaggerItem } from "@/components/animations/RevealOnScroll";
+import { ParallaxBackground } from "@/components/animations/ParallaxLayer";
 
 export const VisionMission: React.FC = () => {
   const { vision, mission } = siteData.visionMission;
 
   return (
-    <section className="py-24 relative overflow-hidden dark:bg-alpine-950 light:bg-slate-50">
+    <section id="about" className="section-padding relative overflow-hidden dark:bg-alpine-950 light:bg-slate-50">
+      <ParallaxBackground
+        speed={0.12}
+        className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(6,182,212,0.08),transparent_50%)]"
+      />
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
-          <h2 className="text-xs font-bold uppercase tracking-widest text-brand-cyan">
+        <RevealOnScroll className="text-center max-w-3xl mx-auto space-y-5 mb-14 sm:mb-16">
+          <p className="text-xs font-bold uppercase tracking-widest text-brand-cyan">
             Enterprise Pillars
-          </h2>
-          <p className="text-3xl sm:text-5xl font-extrabold font-display tracking-tight text-white dark:text-white light:text-slate-900">
-            Guided by Purpose, Driven by Precision
           </p>
-          <p className="text-slate-400 dark:text-slate-400 light:text-slate-600 text-base sm:text-lg">
+          <h2 className="section-heading">
+            Guided by Purpose, Driven by Precision
+          </h2>
+          <p className="section-subtext">
             Our strategic direction balances bold global ambition with absolute technical integrity.
           </p>
-        </div>
+        </RevealOnScroll>
 
-        {/* Dual Cards Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          
-          {/* Vision Card */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+        <StaggerContainer className="grid grid-cols-1 lg:grid-cols-2 gap-8" stagger={0.12}>
+          <StaggerItem>
             <Card className="h-full p-8 sm:p-10 flex flex-col justify-between border-brand-cyan/20">
               <div className="space-y-6">
                 <div className="inline-flex items-center gap-3">
                   <div className="rounded-2xl bg-brand-cyan/15 border border-brand-cyan/30 p-3.5 text-brand-cyan">
                     <Eye className="h-7 w-7" />
                   </div>
-                  <h3 className="text-2xl font-bold font-display text-white dark:text-white light:text-slate-900">
+                  <h3 className="text-2xl sm:text-3xl font-bold font-display text-slate-900 dark:text-white">
                     {vision.title}
                   </h3>
                 </div>
 
-                <p className="text-slate-300 dark:text-slate-300 light:text-slate-700 leading-relaxed text-base sm:text-lg font-medium">
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-base sm:text-lg font-medium">
                   &quot;{vision.statement}&quot;
                 </p>
 
-                <div className="pt-4 border-t border-white/10 space-y-3">
+                <div className="pt-4 border-t border-white/10 light:border-slate-200 space-y-3">
                   {vision.highlights.map((item, idx) => (
                     <div key={idx} className="flex items-start gap-3">
                       <CheckCircle2 className="h-5 w-5 text-brand-cyan shrink-0 mt-0.5" />
-                      <span className="text-xs sm:text-sm text-slate-400 dark:text-slate-400 light:text-slate-600 font-medium">
+                      <span className="text-sm sm:text-base text-slate-600 dark:text-slate-400 font-medium">
                         {item}
                       </span>
                     </div>
@@ -63,35 +59,29 @@ export const VisionMission: React.FC = () => {
                 </div>
               </div>
             </Card>
-          </motion.div>
+          </StaggerItem>
 
-          {/* Mission Card */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <StaggerItem>
             <Card className="h-full p-8 sm:p-10 flex flex-col justify-between border-brand-teal/20">
               <div className="space-y-6">
                 <div className="inline-flex items-center gap-3">
                   <div className="rounded-2xl bg-brand-teal/15 border border-brand-teal/30 p-3.5 text-brand-teal">
                     <Target className="h-7 w-7" />
                   </div>
-                  <h3 className="text-2xl font-bold font-display text-white dark:text-white light:text-slate-900">
+                  <h3 className="text-2xl sm:text-3xl font-bold font-display text-slate-900 dark:text-white">
                     {mission.title}
                   </h3>
                 </div>
 
-                <p className="text-slate-300 dark:text-slate-300 light:text-slate-700 leading-relaxed text-base sm:text-lg font-medium">
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-base sm:text-lg font-medium">
                   &quot;{mission.statement}&quot;
                 </p>
 
-                <div className="pt-4 border-t border-white/10 space-y-3">
+                <div className="pt-4 border-t border-white/10 light:border-slate-200 space-y-3">
                   {mission.highlights.map((item, idx) => (
                     <div key={idx} className="flex items-start gap-3">
                       <CheckCircle2 className="h-5 w-5 text-brand-teal shrink-0 mt-0.5" />
-                      <span className="text-xs sm:text-sm text-slate-400 dark:text-slate-400 light:text-slate-600 font-medium">
+                      <span className="text-sm sm:text-base text-slate-600 dark:text-slate-400 font-medium">
                         {item}
                       </span>
                     </div>
@@ -99,9 +89,8 @@ export const VisionMission: React.FC = () => {
                 </div>
               </div>
             </Card>
-          </motion.div>
-
-        </div>
+          </StaggerItem>
+        </StaggerContainer>
       </div>
     </section>
   );

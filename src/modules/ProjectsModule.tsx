@@ -9,7 +9,8 @@ import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { Layers, ArrowRight, ExternalLink, Calendar, CheckCircle2, Sparkles, Filter } from "lucide-react";
-import { motion } from "framer-motion";
+import { RevealOnScroll, StaggerContainer, StaggerItem } from "@/components/animations/RevealOnScroll";
+import { ParallaxBackground } from "@/components/animations/ParallaxLayer";
 
 export const ProjectsModule: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -23,26 +24,26 @@ export const ProjectsModule: React.FC = () => {
       : siteData.projects.filter((p) => p.category === selectedCategory);
 
   return (
-    <section id="projects" className="py-24 relative overflow-hidden dark:bg-alpine-950 light:bg-slate-50">
-      {/* Background Glow */}
-      <div className="absolute top-1/4 right-10 w-[500px] h-[300px] bg-brand-teal/10 rounded-full blur-[140px] pointer-events-none" />
+    <section id="projects" className="section-padding relative overflow-hidden dark:bg-alpine-950 light:bg-slate-50">
+      <ParallaxBackground
+        speed={0.12}
+        className="absolute top-1/4 right-10 w-[500px] h-[300px] bg-brand-teal/10 rounded-full blur-[140px]"
+      />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Section Header Matching Second Screenshot */}
-        <div className="text-center max-w-3xl mx-auto space-y-4 mb-12">
+        <RevealOnScroll className="text-center max-w-3xl mx-auto space-y-5 mb-12 sm:mb-14">
           <Badge variant="teal" className="uppercase tracking-widest px-4 py-1">
             OUR WORK
           </Badge>
           
-          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold font-display tracking-tight text-slate-900 dark:text-white">
+          <h2 className="section-heading">
             Projects We&apos;ve Delivered
           </h2>
 
-          <p className="text-slate-600 dark:text-slate-400 text-base sm:text-lg leading-relaxed">
+          <p className="section-subtext">
             Real-world solutions across ERP, e-commerce, healthcare, SaaS, logistics, and fintech — built with modern stacks and deployed to production.
           </p>
-        </div>
+        </RevealOnScroll>
 
         {/* Category Filter Pills */}
         <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
@@ -62,15 +63,9 @@ export const ProjectsModule: React.FC = () => {
         </div>
 
         {/* Delivered Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filteredProjects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.08 }}
-            >
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6" stagger={0.07}>
+          {filteredProjects.map((project) => (
+            <StaggerItem key={project.id}>
               <Card
                 onClick={() => setSelectedProject(project)}
                 className="h-full flex flex-col justify-between cursor-pointer group hover:border-brand-cyan/50 transition-all duration-300"
@@ -136,9 +131,9 @@ export const ProjectsModule: React.FC = () => {
                   <ArrowRight className="h-4 w-4" />
                 </div>
               </Card>
-            </motion.div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
 
       </div>
 

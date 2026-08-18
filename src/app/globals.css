@@ -7,6 +7,10 @@
     scroll-behavior: smooth;
   }
 
+  section[id] {
+    scroll-margin-top: 110px;
+  }
+
   /* Default Dark Mode Styling */
   html.dark body {
     background-color: #0B0F19;
@@ -64,5 +68,58 @@
 
   .text-glow {
     text-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+  }
+
+  .light .text-glow {
+    text-shadow: 0 0 20px rgba(6, 182, 212, 0.25);
+  }
+
+  .section-heading {
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold font-display tracking-tight text-slate-900 dark:text-white;
+  }
+
+  .section-subtext {
+    @apply text-base sm:text-lg md:text-xl text-slate-700 dark:text-slate-400 leading-relaxed;
+  }
+
+  .page-heading {
+    @apply text-4xl sm:text-5xl md:text-6xl font-extrabold font-display tracking-tight text-slate-900 dark:text-white;
+  }
+
+  .page-subtext {
+    @apply text-base sm:text-lg md:text-xl text-slate-600 dark:text-slate-400 leading-relaxed;
+  }
+
+  .section-padding {
+    @apply py-20 sm:py-24 md:py-28 lg:py-32;
+  }
+
+  .glass-panel {
+    @apply rounded-2xl border backdrop-blur-xl
+      dark:bg-alpine-900/80 dark:border-white/10
+      light:bg-white/95 light:border-slate-200 light:shadow-xl light:shadow-slate-200/50;
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+  }
+
+  .gradient-border {
+    position: relative;
+  }
+
+  .gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.5), rgba(14, 165, 233, 0.2), transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
   }
 }

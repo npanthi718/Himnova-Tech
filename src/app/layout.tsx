@@ -61,7 +61,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <body className={`${inter.variable} ${outfit.variable} min-h-screen bg-alpine-950 text-slate-100 flex flex-col font-sans`}>
+      <body className={`${inter.variable} ${outfit.variable} min-h-screen flex flex-col font-sans antialiased`}>
         <ThemeProvider>
           <Navbar />
           <main className="flex-grow">{children}</main>

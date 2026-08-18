@@ -48,6 +48,13 @@ export interface CareerItem {
   requirements: string[];
 }
 
+export interface CapabilityItem {
+  iconName: ServiceItem["iconName"];
+  label: string;
+  metric: string;
+  unit: string;
+}
+
 export interface SiteConfig {
   meta: {
     title: string;
@@ -106,6 +113,7 @@ export interface SiteConfig {
   services: ServiceItem[];
   projects: ProjectItem[];
   careers: CareerItem[];
+  capabilities: CapabilityItem[];
   navLinks: Array<{ label: string; href: string }>;
   footerLinks: {
     company: Array<{ label: string; href: string }>;
@@ -145,14 +153,14 @@ export const siteData: SiteConfig = {
       landmark: "Oppossite to Deurali Club",
     },
     contact: {
-      email: "support.himnova@gmail.com",
-      salesEmail: "support.himnova@gmail.com",
-      careersEmail: "support.himnova@gmail.com",
+      email: "support.himnovatech@gmail.com",
+      salesEmail: "support.himnovatech@gmail.com",
+      careersEmail: "support.himnovatech@gmail.com",
       phonePrimary: "+977 9823009467",
       phoneSecondary: "+977 9823009467 / +91 9359029905",
     },
     social: {
-      linkedin: "https://www.linkedin.com/in/sushilpanthi/",
+      linkedin: "https://www.linkedin.com/in/himnova-technologies-private-limited-06779442a/",
       github: "https://github.com/npanthi718",
       twitter: "https://x.com/himnovatech",
       facebook: "https://www.facebook.com/profile.php?id=61593383187833",
@@ -710,34 +718,44 @@ export const siteData: SiteConfig = {
       ],
     },
   ],
+  capabilities: [
+    { iconName: "Cloud", label: "Cloud & DevOps", metric: "99.99", unit: "% Uptime SLA" },
+    { iconName: "Code", label: "Custom Software", metric: "14", unit: "Service Lines" },
+    { iconName: "Server", label: "Infrastructure", metric: "50+", unit: "Projects Delivered" },
+    { iconName: "ShieldCheck", label: "Cybersecurity", metric: "24/7", unit: "SOC Monitoring" },
+    { iconName: "Smartphone", label: "Mobile Engineering", metric: "12+", unit: "App Launches" },
+    { iconName: "BarChart3", label: "Data & Analytics", metric: "3x", unit: "Faster Insights" },
+    { iconName: "Globe", label: "Web Platforms", metric: "Sub-1s", unit: "Load Times" },
+    { iconName: "HelpCircle", label: "IT Support", metric: "<15m", unit: "Response Time" },
+  ],
   navLinks: [
-    { label: "Home", href: "/" },
-    { label: "Services", href: "/services" },
-    { label: "Projects", href: "/projects" },
-    { label: "About", href: "/about" },
-    { label: "Careers", href: "/careers" },
-    { label: "Contact", href: "/contact" },
+    { label: "Home", href: "#home" },
+    { label: "Services", href: "#services" },
+    { label: "Projects", href: "#projects" },
+    { label: "About", href: "#about" },
+    { label: "Careers", href: "#careers" },
+    { label: "Contact", href: "#contact" },
   ],
   footerLinks: {
     company: [
-      { label: "About Himnova", href: "/about" },
-      { label: "Delivered Projects", href: "/projects" },
-      { label: "Director's Vision", href: "/about#director" },
-      { label: "Careers", href: "/careers" },
+      { label: "About Himnova", href: "#about" },
+      { label: "Delivered Projects", href: "#projects" },
+      { label: "Director's Vision", href: "#director" },
+      { label: "Careers", href: "#careers" },
     ],
     services: [
-      { label: "Custom Software", href: "/services#custom-software" },
-      { label: "Web Applications", href: "/services#web-apps-platforms" },
-      { label: "Mobile Apps", href: "/services#mobile-app-dev" },
-      { label: "Cloud & DevOps", href: "/services#deployment-cloud-support" },
-      { label: "IT Support (24/7)", href: "/services#it-support-maintenance" },
-      { label: "Consulting & Advisory", href: "/services#consulting-advisory" },
+      { label: "Custom Software", href: "#services" },
+      { label: "Web Applications", href: "#services" },
+      { label: "Mobile Apps", href: "#services" },
+      { label: "Cloud & DevOps", href: "#services" },
+      { label: "IT Support (24/7)", href: "#services" },
+      { label: "Consulting & Advisory", href: "#services" },
     ],
     legal: [
-      { label: "Privacy Policy", href: "#" },
-      { label: "Terms of Service", href: "#" },
-      { label: "Security & Sovereignty", href: "#" },
-      { label: "SLA Commitments", href: "#" },
+      { label: "Privacy Policy", href: "#privacy-policy" },
+      { label: "Terms of Service", href: "#terms-of-service" },
+      { label: "Security & Sovereignty", href: "#security-sovereignty" },
+      { label: "SLA Commitments", href: "#sla-commitments" },
     ],
   },
 };
