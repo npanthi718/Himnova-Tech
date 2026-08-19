@@ -23,6 +23,11 @@ export const metadata: Metadata = {
   title: siteData.meta.title,
   description: siteData.meta.description,
   keywords: siteData.meta.keywords,
+  icons: {
+    icon: "/logos/himnova.ico",
+    shortcut: "/logos/himnova.ico",
+    apple: "/logos/himnova.ico",
+  },
   alternates: {
     canonical: "https://www.himnovatech.com",
   },
