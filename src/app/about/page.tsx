@@ -24,7 +24,7 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="pt-28 pb-20 space-y-16">
+    <div className="pt-32 sm:pt-36 md:pt-40 pb-20 space-y-16">
       
       {/* Header Banner */}
       <section className="relative px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center space-y-6">

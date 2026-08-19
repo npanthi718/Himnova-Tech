@@ -102,40 +102,61 @@ export const CareersModule: React.FC = () => {
 
     setSubmitting(true);
 
-    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "";
-    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "";
-    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "";
+    const serviceId =
+      process.env.NEXT_PUBLIC_EMAILJS_CAREER_SERVICE_ID ||
+      process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ||
+      "";
+    const adminTemplateId =
+      process.env.NEXT_PUBLIC_EMAILJS_CAREER_ADMIN_TEMPLATE_ID ||
+      process.env.NEXT_PUBLIC_EMAILJS_CAREER_TEMPLATE_ID ||
+      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ||
+      "";
+    const candidateTemplateId =
+      process.env.NEXT_PUBLIC_EMAILJS_CAREER_CANDIDATE_TEMPLATE_ID || "";
+    const publicKey =
+      process.env.NEXT_PUBLIC_EMAILJS_CAREER_PUBLIC_KEY ||
+      process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ||
+      "";
 
     try {
-      if (serviceId && templateId && publicKey && resumeFile) {
-        const resumeBase64 = await fileToBase64(resumeFile);
+      if (serviceId && publicKey) {
+        let resumeBase64 = "";
+        if (resumeFile) {
+          resumeBase64 = await fileToBase64(resumeFile);
+        }
         let coverBase64 = "";
         if (coverLetterFile) {
           coverBase64 = await fileToBase64(coverLetterFile);
         }
 
-        await emailjs.send(
-          serviceId,
-          templateId,
-          {
-            from_name: formData.fullName,
-            from_email: formData.email,
-            phone: formData.phone,
-            current_location: formData.currentLocation,
-            years_experience: formData.yearsExperience,
-            linkedin_url: formData.linkedInUrl || "Not provided",
-            applied_role: selectedRole ? selectedRole.role : "General Application",
-            message: formData.professionalSummary || "See attached resume.",
-            resume_filename: resumeFile.name,
-            resume_content: resumeBase64,
-            cover_letter_filename: coverLetterFile?.name || "None",
-            cover_letter_content: coverBase64 || "None",
-            to_name: "Himnova Talent Acquisition Team",
-          },
-          publicKey
-        );
+        const templateParams = {
+          from_name: formData.fullName,
+          from_email: formData.email,
+          phone: formData.phone,
+          current_location: formData.currentLocation,
+          years_experience: formData.yearsExperience,
+          linkedin_url: formData.linkedInUrl || "Not Provided",
+          applied_role: formData.appliedPosition || selectedRole?.role || "General Application",
+          message: formData.professionalSummary || "See attached resume.",
+          resume_filename: resumeFile?.name || "Resume Attached",
+          resume_content: resumeBase64,
+          resume_file: resumeBase64,
+          resume_attachment: resumeBase64,
+          cover_letter_filename: coverLetterFile?.name || "Not Provided",
+          cover_letter_content: coverBase64 || "Not Provided",
+          cover_letter_file: coverBase64 || "Not Provided",
+          cover_letter_attachment: coverBase64 || "Not Provided",
+          to_name: "Himnova Talent Acquisition Team",
+        };
+
+        if (adminTemplateId) {
+          await emailjs.send(serviceId, adminTemplateId, templateParams, publicKey);
+        }
+        if (candidateTemplateId) {
+          await emailjs.send(serviceId, candidateTemplateId, templateParams, publicKey);
+        }
       } else {
-        await new Promise((resolve) => setTimeout(resolve, 1200));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
 
       setToastState({

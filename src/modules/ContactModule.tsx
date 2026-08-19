@@ -48,25 +48,41 @@ export const ContactModule: React.FC = () => {
 
     setSubmitting(true);
 
-    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "";
-    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "";
-    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "";
+    const serviceId =
+      process.env.NEXT_PUBLIC_EMAILJS_CONTACT_SERVICE_ID ||
+      process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ||
+      "";
+    const adminTemplateId =
+      process.env.NEXT_PUBLIC_EMAILJS_CONTACT_ADMIN_TEMPLATE_ID ||
+      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ||
+      "";
+    const clientTemplateId =
+      process.env.NEXT_PUBLIC_EMAILJS_CONTACT_CLIENT_TEMPLATE_ID || "";
+    const publicKey =
+      process.env.NEXT_PUBLIC_EMAILJS_CONTACT_PUBLIC_KEY ||
+      process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ||
+      "";
 
     const templateParams = {
       from_name: formData.fullName,
       from_email: formData.email,
       phone: formData.phone,
       subject: formData.subject,
-      attachment_url: formData.attachmentUrl,
+      attachment_url: formData.attachmentUrl || "Not Provided",
       message: formData.message,
       to_name: "Himnova Enterprise Architecture Team",
     };
 
     try {
-      if (serviceId && templateId && publicKey) {
-        await emailjs.send(serviceId, templateId, templateParams, publicKey);
+      if (serviceId && publicKey) {
+        if (adminTemplateId) {
+          await emailjs.send(serviceId, adminTemplateId, templateParams, publicKey);
+        }
+        if (clientTemplateId) {
+          await emailjs.send(serviceId, clientTemplateId, templateParams, publicKey);
+        }
       } else {
-        await new Promise((resolve) => setTimeout(resolve, 1200));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
 
       setToastState({

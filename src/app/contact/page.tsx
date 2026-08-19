@@ -46,26 +46,41 @@ export default function ContactPage() {
 
     setSubmitting(true);
 
-    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "";
-    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "";
-    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "";
+    const serviceId =
+      process.env.NEXT_PUBLIC_EMAILJS_CONTACT_SERVICE_ID ||
+      process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ||
+      "";
+    const adminTemplateId =
+      process.env.NEXT_PUBLIC_EMAILJS_CONTACT_ADMIN_TEMPLATE_ID ||
+      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ||
+      "";
+    const clientTemplateId =
+      process.env.NEXT_PUBLIC_EMAILJS_CONTACT_CLIENT_TEMPLATE_ID || "";
+    const publicKey =
+      process.env.NEXT_PUBLIC_EMAILJS_CONTACT_PUBLIC_KEY ||
+      process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ||
+      "";
 
     const templateParams = {
       from_name: formData.fullName,
       from_email: formData.email,
       phone: formData.phone,
       subject: formData.subject,
-      attachment_url: formData.attachmentUrl,
+      attachment_url: formData.attachmentUrl || "Not Provided",
       message: formData.message,
       to_name: "Himnova Enterprise Architecture Team",
     };
 
     try {
-      if (serviceId && templateId && publicKey) {
-        await emailjs.send(serviceId, templateId, templateParams, publicKey);
+      if (serviceId && publicKey) {
+        if (adminTemplateId) {
+          await emailjs.send(serviceId, adminTemplateId, templateParams, publicKey);
+        }
+        if (clientTemplateId) {
+          await emailjs.send(serviceId, clientTemplateId, templateParams, publicKey);
+        }
       } else {
-        // Fallback simulation when env keys are unset for local demonstration
-        await new Promise((resolve) => setTimeout(resolve, 1200));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
 
       setToastState({
@@ -95,7 +110,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="pt-28 pb-20 space-y-16">
+    <div className="pt-32 sm:pt-36 md:pt-40 pb-20 space-y-16">
       
       {/* Header Banner */}
       <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center space-y-6">

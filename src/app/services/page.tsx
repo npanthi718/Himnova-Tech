@@ -22,7 +22,7 @@ export const metadata = {
 
 export default function ServicesPage() {
   return (
-    <div className="pt-28 pb-16 space-y-12">
+    <div className="pt-32 sm:pt-36 md:pt-40 pb-16 sm:pb-24 space-y-12">
       <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center space-y-6">
         <Badge variant="cyan">Service Catalog</Badge>
         <h1 className="text-4xl sm:text-6xl font-extrabold font-display tracking-tight text-slate-900 dark:text-white">
