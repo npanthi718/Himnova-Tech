@@ -76,10 +76,18 @@ export const ContactModule: React.FC = () => {
     try {
       if (serviceId && publicKey) {
         if (adminTemplateId) {
-          await emailjs.send(serviceId, adminTemplateId, templateParams, publicKey);
+          try {
+            await emailjs.send(serviceId, adminTemplateId, templateParams, publicKey);
+          } catch (adminErr) {
+            console.error("Contact Admin EmailJS send failed:", adminErr);
+          }
         }
         if (clientTemplateId) {
-          await emailjs.send(serviceId, clientTemplateId, templateParams, publicKey);
+          try {
+            await emailjs.send(serviceId, clientTemplateId, templateParams, publicKey);
+          } catch (clientErr) {
+            console.error("Contact Client EmailJS send failed:", clientErr);
+          }
         }
       } else {
         await new Promise((resolve) => setTimeout(resolve, 1000));

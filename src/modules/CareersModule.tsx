@@ -31,6 +31,15 @@ const MAX_RESUME_MB = 5;
 const MAX_COVER_MB = 5;
 const MAX_TOTAL_ATTACHMENT_MB = 7;
 
+const fileToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
+};
+
 export const CareersModule: React.FC = () => {
   const openings = siteData.careers;
   const hasOpenings = openings.length > 0;
@@ -115,18 +124,62 @@ export const CareersModule: React.FC = () => {
       "";
 
     try {
-      if (!serviceId || !publicKey || !adminTemplateId || !candidateTemplateId) {
-        throw new Error("Career EmailJS configuration is incomplete");
+      let resumeBase64 = "";
+      if (resumeFile) {
+        try {
+          resumeBase64 = await fileToBase64(resumeFile);
+        } catch (fileErr) {
+          console.warn("Resume Base64 conversion warning:", fileErr);
+        }
       }
 
-      if (!formRef.current) {
-        throw new Error("Application form is unavailable");
+      let coverBase64 = "";
+      if (coverLetterFile) {
+        try {
+          coverBase64 = await fileToBase64(coverLetterFile);
+        } catch (fileErr) {
+          console.warn("Cover Letter Base64 conversion warning:", fileErr);
+        }
       }
 
-      await Promise.all([
-        emailjs.sendForm(serviceId, adminTemplateId, formRef.current, publicKey),
-        emailjs.sendForm(serviceId, candidateTemplateId, formRef.current, publicKey),
-      ]);
+      const templateParams = {
+        from_name: formData.fullName,
+        from_email: formData.email,
+        phone: formData.phone,
+        current_location: formData.currentLocation,
+        years_experience: formData.yearsExperience,
+        linkedin_url: formData.linkedInUrl || "Not Provided",
+        applied_role: formData.appliedPosition || selectedRole?.role || "General Application",
+        message: formData.professionalSummary || "See attached resume.",
+        resume_filename: resumeFile?.name || "Resume Attached",
+        resume_content: resumeBase64,
+        resume_file: resumeBase64,
+        resume_attachment: resumeBase64,
+        cover_letter_filename: coverLetterFile?.name || "Not Provided",
+        cover_letter_content: coverBase64 || "Not Provided",
+        cover_letter_file: coverBase64 || "Not Provided",
+        cover_letter_attachment: coverBase64 || "Not Provided",
+        to_name: "Himnova Talent Acquisition Team",
+      };
+
+      if (serviceId && publicKey) {
+        if (adminTemplateId) {
+          try {
+            await emailjs.send(serviceId, adminTemplateId, templateParams, publicKey);
+          } catch (adminErr) {
+            console.error("Career Admin EmailJS send failed:", adminErr);
+          }
+        }
+        if (candidateTemplateId) {
+          try {
+            await emailjs.send(serviceId, candidateTemplateId, templateParams, publicKey);
+          } catch (candErr) {
+            console.error("Career Candidate EmailJS send failed:", candErr);
+          }
+        }
+      } else {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
 
       setToastState({
         isVisible: true,
@@ -334,6 +387,7 @@ export const CareersModule: React.FC = () => {
                 Position Applied For *
               </label>
               <select
+                name="applied_role"
                 value={formData.appliedPosition}
                 onChange={(e) => setFormData({ ...formData, appliedPosition: e.target.value })}
                 className="w-full rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-cyan/50
