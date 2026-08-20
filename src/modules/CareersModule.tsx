@@ -142,6 +142,22 @@ export const CareersModule: React.FC = () => {
         }
       }
 
+      // Safely check Base64 payload size to stay strictly beneath EmailJS's 50KB variable limit
+      const SAFE_MAX_BASE64_BYTES = 35000;
+      const finalResumeContent =
+        resumeFile && resumeBase64.length <= SAFE_MAX_BASE64_BYTES
+          ? resumeBase64
+          : resumeFile
+          ? `[File Uploaded: ${resumeFile.name} (${(resumeFile.size / 1024).toFixed(1)} KB)]`
+          : "Not Provided";
+
+      const finalCoverContent =
+        coverLetterFile && coverBase64.length <= SAFE_MAX_BASE64_BYTES
+          ? coverBase64
+          : coverLetterFile
+          ? `[File Uploaded: ${coverLetterFile.name} (${(coverLetterFile.size / 1024).toFixed(1)} KB)]`
+          : "Not Provided";
+
       const templateParams = {
         from_name: formData.fullName,
         from_email: formData.email,
@@ -150,15 +166,11 @@ export const CareersModule: React.FC = () => {
         years_experience: formData.yearsExperience,
         linkedin_url: formData.linkedInUrl || "Not Provided",
         applied_role: formData.appliedPosition || selectedRole?.role || "General Application",
-        message: formData.professionalSummary || "See attached resume.",
-        resume_filename: resumeFile?.name || "Resume Attached",
-        resume_content: resumeBase64,
-        resume_file: resumeBase64,
-        resume_attachment: resumeBase64,
-        cover_letter_filename: coverLetterFile?.name || "Not Provided",
-        cover_letter_content: coverBase64 || "Not Provided",
-        cover_letter_file: coverBase64 || "Not Provided",
-        cover_letter_attachment: coverBase64 || "Not Provided",
+        message: formData.professionalSummary || "See candidate application details.",
+        resume_filename: resumeFile ? `${resumeFile.name} (${(resumeFile.size / 1024).toFixed(1)} KB)` : "Not Provided",
+        resume_content: finalResumeContent,
+        cover_letter_filename: coverLetterFile ? `${coverLetterFile.name} (${(coverLetterFile.size / 1024).toFixed(1)} KB)` : "Not Provided",
+        cover_letter_content: finalCoverContent,
         to_name: "Himnova Talent Acquisition Team",
       };
 
