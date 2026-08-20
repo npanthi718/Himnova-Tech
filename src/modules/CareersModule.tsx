@@ -92,14 +92,6 @@ export const CareersModule: React.FC = () => {
     return Object.keys(errs).length === 0;
   };
 
-  const fileToBase64 = (file: File): Promise<string> =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-
   const handleApplySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
@@ -127,35 +119,14 @@ export const CareersModule: React.FC = () => {
         throw new Error("Career EmailJS configuration is incomplete");
       }
 
-      const sharedTemplateParams = {
-        from_name: formData.fullName,
-        from_email: formData.email,
-        phone: formData.phone,
-        current_location: formData.currentLocation,
-        years_experience: formData.yearsExperience,
-        linkedin_url: formData.linkedInUrl || "Not Provided",
-        applied_role: formData.appliedPosition || selectedRole?.role || "General Application",
-        message: formData.professionalSummary || "See attached resume.",
-        resume_filename: resumeFile?.name || "Resume Attached",
-        cover_letter_filename: coverLetterFile?.name || "Not Provided",
-        to_name: "Himnova Talent Acquisition Team",
-      };
+      if (!formRef.current) {
+        throw new Error("Application form is unavailable");
+      }
 
-      const resumeBase64 = resumeFile ? await fileToBase64(resumeFile) : "";
-      const coverBase64 = coverLetterFile ? await fileToBase64(coverLetterFile) : "";
-
-      await emailjs.send(
-        serviceId,
-        adminTemplateId,
-        {
-          ...sharedTemplateParams,
-          resume_file: resumeBase64,
-          ...(coverBase64 ? { cover_letter_file: coverBase64 } : {}),
-        },
-        publicKey,
-      );
-
-      await emailjs.send(serviceId, candidateTemplateId, sharedTemplateParams, publicKey);
+      await Promise.all([
+        emailjs.sendForm(serviceId, adminTemplateId, formRef.current, publicKey),
+        emailjs.sendForm(serviceId, candidateTemplateId, formRef.current, publicKey),
+      ]);
 
       setToastState({
         isVisible: true,
@@ -386,6 +357,7 @@ export const CareersModule: React.FC = () => {
 
             <Input
               label="Full Name *"
+              name="from_name"
               placeholder="e.g. Sushil Sharma"
               value={formData.fullName}
               onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
@@ -395,6 +367,7 @@ export const CareersModule: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input
                 label="Email Address *"
+                name="from_email"
                 type="email"
                 placeholder="you@example.com"
                 value={formData.email}
@@ -403,6 +376,7 @@ export const CareersModule: React.FC = () => {
               />
               <Input
                 label="Phone Number *"
+                name="phone"
                 placeholder="+977 980-0000000"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -413,6 +387,7 @@ export const CareersModule: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input
                 label="Current Location *"
+                name="current_location"
                 placeholder="e.g. Kathmandu, Nepal"
                 value={formData.currentLocation}
                 onChange={(e) => setFormData({ ...formData, currentLocation: e.target.value })}
@@ -420,6 +395,7 @@ export const CareersModule: React.FC = () => {
               />
               <Input
                 label="Years of Experience *"
+                name="years_experience"
                 placeholder="e.g. 4"
                 value={formData.yearsExperience}
                 onChange={(e) => setFormData({ ...formData, yearsExperience: e.target.value })}
@@ -429,6 +405,7 @@ export const CareersModule: React.FC = () => {
 
             <Input
               label="LinkedIn / Portfolio URL (Optional)"
+              name="linkedin_url"
               placeholder="https://linkedin.com/in/..."
               value={formData.linkedInUrl}
               onChange={(e) => setFormData({ ...formData, linkedInUrl: e.target.value })}
@@ -436,6 +413,7 @@ export const CareersModule: React.FC = () => {
 
             <FileInput
               label="Resume *"
+              name="resume_file"
               value={resumeFile}
               onChange={setResumeFile}
               error={errors.resume}
@@ -444,6 +422,7 @@ export const CareersModule: React.FC = () => {
 
             <FileInput
               label="Cover Letter"
+              name="cover_letter_file"
               value={coverLetterFile}
               onChange={setCoverLetterFile}
               error={errors.coverLetter}
@@ -453,11 +432,17 @@ export const CareersModule: React.FC = () => {
 
             <Textarea
               label="Professional Summary (Optional)"
+              name="message"
               rows={3}
               placeholder="Briefly highlight your key achievements..."
               value={formData.professionalSummary}
               onChange={(e) => setFormData({ ...formData, professionalSummary: e.target.value })}
             />
+
+            <input type="hidden" name="applied_role" value={formData.appliedPosition || selectedRole?.role || "General Application"} />
+            <input type="hidden" name="resume_filename" value={resumeFile?.name || "Resume Attached"} />
+            <input type="hidden" name="cover_letter_filename" value={coverLetterFile?.name || "Not Provided"} />
+            <input type="hidden" name="to_name" value="Himnova Talent Acquisition Team" />
 
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
               <span className="text-xs text-slate-500 text-center sm:text-left">

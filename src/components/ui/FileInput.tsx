@@ -5,6 +5,7 @@ import { Upload, X, FileText } from "lucide-react";
 
 export interface FileInputProps {
   label?: string;
+  name?: string;
   error?: string;
   accept?: string;
   maxSizeMB?: number;
@@ -15,6 +16,7 @@ export interface FileInputProps {
 
 export const FileInput: React.FC<FileInputProps> = ({
   label,
+  name,
   error,
   accept = ".pdf,.doc,.docx",
   maxSizeMB = 10,
@@ -103,6 +105,7 @@ export const FileInput: React.FC<FileInputProps> = ({
       <input
         ref={inputRef}
         type="file"
+        name={name}
         accept={accept}
         onChange={handleFileChange}
         className="hidden"

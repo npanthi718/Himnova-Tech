@@ -62,6 +62,8 @@ This folder contains 4 production-grade HTML email templates for your **EmailJS 
 | `{{resume_filename}}`       | Uploaded resume file name               | `Resume_Sushil_Sharma.pdf`        |
 | `{{cover_letter_filename}}` | Uploaded cover letter file name         | `Cover_Letter_Sushil.pdf`         |
 
-For the admin application template, configure EmailJS Variable Attachments with parameter names
-`resume_file` and `cover_letter_file`. The application sends these as Base64 data only to the
-admin template; the candidate confirmation intentionally omits file contents to keep that request small.
+For the admin application template, configure EmailJS **Form File Attachments** with parameter
+names `resume_file` and `cover_letter_file`. The application uses `emailjs.sendForm()` so files
+are uploaded as multipart form data instead of Base64 template variables. Do not configure file
+attachments on the candidate confirmation template unless you also want the applicant to receive
+copies of the uploaded files.
