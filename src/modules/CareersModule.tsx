@@ -27,8 +27,9 @@ import { motion } from "framer-motion";
 import { RevealOnScroll, StaggerContainer, StaggerItem } from "@/components/animations/RevealOnScroll";
 import Link from "next/link";
 
-const MAX_RESUME_MB = 10;
-const MAX_COVER_MB = 10;
+const MAX_RESUME_MB = 5;
+const MAX_COVER_MB = 5;
+const MAX_TOTAL_ATTACHMENT_MB = 7;
 
 export const CareersModule: React.FC = () => {
   const openings = siteData.careers;
@@ -84,6 +85,9 @@ export const CareersModule: React.FC = () => {
       const sizeErr = validateFileSize(coverLetterFile, MAX_COVER_MB, "Cover letter");
       if (sizeErr) errs.coverLetter = sizeErr;
     }
+    if (resumeFile && coverLetterFile && resumeFile.size + coverLetterFile.size > MAX_TOTAL_ATTACHMENT_MB * 1024 * 1024) {
+      errs.coverLetter = `Resume and cover letter together must be under ${MAX_TOTAL_ATTACHMENT_MB}MB`;
+    }
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -119,45 +123,39 @@ export const CareersModule: React.FC = () => {
       "";
 
     try {
-      if (serviceId && publicKey) {
-        let resumeBase64 = "";
-        if (resumeFile) {
-          resumeBase64 = await fileToBase64(resumeFile);
-        }
-        let coverBase64 = "";
-        if (coverLetterFile) {
-          coverBase64 = await fileToBase64(coverLetterFile);
-        }
-
-        const templateParams = {
-          from_name: formData.fullName,
-          from_email: formData.email,
-          phone: formData.phone,
-          current_location: formData.currentLocation,
-          years_experience: formData.yearsExperience,
-          linkedin_url: formData.linkedInUrl || "Not Provided",
-          applied_role: formData.appliedPosition || selectedRole?.role || "General Application",
-          message: formData.professionalSummary || "See attached resume.",
-          resume_filename: resumeFile?.name || "Resume Attached",
-          resume_content: resumeBase64,
-          resume_file: resumeBase64,
-          resume_attachment: resumeBase64,
-          cover_letter_filename: coverLetterFile?.name || "Not Provided",
-          cover_letter_content: coverBase64 || "Not Provided",
-          cover_letter_file: coverBase64 || "Not Provided",
-          cover_letter_attachment: coverBase64 || "Not Provided",
-          to_name: "Himnova Talent Acquisition Team",
-        };
-
-        if (adminTemplateId) {
-          await emailjs.send(serviceId, adminTemplateId, templateParams, publicKey);
-        }
-        if (candidateTemplateId) {
-          await emailjs.send(serviceId, candidateTemplateId, templateParams, publicKey);
-        }
-      } else {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+      if (!serviceId || !publicKey || !adminTemplateId || !candidateTemplateId) {
+        throw new Error("Career EmailJS configuration is incomplete");
       }
+
+      const sharedTemplateParams = {
+        from_name: formData.fullName,
+        from_email: formData.email,
+        phone: formData.phone,
+        current_location: formData.currentLocation,
+        years_experience: formData.yearsExperience,
+        linkedin_url: formData.linkedInUrl || "Not Provided",
+        applied_role: formData.appliedPosition || selectedRole?.role || "General Application",
+        message: formData.professionalSummary || "See attached resume.",
+        resume_filename: resumeFile?.name || "Resume Attached",
+        cover_letter_filename: coverLetterFile?.name || "Not Provided",
+        to_name: "Himnova Talent Acquisition Team",
+      };
+
+      const resumeBase64 = resumeFile ? await fileToBase64(resumeFile) : "";
+      const coverBase64 = coverLetterFile ? await fileToBase64(coverLetterFile) : "";
+
+      await emailjs.send(
+        serviceId,
+        adminTemplateId,
+        {
+          ...sharedTemplateParams,
+          resume_file: resumeBase64,
+          ...(coverBase64 ? { cover_letter_file: coverBase64 } : {}),
+        },
+        publicKey,
+      );
+
+      await emailjs.send(serviceId, candidateTemplateId, sharedTemplateParams, publicKey);
 
       setToastState({
         isVisible: true,

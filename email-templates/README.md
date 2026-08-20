@@ -47,17 +47,21 @@ This folder contains 4 production-grade HTML email templates for your **EmailJS 
 
 ## 🔑 EmailJS Parameter Reference
 
-| Parameter Name | Form Field / Description | Example Value |
-| :--- | :--- | :--- |
-| `{{from_name}}` | Full Name of client or candidate | `Sushil Sharma` |
-| `{{from_email}}` | Email address of client or candidate | `client@example.com` |
-| `{{phone}}` | Contact phone number | `+977 9823009467` |
-| `{{subject}}` | Project subject / Inquiry category | `Enterprise Cloud Migration` |
-| `{{message}}` | Inquiry message or professional summary | `Detailed project requirement...` |
-| `{{attachment_url}}` | Document / Specification URL | `https://drive.google.com/...` |
-| `{{applied_role}}` | Job position applied for | `Software Sales Specialist` |
-| `{{current_location}}` | Candidate current city & country | `Kathmandu, Nepal` |
-| `{{years_experience}}` | Candidate years of experience | `3+ Years` |
-| `{{linkedin_url}}` | LinkedIn or Portfolio link | `https://linkedin.com/in/...` |
-| `{{resume_filename}}` | Uploaded resume file name | `Resume_Sushil_Sharma.pdf` |
-| `{{cover_letter_filename}}` | Uploaded cover letter file name | `Cover_Letter_Sushil.pdf` |
+| Parameter Name              | Form Field / Description                | Example Value                     |
+| :-------------------------- | :-------------------------------------- | :-------------------------------- |
+| `{{from_name}}`             | Full Name of client or candidate        | `Sushil Sharma`                   |
+| `{{from_email}}`            | Email address of client or candidate    | `client@example.com`              |
+| `{{phone}}`                 | Contact phone number                    | `+977 9823009467`                 |
+| `{{subject}}`               | Project subject / Inquiry category      | `Enterprise Cloud Migration`      |
+| `{{message}}`               | Inquiry message or professional summary | `Detailed project requirement...` |
+| `{{attachment_url}}`        | Document / Specification URL            | `https://drive.google.com/...`    |
+| `{{applied_role}}`          | Job position applied for                | `Software Sales Specialist`       |
+| `{{current_location}}`      | Candidate current city & country        | `Kathmandu, Nepal`                |
+| `{{years_experience}}`      | Candidate years of experience           | `3+ Years`                        |
+| `{{linkedin_url}}`          | LinkedIn or Portfolio link              | `https://linkedin.com/in/...`     |
+| `{{resume_filename}}`       | Uploaded resume file name               | `Resume_Sushil_Sharma.pdf`        |
+| `{{cover_letter_filename}}` | Uploaded cover letter file name         | `Cover_Letter_Sushil.pdf`         |
+
+For the admin application template, configure EmailJS Variable Attachments with parameter names
+`resume_file` and `cover_letter_file`. The application sends these as Base64 data only to the
+admin template; the candidate confirmation intentionally omits file contents to keep that request small.
