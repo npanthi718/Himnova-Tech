@@ -13,10 +13,10 @@ interface RevealOnScrollProps {
 }
 
 const directionOffset = {
-  up: { y: 40, x: 0 },
-  down: { y: -40, x: 0 },
-  left: { x: 40, y: 0 },
-  right: { x: -40, y: 0 },
+  up: { y: 25, x: 0 },
+  down: { y: -25, x: 0 },
+  left: { x: 25, y: 0 },
+  right: { x: -25, y: 0 },
   none: { x: 0, y: 0 },
 };
 
@@ -25,7 +25,7 @@ export const RevealOnScroll: React.FC<RevealOnScrollProps> = ({
   className = "",
   delay = 0,
   direction = "up",
-  duration = 0.65,
+  duration = 0.55,
   once = true,
 }) => {
   const offset = directionOffset[direction];
@@ -34,7 +34,7 @@ export const RevealOnScroll: React.FC<RevealOnScrollProps> = ({
     <motion.div
       initial={{ opacity: 0, ...offset }}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once, margin: "-60px" }}
+      viewport={{ once, amount: 0.1 }}
       transition={{ duration, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >
@@ -51,21 +51,21 @@ interface StaggerContainerProps {
 }
 
 export const staggerChildVariants: Variants = {
-  hidden: { opacity: 0, y: 32 },
+  hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 },
 };
 
 export const StaggerContainer: React.FC<StaggerContainerProps> = ({
   children,
   className = "",
-  stagger = 0.08,
+  stagger = 0.06,
   once = true,
 }) => {
   return (
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once, margin: "-40px" }}
+      viewport={{ once, amount: 0.05 }}
       variants={{
         hidden: {},
         visible: { transition: { staggerChildren: stagger } },
@@ -84,7 +84,7 @@ export const StaggerItem: React.FC<{ children: React.ReactNode; className?: stri
   return (
     <motion.div
       variants={staggerChildVariants}
-      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >
       {children}

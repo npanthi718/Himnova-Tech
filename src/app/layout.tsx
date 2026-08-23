@@ -24,9 +24,23 @@ export const metadata: Metadata = {
   description: siteData.meta.description,
   keywords: siteData.meta.keywords,
   icons: {
-    icon: "/logos/himnova.ico",
-    shortcut: "/logos/himnova.ico",
-    apple: "/logos/himnova.ico",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/logos/himnova.ico" },
+      { url: "/logos/logo.png", type: "image/png" },
+    ],
+    shortcut: ["/favicon.ico", "/logos/himnova.ico"],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+      { url: "/logos/logo.png", sizes: "180x180", type: "image/png" },
+      { url: "/logos/himnova.ico" },
+    ],
+    other: [
+      {
+        rel: "apple-touch-icon-precomposed",
+        url: "/logos/logo.png",
+      },
+    ],
   },
   alternates: {
     canonical: "https://www.himnovatech.com",
@@ -133,6 +147,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/logos/himnova.ico" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

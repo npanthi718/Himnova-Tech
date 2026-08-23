@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg_carrentalfleet" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B0F19" />
+      <stop offset="50%" stop-color="#111827" />
+      <stop offset="100%" stop-color="#070A10" />
+    </linearGradient>
+    <linearGradient id="grad_carrentalfleet" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0EA5E9" />
+      <stop offset="100%" stop-color="#3B82F6" />
+    </linearGradient>
+    <radialGradient id="glow_carrentalfleet" cx="85%" cy="20%" r="55%">
+      <stop offset="0%" stop-color="#0EA5E9" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#0EA5E9" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="grid_carrentalfleet" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg_carrentalfleet)" />
+  <rect width="1200" height="630" fill="url(#grid_carrentalfleet)" />
+  <circle cx="950" cy="180" r="380" fill="url(#glow_carrentalfleet)" />
+
+  <rect x="40" y="40" width="1120" height="550" rx="28" fill="rgba(255, 255, 255, 0.02)" stroke="rgba(255, 255, 255, 0.08)" stroke-width="2" />
+
+  <g transform="translate(80, 80)">
+    <rect x="0" y="0" width="230" height="38" rx="19" fill="rgba(6, 182, 212, 0.12)" stroke="rgba(6, 182, 212, 0.4)" stroke-width="1.5" />
+    <text x="115" y="24" fill="#06B6D4" font-family="sans-serif" font-size="12" font-weight="800" letter-spacing="1.5" text-anchor="middle">Hospitality &amp; Food</text>
+
+    <rect x="245" y="0" width="160" height="38" rx="19" fill="rgba(16, 185, 129, 0.15)" stroke="rgba(16, 185, 129, 0.5)" stroke-width="1.5" />
+    <text x="325" y="24" fill="#10B981" font-family="sans-serif" font-size="12" font-weight="800" letter-spacing="1" text-anchor="middle">Digital Contracts</text>
+  </g>
+
+  <g transform="translate(900, 140)">
+    <rect x="0" y="0" width="180" height="180" rx="36" fill="rgba(255,255,255,0.03)" stroke="url(#grad_carrentalfleet)" stroke-width="2.5" />
+    <circle cx="90" cy="90" r="60" fill="url(#grad_carrentalfleet)" fill-opacity="0.1" />
+    <text x="90" y="100" fill="url(#grad_carrentalfleet)" font-family="sans-serif" font-size="22" font-weight="900" text-anchor="middle" letter-spacing="1">FLEET</text>
+  </g>
+
+  <text x="80" y="220" fill="#FFFFFF" font-family="sans-serif" font-size="44" font-weight="900" letter-spacing="-1">DriveSync Car Rental</text>
+  <text x="80" y="270" fill="#94A3B8" font-family="sans-serif" font-size="20" font-weight="500">Fleet Availability Calendar, Digital Signatures &amp; OCR</text>
+
+  <g transform="translate(80, 320)">
+    <rect x="0" y="0" width="300" height="90" rx="16" fill="rgba(30, 41, 59, 0.7)" stroke="rgba(6, 182, 212, 0.3)" stroke-width="1.5" />
+    <text x="24" y="34" fill="#94A3B8" font-family="sans-serif" font-size="12" font-weight="600">KEY CAPABILITY</text>
+    <text x="24" y="68" fill="#06B6D4" font-family="sans-serif" font-size="20" font-weight="800">License Photo OCR</text>
+
+    <rect x="325" y="0" width="300" height="90" rx="16" fill="rgba(30, 41, 59, 0.7)" stroke="rgba(16, 185, 129, 0.3)" stroke-width="1.5" />
+    <text x="349" y="34" fill="#94A3B8" font-family="sans-serif" font-size="12" font-weight="600">INTEGRATION HIGHLIGHT</text>
+    <text x="349" y="68" fill="#10B981" font-family="sans-serif" font-size="20" font-weight="800">Deposit Refund Ledger</text>
+  </g>
+
+  <g transform="translate(80, 450)">
+    <text x="0" y="-12" fill="#64748B" font-family="sans-serif" font-size="12" font-weight="700" letter-spacing="1">ARCHITECTURAL PIPELINE</text>
+    
+    <rect x="0" y="0" width="125" height="36" rx="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" />
+    <text x="62.5" y="23" fill="#E2E8F0" font-family="monospace" font-size="11" font-weight="600" text-anchor="middle">Fleet Grid</text>
+    <rect x="135" y="0" width="125" height="36" rx="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" />
+    <text x="197.5" y="23" fill="#E2E8F0" font-family="monospace" font-size="11" font-weight="600" text-anchor="middle">License Verify</text>
+    <rect x="270" y="0" width="125" height="36" rx="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" />
+    <text x="332.5" y="23" fill="#E2E8F0" font-family="monospace" font-size="11" font-weight="600" text-anchor="middle">Digital Contract</text>
+    <rect x="405" y="0" width="125" height="36" rx="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" />
+    <text x="467.5" y="23" fill="#E2E8F0" font-family="monospace" font-size="11" font-weight="600" text-anchor="middle">GPS Logs</text>
+  </g>
+
+  <text x="80" y="540" fill="#64748B" font-family="sans-serif" font-size="13" font-weight="600">Himnova Ready-to-Deploy Platform • 100% Code Ownership • www.himnovatech.com</text>
+</svg>

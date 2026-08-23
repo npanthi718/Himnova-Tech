@@ -1,16 +1,71 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340" fill="none" width="100%" height="100%">
-  <rect width="600" height="340" rx="16" fill="#0B0F19"/>
-  <rect x="30" y="30" width="540" height="280" rx="12" fill="#111827" stroke="#10B981" stroke-width="1.5"/>
-  <text x="540" y="55" font-family="'Inter', sans-serif" font-size="12" font-weight="800" fill="#10B981" text-anchor="end">SushilGPT AI Platform</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg_sushilgptsvg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B0F19" />
+      <stop offset="60%" stop-color="#111827" />
+      <stop offset="100%" stop-color="#070A10" />
+    </linearGradient>
+    <linearGradient id="grad_sushilgptsvg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#06B6D4" />
+    </linearGradient>
+    <radialGradient id="glow_sushilgptsvg" cx="85%" cy="20%" r="55%">
+      <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="grid_sushilgptsvg" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1" />
+    </pattern>
+  </defs>
 
-  <!-- Chat Bubbles -->
-  <rect x="60" y="85" width="340" height="50" rx="12" fill="#1E293B"/>
-  <text x="80" y="115" font-family="'Inter', sans-serif" font-size="13" font-weight="600" fill="#E2E8F0">User: How do we scale Kubernetes clusters in Himnova?</text>
+  <rect width="1200" height="630" fill="url(#bg_sushilgptsvg)" />
+  <rect width="1200" height="630" fill="url(#grid_sushilgptsvg)" />
+  <circle cx="950" cy="180" r="380" fill="url(#glow_sushilgptsvg)" />
 
-  <rect x="180" y="150" width="360" height="85" rx="12" fill="#06B6D4" opacity="0.15" stroke="#06B6D4" stroke-width="1"/>
-  <text x="200" y="178" font-family="'Inter', sans-serif" font-size="13" font-weight="700" fill="#06B6D4">SushilGPT Assistant:</text>
-  <text x="200" y="200" font-family="'Inter', sans-serif" font-size="12" fill="#E2E8F0">Himnova Autoscaler dynamically provisions nodes based on CPU & Memory...</text>
+  <rect x="40" y="40" width="1120" height="550" rx="28" fill="rgba(255, 255, 255, 0.02)" stroke="rgba(255, 255, 255, 0.08)" stroke-width="2" />
 
-  <rect x="60" y="250" width="480" height="40" rx="20" fill="#1E293B" stroke="#334155" stroke-width="1"/>
-  <text x="85" y="275" font-family="'Inter', sans-serif" font-size="12" fill="#94A3B8">Send message to SushilGPT AI...</text>
+  <g transform="translate(80, 80)">
+    <rect x="0" y="0" width="220" height="38" rx="19" fill="rgba(6, 182, 212, 0.12)" stroke="rgba(6, 182, 212, 0.4)" stroke-width="1.5" />
+    <text x="110" y="24" fill="#06B6D4" font-family="sans-serif" font-size="12" font-weight="800" letter-spacing="1.5" text-anchor="middle">Full-Stack Web App</text>
+
+    <rect x="235" y="0" width="120" height="38" rx="19" fill="rgba(16, 185, 129, 0.15)" stroke="rgba(16, 185, 129, 0.5)" stroke-width="1.5" />
+    <text x="295" y="24" fill="#10B981" font-family="sans-serif" font-size="12" font-weight="800" letter-spacing="1" text-anchor="middle">COMPLETED</text>
+
+    <rect x="365" y="0" width="80" height="38" rx="19" fill="rgba(255, 255, 255, 0.06)" stroke="rgba(255, 255, 255, 0.15)" stroke-width="1.5" />
+    <text x="405" y="24" fill="#94A3B8" font-family="monospace" font-size="12" font-weight="700" text-anchor="middle">2025</text>
+  </g>
+
+  <g transform="translate(900, 140)">
+    <rect x="0" y="0" width="180" height="180" rx="36" fill="rgba(255,255,255,0.03)" stroke="url(#grad_sushilgptsvg)" stroke-width="2.5" />
+    <circle cx="90" cy="90" r="60" fill="url(#grad_sushilgptsvg)" fill-opacity="0.1" />
+    <text x="90" y="100" fill="url(#grad_sushilgptsvg)" font-family="sans-serif" font-size="24" font-weight="900" text-anchor="middle" letter-spacing="1">AI CHAT</text>
+  </g>
+
+  <text x="80" y="220" fill="#FFFFFF" font-family="sans-serif" font-size="44" font-weight="900" letter-spacing="-1">SushilGPT AI Platform</text>
+  <text x="80" y="270" fill="#94A3B8" font-family="sans-serif" font-size="20" font-weight="500">Full-Stack Conversational LLM with Server-Sent Events Streaming</text>
+
+  <g transform="translate(80, 320)">
+    <rect x="0" y="0" width="280" height="90" rx="16" fill="rgba(30, 41, 59, 0.7)" stroke="rgba(6, 182, 212, 0.3)" stroke-width="1.5" />
+    <text x="24" y="36" fill="#94A3B8" font-family="sans-serif" font-size="13" font-weight="600">Streaming Latency</text>
+    <text x="24" y="72" fill="#06B6D4" font-family="sans-serif" font-size="26" font-weight="800">Sub-85ms</text>
+
+    <rect x="305" y="0" width="280" height="90" rx="16" fill="rgba(30, 41, 59, 0.7)" stroke="rgba(16, 185, 129, 0.3)" stroke-width="1.5" />
+    <text x="329" y="36" fill="#94A3B8" font-family="sans-serif" font-size="13" font-weight="600">Multi-Thread State</text>
+    <text x="329" y="72" fill="#10B981" font-family="sans-serif" font-size="26" font-weight="800">MongoDB</text>
+  </g>
+
+  <g transform="translate(80, 450)">
+    <text x="0" y="-12" fill="#64748B" font-family="sans-serif" font-size="12" font-weight="700" letter-spacing="1">TECHNOLOGY STACK</text>
+    
+    <rect x="0" y="0" width="110" height="34" rx="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)"/>
+    <text x="55" y="22" fill="#CBD5E1" font-family="monospace" font-size="12" font-weight="600" text-anchor="middle">Next.js</text>
+    <rect x="120" y="0" width="110" height="34" rx="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)"/>
+    <text x="175" y="22" fill="#CBD5E1" font-family="monospace" font-size="12" font-weight="600" text-anchor="middle">OpenAI API</text>
+    <rect x="240" y="0" width="110" height="34" rx="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)"/>
+    <text x="295" y="22" fill="#CBD5E1" font-family="monospace" font-size="12" font-weight="600" text-anchor="middle">SSE Stream</text>
+    <rect x="360" y="0" width="110" height="34" rx="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)"/>
+    <text x="415" y="22" fill="#CBD5E1" font-family="monospace" font-size="12" font-weight="600" text-anchor="middle">Node.js</text>
+  </g>
+
+  <text x="80" y="540" fill="#64748B" font-family="sans-serif" font-size="13" font-weight="600">Himnova Technologies Production Case Study • www.himnovatech.com</text>
 </svg>

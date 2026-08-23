@@ -5,6 +5,8 @@ const nextConfig = {
   compress: true,
   images: {
     formats: ["image/avif", "image/webp"],
+    dangerouslyAllowSVG: true,
+    contentDispositionType: "inline",
   },
   async headers() {
     return [
@@ -14,18 +16,6 @@ const nextConfig = {
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "X-Frame-Options", value: "SAMEORIGIN" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-        ],
-      },
-      {
-        source: "/images/:path*",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
-      },
-      {
-        source: "/logos/:path*",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],
       },
     ];

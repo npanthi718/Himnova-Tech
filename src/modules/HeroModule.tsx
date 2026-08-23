@@ -84,16 +84,16 @@ export const HeroModule: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2"
+              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 pt-2"
             >
               <Link href="#services" className="w-full sm:w-auto">
                 <Button size="lg" className="w-full sm:w-auto" icon={<ArrowRight className="h-4 w-4" />}>
-                  Explore Services
+                  Explore 14 IT Services
                 </Button>
               </Link>
-              <Link href="#contact" className="w-full sm:w-auto">
+              <Link href="#solutions" className="w-full sm:w-auto">
                 <Button size="lg" variant="secondary" className="w-full sm:w-auto">
-                  Schedule Technical Audit
+                  Ready Products & Pricing
                 </Button>
               </Link>
             </motion.div>

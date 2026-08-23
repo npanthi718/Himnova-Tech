@@ -20,7 +20,7 @@ export const Navbar: React.FC = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 15);
 
-      const sections = ["home", "about", "services", "projects", "director", "careers", "governance", "contact"];
+      const sections = ["home", "services", "solutions", "projects", "blog", "about", "director", "careers", "governance", "contact"];
       let current = "#home";
 
       sections.forEach((id) => {
@@ -86,12 +86,14 @@ export const Navbar: React.FC = () => {
           <nav className="hidden lg:flex items-center gap-1 rounded-full border border-slate-200 bg-white/90 dark:border-white/10 dark:bg-alpine-900/60 px-4 py-1.5 backdrop-blur-md shadow-sm dark:shadow-inner">
             {siteData.navLinks.map((link) => {
               const targetHref = link.href.startsWith("#") && pathname !== "/" ? `/${link.href}` : link.href;
-              const isActive = link.href.startsWith("#") ? (pathname === "/" && activeHash === link.href) : pathname === link.href;
+              const isCurrentSection = link.href.startsWith("#") && pathname === "/" && activeHash === link.href;
+              const isCurrentPage = !link.href.startsWith("#") && (pathname === link.href || (link.href === "/blog" && pathname.startsWith("/blog")) || (link.href === "/solutions" && pathname.startsWith("/solutions")));
+              const isActive = isCurrentSection || isCurrentPage;
               return (
                 <Link
                   key={link.href}
                   href={targetHref}
-                  className={`relative px-4 py-2 text-xs font-bold tracking-wider uppercase transition-colors rounded-full ${
+                  className={`relative px-3.5 py-1.5 text-xs font-bold tracking-wider uppercase transition-colors rounded-full ${
                     isActive
                       ? "text-brand-cyan dark:text-brand-cyan"
                       : "text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
@@ -148,7 +150,9 @@ export const Navbar: React.FC = () => {
               <nav className="flex flex-col space-y-2">
                 {siteData.navLinks.map((link) => {
                   const targetHref = link.href.startsWith("#") && pathname !== "/" ? `/${link.href}` : link.href;
-                  const isActive = link.href.startsWith("#") ? (pathname === "/" && activeHash === link.href) : pathname === link.href;
+                  const isCurrentSection = link.href.startsWith("#") && pathname === "/" && activeHash === link.href;
+                  const isCurrentPage = !link.href.startsWith("#") && (pathname === link.href || (link.href === "/blog" && pathname.startsWith("/blog")) || (link.href === "/solutions" && pathname.startsWith("/solutions")));
+                  const isActive = isCurrentSection || isCurrentPage;
                   return (
                     <Link
                       key={link.href}

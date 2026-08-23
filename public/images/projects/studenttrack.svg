@@ -1,11 +1,71 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340" fill="none" width="100%" height="100%">
-  <rect width="600" height="340" rx="16" fill="#0B0F19"/>
-  <rect x="30" y="30" width="540" height="280" rx="12" fill="#111827" stroke="#6366F1" stroke-width="1.5"/>
-  <text x="540" y="55" font-family="'Inter', sans-serif" font-size="12" font-weight="800" fill="#6366F1" text-anchor="end">StudentTrack Django ERP</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg_studenttracksvg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B0F19" />
+      <stop offset="60%" stop-color="#111827" />
+      <stop offset="100%" stop-color="#070A10" />
+    </linearGradient>
+    <linearGradient id="grad_studenttracksvg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+    <radialGradient id="glow_studenttracksvg" cx="85%" cy="20%" r="55%">
+      <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#3B82F6" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="grid_studenttracksvg" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1" />
+    </pattern>
+  </defs>
 
-  <rect x="60" y="80" width="480" height="200" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1"/>
-  <text x="90" y="120" font-family="'Inter', sans-serif" font-size="16" font-weight="700" fill="#FFFFFF">Academic Performance & GPA Module</text>
-  <rect x="90" y="145" width="420" height="12" rx="4" fill="#6366F1"/>
-  <rect x="90" y="170" width="360" height="12" rx="4" fill="#10B981"/>
-  <rect x="90" y="195" width="280" height="12" rx="4" fill="#06B6D4"/>
+  <rect width="1200" height="630" fill="url(#bg_studenttracksvg)" />
+  <rect width="1200" height="630" fill="url(#grid_studenttracksvg)" />
+  <circle cx="950" cy="180" r="380" fill="url(#glow_studenttracksvg)" />
+
+  <rect x="40" y="40" width="1120" height="550" rx="28" fill="rgba(255, 255, 255, 0.02)" stroke="rgba(255, 255, 255, 0.08)" stroke-width="2" />
+
+  <g transform="translate(80, 80)">
+    <rect x="0" y="0" width="220" height="38" rx="19" fill="rgba(6, 182, 212, 0.12)" stroke="rgba(6, 182, 212, 0.4)" stroke-width="1.5" />
+    <text x="110" y="24" fill="#06B6D4" font-family="sans-serif" font-size="12" font-weight="800" letter-spacing="1.5" text-anchor="middle">Full-Stack Web App</text>
+
+    <rect x="235" y="0" width="120" height="38" rx="19" fill="rgba(16, 185, 129, 0.15)" stroke="rgba(16, 185, 129, 0.5)" stroke-width="1.5" />
+    <text x="295" y="24" fill="#10B981" font-family="sans-serif" font-size="12" font-weight="800" letter-spacing="1" text-anchor="middle">COMPLETED</text>
+
+    <rect x="365" y="0" width="80" height="38" rx="19" fill="rgba(255, 255, 255, 0.06)" stroke="rgba(255, 255, 255, 0.15)" stroke-width="1.5" />
+    <text x="405" y="24" fill="#94A3B8" font-family="monospace" font-size="12" font-weight="700" text-anchor="middle">2024</text>
+  </g>
+
+  <g transform="translate(900, 140)">
+    <rect x="0" y="0" width="180" height="180" rx="36" fill="rgba(255,255,255,0.03)" stroke="url(#grad_studenttracksvg)" stroke-width="2.5" />
+    <circle cx="90" cy="90" r="60" fill="url(#grad_studenttracksvg)" fill-opacity="0.1" />
+    <text x="90" y="100" fill="url(#grad_studenttracksvg)" font-family="sans-serif" font-size="24" font-weight="900" text-anchor="middle" letter-spacing="1">EDUTRACK</text>
+  </g>
+
+  <text x="80" y="220" fill="#FFFFFF" font-family="sans-serif" font-size="44" font-weight="900" letter-spacing="-1">StudentTrack SIS &amp; LMS</text>
+  <text x="80" y="270" fill="#94A3B8" font-family="sans-serif" font-size="20" font-weight="500">Django Academic Administration, GPA Analytics &amp; Parent Portal</text>
+
+  <g transform="translate(80, 320)">
+    <rect x="0" y="0" width="280" height="90" rx="16" fill="rgba(30, 41, 59, 0.7)" stroke="rgba(6, 182, 212, 0.3)" stroke-width="1.5" />
+    <text x="24" y="36" fill="#94A3B8" font-family="sans-serif" font-size="13" font-weight="600">Enrolled Students</text>
+    <text x="24" y="72" fill="#06B6D4" font-family="sans-serif" font-size="26" font-weight="800">3,500+</text>
+
+    <rect x="305" y="0" width="280" height="90" rx="16" fill="rgba(30, 41, 59, 0.7)" stroke="rgba(16, 185, 129, 0.3)" stroke-width="1.5" />
+    <text x="329" y="36" fill="#94A3B8" font-family="sans-serif" font-size="13" font-weight="600">Auto GPA Engine</text>
+    <text x="329" y="72" fill="#10B981" font-family="sans-serif" font-size="26" font-weight="800">Relational</text>
+  </g>
+
+  <g transform="translate(80, 450)">
+    <text x="0" y="-12" fill="#64748B" font-family="sans-serif" font-size="12" font-weight="700" letter-spacing="1">TECHNOLOGY STACK</text>
+    
+    <rect x="0" y="0" width="110" height="34" rx="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)"/>
+    <text x="55" y="22" fill="#CBD5E1" font-family="monospace" font-size="12" font-weight="600" text-anchor="middle">Python</text>
+    <rect x="120" y="0" width="110" height="34" rx="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)"/>
+    <text x="175" y="22" fill="#CBD5E1" font-family="monospace" font-size="12" font-weight="600" text-anchor="middle">Django</text>
+    <rect x="240" y="0" width="110" height="34" rx="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)"/>
+    <text x="295" y="22" fill="#CBD5E1" font-family="monospace" font-size="12" font-weight="600" text-anchor="middle">PostgreSQL</text>
+    <rect x="360" y="0" width="110" height="34" rx="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)"/>
+    <text x="415" y="22" fill="#CBD5E1" font-family="monospace" font-size="12" font-weight="600" text-anchor="middle">HTML/CSS</text>
+  </g>
+
+  <text x="80" y="540" fill="#64748B" font-family="sans-serif" font-size="13" font-weight="600">Himnova Technologies Production Case Study • www.himnovatech.com</text>
 </svg>

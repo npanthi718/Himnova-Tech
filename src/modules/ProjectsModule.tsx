@@ -53,8 +53,8 @@ export const ProjectsModule: React.FC = () => {
               onClick={() => setSelectedCategory(cat)}
               className={`px-4 py-2 text-xs font-bold rounded-full transition-all duration-300 ${
                 selectedCategory === cat
-                  ? "bg-brand-cyan text-white shadow-lg shadow-brand-cyan/25"
-                  : "bg-slate-100 text-slate-700 border border-slate-300 hover:border-brand-cyan/50 dark:bg-alpine-900/60 dark:text-slate-300 dark:border-white/10"
+                  ? "bg-brand-cyan text-white shadow-lg shadow-brand-cyan/25 scale-105"
+                  : "bg-white text-slate-700 border border-slate-300 hover:border-brand-cyan/50 dark:bg-alpine-900/80 dark:text-slate-300 dark:border-white/10"
               }`}
             >
               {cat}
@@ -68,17 +68,16 @@ export const ProjectsModule: React.FC = () => {
             <StaggerItem key={project.id}>
               <Card
                 onClick={() => setSelectedProject(project)}
-                className="h-full flex flex-col justify-between cursor-pointer group hover:border-brand-cyan/50 transition-all duration-300"
+                className="h-full flex flex-col justify-between cursor-pointer group hover:border-brand-cyan/60 hover:shadow-xl hover:shadow-brand-cyan/10 transition-all duration-300 overflow-hidden"
               >
                 <div>
                   {/* Thumbnail Image Header */}
-                  <div className="relative h-44 w-full overflow-hidden bg-alpine-900 border-b border-white/10">
-                    <Image
+                  <div className="relative h-48 w-full overflow-hidden bg-slate-900 border-b border-slate-200 dark:border-white/10">
+                    <img
                       src={project.imagePlaceholder}
                       alt={project.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
                     />
                     
                     {/* Top Badges Overlay */}
@@ -147,13 +146,12 @@ export const ProjectsModule: React.FC = () => {
         >
           <div className="space-y-6">
             
-            <div className="relative h-48 w-full rounded-xl overflow-hidden border border-white/10">
-              <Image
+            <div className="relative h-60 sm:h-72 w-full rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 bg-slate-900 shadow-xl">
+              <img
                 src={selectedProject.imagePlaceholder}
                 alt={selectedProject.title}
-                fill
-                sizes="(max-width: 1024px) 100vw, 800px"
                 className="h-full w-full object-cover"
+                loading="lazy"
               />
             </div>
 
