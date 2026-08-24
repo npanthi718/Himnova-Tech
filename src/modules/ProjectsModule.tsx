@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { siteData, ProjectItem } from "@/config/siteData";
+import { VisualProductGraphic } from "@/components/ui/VisualProductGraphic";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
@@ -63,7 +64,7 @@ export const ProjectsModule: React.FC = () => {
         </div>
 
         {/* Delivered Projects Grid */}
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6" stagger={0.07}>
+        <StaggerContainer key={selectedCategory} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6" stagger={0.07}>
           {filteredProjects.map((project) => (
             <StaggerItem key={project.id}>
               <Card
@@ -71,28 +72,16 @@ export const ProjectsModule: React.FC = () => {
                 className="h-full flex flex-col justify-between cursor-pointer group hover:border-brand-cyan/60 hover:shadow-xl hover:shadow-brand-cyan/10 transition-all duration-300 overflow-hidden"
               >
                 <div>
-                  {/* Thumbnail Image Header */}
-                  <div className="relative h-48 w-full overflow-hidden bg-slate-900 border-b border-slate-200 dark:border-white/10">
-                    <img
-                      src={project.imagePlaceholder}
-                      alt={project.title}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
+                  {/* Visual UI Graphic Preview */}
+                  <div className="p-2 bg-slate-900 border-b border-slate-200 dark:border-white/10">
+                    <VisualProductGraphic
+                      title={project.title}
+                      category={project.category}
+                      iconName="Code"
+                      type="project"
+                      badge={project.status}
+                      metricsText={project.year}
                     />
-                    
-                    {/* Top Badges Overlay */}
-                    <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
-                      <span className="px-2.5 py-1 text-[10px] font-bold uppercase rounded-md bg-black/75 backdrop-blur-md text-white border border-white/20">
-                        {project.category}
-                      </span>
-                      <span className="px-2.5 py-1 text-[10px] font-bold uppercase rounded-md bg-emerald-500/90 text-white shadow">
-                        {project.status}
-                      </span>
-                    </div>
-
-                    <div className="absolute bottom-2 right-3 px-2 py-0.5 text-[10px] font-mono font-bold bg-black/60 rounded text-slate-300">
-                      {project.year}
-                    </div>
                   </div>
 
                   {/* Body Content */}

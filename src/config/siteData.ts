@@ -629,7 +629,7 @@ export const siteData: SiteConfig = {
       tagline: "Comprehensive OPD queue, electronic health records, pathology reports & billing POS.",
       description:
         "LumbiniCare Connect is a multi-department hospital management suite deployed across regional clinics in Nepal. Features OPD queue token generation, computerized physician order entry (CPOE), pathology lab report dispatch, and integrated pharmacy inventory.",
-      category: "Full-Stack Web App",
+      category: "Enterprise ERP",
       year: "2025",
       status: "Completed",
       techStack: [

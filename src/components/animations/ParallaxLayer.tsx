@@ -26,7 +26,7 @@ export const ParallaxLayer: React.FC<ParallaxLayerProps> = ({
   const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.4, 1, 1, 0.4]);
 
   return (
-    <div ref={ref} className={`relative ${className}`}>
+    <div ref={ref} className={`relative ${className}`} style={{ position: "relative" }}>
       <motion.div style={{ y, opacity }}>{children}</motion.div>
     </div>
   );
@@ -50,7 +50,7 @@ export const ParallaxBackground: React.FC<ParallaxBackgroundProps> = ({
   const y = useTransform(scrollYProgress, [0, 1], [0, speed * -200]);
 
   return (
-    <div ref={ref} className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div ref={ref} className="absolute inset-0 overflow-hidden pointer-events-none" style={{ position: "absolute" }}>
       <motion.div style={{ y }} className={className} />
     </div>
   );

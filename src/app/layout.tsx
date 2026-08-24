@@ -26,14 +26,16 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
-      { url: "/logos/himnova.ico" },
+      { url: "/favicon-48x48.png", sizes: "48x48", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
       { url: "/logos/logo.png", type: "image/png" },
     ],
-    shortcut: ["/favicon.ico", "/logos/himnova.ico"],
+    shortcut: ["/favicon.ico", "/favicon-48x48.png"],
     apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
       { url: "/logos/logo.png", sizes: "180x180", type: "image/png" },
-      { url: "/logos/himnova.ico" },
     ],
     other: [
       {
@@ -148,9 +150,11 @@ export default function RootLayout({
     <html lang="en" className="dark" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/logos/himnova.ico" />
+        <link rel="icon" href="/favicon-48x48.png" sizes="48x48" type="image/png" />
+        <link rel="icon" href="/icon-192.png" sizes="192x192" type="image/png" />
+        <link rel="icon" href="/icon-512.png" sizes="512x512" type="image/png" />
         <link rel="shortcut icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" href="/apple-icon.png" sizes="180x180" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

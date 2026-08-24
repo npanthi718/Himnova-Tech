@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { blogPosts } from "@/data/blogs/blogPosts";
+import { VisualProductGraphic } from "@/components/ui/VisualProductGraphic";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -93,18 +94,16 @@ export default function BlogIndexPage() {
             <Card className="p-6 sm:p-8 lg:p-10 border-brand-cyan/40 hover:border-brand-cyan hover:shadow-2xl hover:shadow-brand-cyan/15 transition-all duration-300">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                 
-                {/* Left: Image Banner */}
-                <div className="lg:col-span-6 relative h-64 sm:h-80 w-full rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 dark:border-white/10">
-                  <img
-                    src={featuredPost.coverImage}
-                    alt={featuredPost.title}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                {/* Left: Visual Graphic Preview */}
+                <div className="lg:col-span-6 p-2 rounded-2xl bg-slate-900 border border-slate-200 dark:border-white/10">
+                  <VisualProductGraphic
+                    title={featuredPost.title}
+                    category={featuredPost.category}
+                    iconName="FileText"
+                    type="blog"
+                    badge="Featured Blueprint"
+                    metricsText={featuredPost.publishedDate}
                   />
-                  <div className="absolute top-4 left-4">
-                    <span className="px-3.5 py-1 text-xs font-extrabold uppercase tracking-wide rounded-full bg-brand-cyan text-white shadow-lg">
-                      Featured Spotlight
-                    </span>
-                  </div>
                 </div>
 
                 {/* Right: Info */}
@@ -174,25 +173,22 @@ export default function BlogIndexPage() {
             <p className="text-sm text-slate-500">Try searching for keywords like &quot;AI&quot;, &quot;Cloud&quot;, or &quot;Architecture&quot;.</p>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+          <div key={selectedCategory + searchQuery} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
             {filteredPosts.map((blog) => (
               <Link key={blog.id} href={`/blog/${blog.slug}`} className="block h-full group focus:outline-none">
                 <Card className="h-full flex flex-col justify-between overflow-hidden hover:border-brand-cyan/60 hover:shadow-xl hover:shadow-brand-cyan/10 transition-all duration-300">
                   
                   <div>
-                    {/* Thumbnail Image */}
-                    <div className="relative h-48 w-full overflow-hidden bg-slate-900 border-b border-slate-200 dark:border-white/10">
-                      <img
-                        src={blog.coverImage}
-                        alt={blog.title}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        loading="lazy"
+                    {/* Visual UI Graphic Preview */}
+                    <div className="p-2 bg-slate-900 border-b border-slate-200 dark:border-white/10">
+                      <VisualProductGraphic
+                        title={blog.title}
+                        category={blog.category}
+                        iconName="FileText"
+                        type="blog"
+                        badge={blog.readTime}
+                        metricsText={blog.publishedDate}
                       />
-                      <div className="absolute top-3 left-3">
-                        <span className="px-2.5 py-0.5 text-[10px] font-bold uppercase rounded-md bg-black/80 backdrop-blur-md text-brand-cyan border border-brand-cyan/30">
-                          {blog.category}
-                        </span>
-                      </div>
                     </div>
 
                     {/* Content */}

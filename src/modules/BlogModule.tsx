@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { blogPosts } from "@/data/blogs/blogPosts";
+import { VisualProductGraphic } from "@/components/ui/VisualProductGraphic";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -49,19 +50,16 @@ export const BlogModule: React.FC = () => {
                 <Card className="h-full flex flex-col justify-between overflow-hidden hover:border-brand-cyan/60 hover:shadow-xl hover:shadow-brand-cyan/10 transition-all duration-300">
                   
                   <div>
-                    {/* Cover Image Banner */}
-                    <div className="relative h-48 w-full overflow-hidden bg-slate-900 border-b border-slate-200 dark:border-white/10">
-                      <img
-                        src={blog.coverImage}
-                        alt={blog.title}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        loading="lazy"
+                    {/* Visual UI Graphic Preview */}
+                    <div className="p-2 bg-slate-900 border-b border-slate-200 dark:border-white/10">
+                      <VisualProductGraphic
+                        title={blog.title}
+                        category={blog.category}
+                        iconName="FileText"
+                        type="blog"
+                        badge={blog.readTime}
+                        metricsText={blog.publishedDate}
                       />
-                      <div className="absolute top-3 left-3">
-                        <span className="px-3 py-1 text-[10px] font-extrabold uppercase tracking-wide rounded-full bg-black/75 backdrop-blur-md text-brand-cyan border border-brand-cyan/30">
-                          {blog.category}
-                        </span>
-                      </div>
                     </div>
 
                     {/* Content Body */}

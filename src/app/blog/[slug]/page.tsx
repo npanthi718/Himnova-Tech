@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
 import { blogPosts } from "@/data/blogs/blogPosts";
+import { VisualProductGraphic } from "@/components/ui/VisualProductGraphic";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -137,11 +138,14 @@ export default function BlogPostPage({ params }: Props) {
 
       {/* Featured Cover Graphic */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 my-10">
-        <div className="relative h-72 sm:h-96 md:h-[420px] w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-white/10 bg-slate-900">
-          <img
-            src={post.coverImage}
-            alt={post.title}
-            className="h-full w-full object-cover"
+        <div className="p-2.5 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-200 dark:border-white/10 bg-slate-900">
+          <VisualProductGraphic
+            title={post.title}
+            category={post.category}
+            iconName="FileText"
+            type="blog"
+            badge={post.readTime}
+            metricsText={post.publishedDate}
           />
         </div>
       </div>

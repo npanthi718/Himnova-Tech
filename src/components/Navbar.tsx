@@ -20,23 +20,33 @@ export const Navbar: React.FC = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 15);
 
+      if (pathname !== "/") return;
+
       const sections = ["home", "services", "solutions", "projects", "blog", "about", "director", "careers", "governance", "contact"];
       let current = "#home";
+      const navThreshold = 180;
 
-      sections.forEach((id) => {
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const id = sections[i];
         const sectionEl = document.getElementById(id);
-        if (!sectionEl) return;
-        const top = sectionEl.offsetTop - 120;
-        if (window.scrollY >= top) {
-          current = `#${id}`;
+        if (sectionEl) {
+          const rect = sectionEl.getBoundingClientRect();
+          if (rect.top <= navThreshold) {
+            current = `#${id}`;
+            break;
+          }
         }
-      });
+      }
 
       setActiveHash(current);
     };
 
     const handleHashChange = () => {
-      setActiveHash(window.location.hash || "#home");
+      if (window.location.hash) {
+        setActiveHash(window.location.hash);
+      } else if (pathname === "/") {
+        handleScroll();
+      }
     };
 
     handleHashChange();
@@ -47,7 +57,7 @@ export const Navbar: React.FC = () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("hashchange", handleHashChange);
     };
-  }, []);
+  }, [pathname]);
 
   return (
     <header

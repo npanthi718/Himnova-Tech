@@ -131,7 +131,7 @@ export const ServicesModule: React.FC = () => {
           ))}
         </div>
 
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6" stagger={0.06}>
+        <StaggerContainer key={selectedCategory} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6" stagger={0.06}>
           {filteredServices.map((service) => {
             const IconComponent = iconMap[service.iconName] || Cloud;
             return (
