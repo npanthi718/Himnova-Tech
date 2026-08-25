@@ -64,7 +64,7 @@ export const ProjectsModule: React.FC = () => {
         </div>
 
         {/* Delivered Projects Grid */}
-        <StaggerContainer key={selectedCategory} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6" stagger={0.07}>
+        <StaggerContainer key={selectedCategory} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 sm:gap-8" stagger={0.07}>
           {filteredProjects.map((project) => (
             <StaggerItem key={project.id}>
               <Card

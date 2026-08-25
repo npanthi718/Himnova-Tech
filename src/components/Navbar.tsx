@@ -103,6 +103,11 @@ export const Navbar: React.FC = () => {
                 <Link
                   key={link.href}
                   href={targetHref}
+                  onClick={() => {
+                    if (link.href.startsWith("#")) {
+                      setActiveHash(link.href);
+                    }
+                  }}
                   className={`relative px-3.5 py-1.5 text-xs font-bold tracking-wider uppercase transition-colors rounded-full ${
                     isActive
                       ? "text-brand-cyan dark:text-brand-cyan"

@@ -40,39 +40,31 @@ const iconMap = {
   ShieldCheck,
 };
 
-function CapabilityCard({
+function CapabilityPill({
   label,
   metric,
   unit,
   iconName,
-  index,
 }: {
   label: string;
   metric: string;
   unit: string;
-  iconName: keyof typeof iconMap;
-  index: number;
+  iconName: string;
 }) {
-  const Icon = iconMap[iconName] || Cloud;
+  const IconComponent = iconMap[iconName as keyof typeof iconMap] || Cloud;
 
   return (
-    <div
-      className="flex items-center gap-4 mx-3 px-6 py-4 rounded-2xl shrink-0
-        bg-white border border-slate-200 shadow-md shadow-slate-200/50
-        dark:bg-alpine-900/85 dark:border-white/10 dark:shadow-black/50
-        backdrop-blur-md min-w-[280px] sm:min-w-[320px] transition-all hover:scale-105"
-    >
-      <div
-        className="rounded-xl p-3 bg-brand-cyan/15 border border-brand-cyan/30 text-brand-cyan dark:text-brand-cyan animate-icon-pulse shrink-0"
-        style={{ animationDelay: `${index * 0.25}s` }}
-      >
-        <Icon className="h-6 w-6" />
+    <div className="flex items-center gap-3.5 px-5 py-3.5 rounded-2xl bg-white/90 dark:bg-alpine-900/90 border border-slate-200 dark:border-white/10 shadow-md shadow-slate-200/50 dark:shadow-black/50 backdrop-blur-md shrink-0 hover:border-brand-cyan/60 hover:shadow-xl hover:shadow-brand-cyan/15 transition-all duration-300 group">
+      <div className="rounded-xl p-2.5 bg-brand-cyan/15 border border-brand-cyan/30 text-brand-cyan group-hover:scale-110 group-hover:bg-brand-cyan group-hover:text-white transition-all duration-300 shrink-0">
+        <IconComponent className="h-5 w-5" />
       </div>
       <div>
-        <p className="text-sm font-bold text-slate-900 dark:text-white leading-tight">{label}</p>
-        <p className="text-lg sm:text-xl font-extrabold font-display text-brand-cyan flex items-baseline gap-1 mt-0.5">
+        <p className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-tight">
+          {label}
+        </p>
+        <p className="text-sm sm:text-base font-extrabold font-display text-brand-cyan flex items-baseline gap-1 mt-0.5">
           <span>{metric}</span>
-          <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">
+          <span className="text-[10px] sm:text-xs font-semibold text-slate-500 dark:text-slate-400">
             {unit}
           </span>
         </p>
@@ -88,12 +80,13 @@ export const CapabilitiesStrip: React.FC = () => {
 
   return (
     <section className="relative section-padding overflow-hidden bg-slate-50 dark:bg-alpine-950 border-y border-slate-200 dark:border-white/5">
+      {/* Background Radial Glow */}
       <ParallaxBackground
         speed={0.2}
-        className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(6,182,212,0.12),transparent_60%)]"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[450px] bg-brand-cyan/10 rounded-full blur-[170px] pointer-events-none"
       />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-10 sm:mb-14">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-10 sm:mb-12">
         <RevealOnScroll className="text-center max-w-3xl mx-auto space-y-4">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-cyan/10 border border-brand-cyan/30 text-brand-cyan text-xs font-bold uppercase tracking-widest">
             <Sparkles className="h-3.5 w-3.5" />
@@ -108,6 +101,7 @@ export const CapabilitiesStrip: React.FC = () => {
         </RevealOnScroll>
       </div>
 
+      {/* Infinite Horizontal Scrolling Marquee Rows */}
       <div className="relative z-10 space-y-5">
         <div className="overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
           <motion.div
@@ -115,7 +109,7 @@ export const CapabilitiesStrip: React.FC = () => {
             aria-hidden
           >
             {row1.map((cap, i) => (
-              <CapabilityCard key={`r1-${cap.label}-${i}`} {...cap} index={i} iconName={cap.iconName} />
+              <CapabilityPill key={`r1-${cap.label}-${i}`} {...cap} />
             ))}
           </motion.div>
         </div>
@@ -126,12 +120,13 @@ export const CapabilitiesStrip: React.FC = () => {
             aria-hidden
           >
             {row2.map((cap, i) => (
-              <CapabilityCard key={`r2-${cap.label}-${i}`} {...cap} index={i} iconName={cap.iconName} />
+              <CapabilityPill key={`r2-${cap.label}-${i}`} {...cap} />
             ))}
           </motion.div>
         </div>
       </div>
 
+      {/* Bottom Metric Stats Bar */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-12 sm:mt-16">
         <RevealOnScroll delay={0.15}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">

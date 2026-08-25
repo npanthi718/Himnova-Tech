@@ -23,6 +23,7 @@ export const metadata: Metadata = {
   title: siteData.meta.title,
   description: siteData.meta.description,
   keywords: siteData.meta.keywords,
+  manifest: "/manifest.json",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
