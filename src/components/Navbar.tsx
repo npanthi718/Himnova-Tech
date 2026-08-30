@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { siteData } from "@/config/siteData";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { BrandMark } from "@/components/ui/BrandMark";
 import { Button } from "@/components/ui/Button";
 import { Menu, X, ArrowUpRight, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -70,44 +71,39 @@ export const Navbar: React.FC = () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4">
           
-          {/* Brand Logo matching exact screenshot emblem */}
-          <Link href="/" className="flex items-center gap-3 shrink-0 focus:outline-none">
-            <div className="relative h-11 w-52 sm:w-60 transition-transform duration-300 hover:scale-105">
+          {/* Brand Logo with Official Silver Emblem */}
+          <Link href="/" className="flex items-center gap-3 shrink-0 focus:outline-none group">
+            <div className="relative h-10 w-10 shrink-0 transition-transform duration-300 group-hover:scale-105">
               <Image
-                src="/logos/logo-light.png"
-                alt={siteData.company.name}
+                src="/logos/himnova.png"
+                alt="Himnova Technologies"
                 fill
-                sizes="(max-width: 640px) 208px, 240px"
+                sizes="40px"
                 priority
-                className="hidden h-full w-auto object-contain dark:block"
+                className="object-contain"
               />
-              <Image
-                src="/logos/logo.png"
-                alt={siteData.company.name}
-                fill
-                sizes="(max-width: 640px) 208px, 240px"
-                priority
-                className="h-full w-auto object-contain dark:hidden"
-              />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-base sm:text-lg font-extrabold font-display tracking-tight text-slate-900 dark:text-white leading-none">
+                HIMNOVA
+              </span>
+              <span className="text-[9px] font-extrabold tracking-widest text-brand-cyan uppercase mt-0.5">
+                TECHNOLOGIES
+              </span>
             </div>
           </Link>
 
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center gap-1 rounded-full border border-slate-200 bg-white/90 dark:border-white/10 dark:bg-alpine-900/60 px-4 py-1.5 backdrop-blur-md shadow-sm dark:shadow-inner">
             {siteData.navLinks.map((link) => {
-              const targetHref = link.href.startsWith("#") && pathname !== "/" ? `/${link.href}` : link.href;
-              const isCurrentSection = link.href.startsWith("#") && pathname === "/" && activeHash === link.href;
-              const isCurrentPage = !link.href.startsWith("#") && (pathname === link.href || (link.href === "/blog" && pathname.startsWith("/blog")) || (link.href === "/solutions" && pathname.startsWith("/solutions")));
-              const isActive = isCurrentSection || isCurrentPage;
+              const isActive =
+                link.href === "/"
+                  ? pathname === "/" && activeHash === "#home"
+                  : pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
               return (
                 <Link
                   key={link.href}
-                  href={targetHref}
-                  onClick={() => {
-                    if (link.href.startsWith("#")) {
-                      setActiveHash(link.href);
-                    }
-                  }}
+                  href={link.href}
                   className={`relative px-3.5 py-1.5 text-xs font-bold tracking-wider uppercase transition-colors rounded-full ${
                     isActive
                       ? "text-brand-cyan dark:text-brand-cyan"
@@ -164,14 +160,14 @@ export const Navbar: React.FC = () => {
             <div className="mx-auto max-w-7xl px-6 py-6 space-y-4">
               <nav className="flex flex-col space-y-2">
                 {siteData.navLinks.map((link) => {
-                  const targetHref = link.href.startsWith("#") && pathname !== "/" ? `/${link.href}` : link.href;
-                  const isCurrentSection = link.href.startsWith("#") && pathname === "/" && activeHash === link.href;
-                  const isCurrentPage = !link.href.startsWith("#") && (pathname === link.href || (link.href === "/blog" && pathname.startsWith("/blog")) || (link.href === "/solutions" && pathname.startsWith("/solutions")));
-                  const isActive = isCurrentSection || isCurrentPage;
+                  const isActive =
+                    link.href === "/"
+                      ? pathname === "/" && activeHash === "#home"
+                      : pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
                   return (
                     <Link
                       key={link.href}
-                      href={targetHref}
+                      href={link.href}
                       onClick={() => setMobileMenuOpen(false)}
                       className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-bold tracking-wide uppercase transition-all ${
                         isActive

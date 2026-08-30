@@ -16,10 +16,10 @@ export default function HomePage() {
     <>
       <HeroModule />
       <CapabilitiesStrip />
-      <ServicesModule />
-      <NicheProductsModule />
-      <ProjectsModule />
-      <BlogModule />
+      <ServicesModule limit={6} showViewAll />
+      <NicheProductsModule limit={6} showViewAll />
+      <ProjectsModule limit={3} showViewAll />
+      <BlogModule limit={3} showViewAll />
       <VisionMission />
       <DirectorMessage />
       <CareersModule />

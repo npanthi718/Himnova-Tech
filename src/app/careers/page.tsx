@@ -3,10 +3,13 @@ import { CareersModule } from "@/modules/CareersModule";
 import { Badge } from "@/components/ui/Badge";
 
 export const metadata = {
-  title: "Careers & Tech Openings | Himnova Technologies",
+  title: "Himnova Careers | Tech Jobs at Himnova Technologies",
   description:
-    "Explore open tech careers at Himnova Technologies (www.himnovatech.com): Software Sales, Full-Stack Developers, Marketing Officers, and Engineering Internships.",
+    "Careers at Himnova Technologies (himnovatech.com): software sales, full-stack engineering, marketing, and internships in Kathmandu.",
   keywords: [
+    "Himnova",
+    "Himnova Technologies",
+    "Himnova careers",
     "Tech Jobs Nepal",
     "Software Developer Careers",
     "IT Engineering Openings",

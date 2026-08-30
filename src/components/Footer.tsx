@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { siteData } from "@/config/siteData";
+import { BrandMark } from "@/components/ui/BrandMark";
 import { MapPin, Mail, Phone, Github, Linkedin, Twitter, Facebook } from "lucide-react";
 
 export const Footer: React.FC = () => {
@@ -20,22 +21,24 @@ export const Footer: React.FC = () => {
           
           {/* Column 1 & 2: Brand & Headquarters */}
           <div className="lg:col-span-2 space-y-6">
-            <Link href="/" className="inline-block focus:outline-none">
-              <div className="relative h-12 w-60">
+            {/* Brand Logo with Official Silver Emblem */}
+            <Link href="/" className="inline-flex items-center gap-3 focus:outline-none group">
+              <div className="relative h-11 w-11 shrink-0 transition-transform duration-300 group-hover:scale-105">
                 <Image
-                  src="/logos/logo-light.png"
-                  alt={siteData.company.name}
+                  src="/logos/himnova.png"
+                  alt="Himnova Technologies"
                   fill
-                  sizes="240px"
-                  className="hidden h-full w-auto object-contain dark:block"
+                  sizes="44px"
+                  className="object-contain"
                 />
-                <Image
-                  src="/logos/logo.png"
-                  alt={siteData.company.name}
-                  fill
-                  sizes="240px"
-                  className="h-full w-auto object-contain dark:hidden"
-                />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-lg font-extrabold font-display tracking-tight text-slate-900 dark:text-white leading-none">
+                  HIMNOVA
+                </span>
+                <span className="text-[10px] font-extrabold tracking-widest text-brand-cyan uppercase mt-0.5">
+                  TECHNOLOGIES
+                </span>
               </div>
             </Link>
 
@@ -154,7 +157,7 @@ export const Footer: React.FC = () => {
 
         {/* Bottom copyright bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600 dark:text-slate-400">
-          <p>© {new Date().getFullYear()} {siteData.company.legalName}. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} {siteData.company.legalName}. Official site: himnovatech.com</p>
           <p className="flex items-center gap-1.5">
             Architected for <span className="text-brand-cyan font-semibold">{siteData.company.motto}</span>
           </p>

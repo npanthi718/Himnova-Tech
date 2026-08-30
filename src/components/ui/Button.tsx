@@ -20,7 +20,7 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseClasses =
-    "inline-flex items-center justify-center font-medium rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand-cyan/50 disabled:opacity-50 disabled:cursor-not-allowed select-none";
+    "relative overflow-hidden inline-flex items-center justify-center font-medium rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand-cyan/50 disabled:opacity-50 disabled:cursor-not-allowed select-none";
 
   const sizeClasses = {
     sm: "px-3.5 py-1.5 text-xs gap-1.5",
@@ -47,8 +47,11 @@ export const Button: React.FC<ButtonProps> = ({
       disabled={disabled}
       {...props}
     >
-      {children}
-      {icon && <span className="shrink-0">{icon}</span>}
+      {variant === "primary" && (
+        <span className="pointer-events-none absolute inset-0 btn-shine" aria-hidden="true" />
+      )}
+      <span className="relative z-10">{children}</span>
+      {icon && <span className="relative z-10 shrink-0">{icon}</span>}
     </motion.button>
   );
 };

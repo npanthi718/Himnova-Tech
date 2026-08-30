@@ -3,10 +3,12 @@ import { ProjectsModule } from "@/modules/ProjectsModule";
 import { Badge } from "@/components/ui/Badge";
 
 export const metadata = {
-  title: "Delivered Software & AI Projects | Himnova Technologies",
+  title: "Himnova Projects | Software & AI Delivery Portfolio",
   description:
-    "Explore production software projects delivered by Himnova Technologies (www.himnovatech.com): Enterprise ERPs, HealthTech, AI Assistants, and Scalable Web Platforms.",
+    "Production software and AI projects delivered by Himnova Technologies (himnovatech.com): ERPs, HealthTech, assistants, and scalable web platforms.",
   keywords: [
+    "Himnova",
+    "Himnova Technologies",
     "Delivered Software Projects",
     "Himnova Portfolio",
     "Enterprise Software Case Studies",

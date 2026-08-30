@@ -12,8 +12,13 @@ import { Clock, ArrowRight, BookOpen, Sparkles } from "lucide-react";
 import { RevealOnScroll, StaggerContainer, StaggerItem } from "@/components/animations/RevealOnScroll";
 import { ParallaxBackground } from "@/components/animations/ParallaxLayer";
 
-export const BlogModule: React.FC = () => {
-  const latestBlogs = blogPosts.slice(0, 3);
+interface BlogModuleProps {
+  limit?: number;
+  showViewAll?: boolean;
+}
+
+export const BlogModule: React.FC<BlogModuleProps> = ({ limit }) => {
+  const latestBlogs = blogPosts.slice(0, limit || 3);
 
   return (
     <section

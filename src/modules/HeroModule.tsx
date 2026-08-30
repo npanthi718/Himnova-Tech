@@ -79,6 +79,9 @@ export const HeroModule: React.FC = () => {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-4xl sm:text-6xl lg:text-7xl font-extrabold font-display tracking-tight text-slate-900 dark:text-white leading-[1.1]"
             >
+              <span className="block text-lg sm:text-xl lg:text-2xl font-semibold tracking-wide text-slate-600 dark:text-slate-300 mb-3">
+                Himnova Technologies
+              </span>
               Architecting <br />
               <span className="bg-gradient-to-r from-brand-cyan via-teal-400 to-sky-500 bg-clip-text text-transparent text-glow">
                 Cloud Intelligence
@@ -161,7 +164,8 @@ export const HeroModule: React.FC = () => {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="lg:col-span-5 relative"
           >
-            <div className="relative mx-auto max-w-md lg:max-w-none rounded-3xl border border-slate-200 dark:border-white/15 bg-white/95 dark:bg-alpine-900/95 p-6 shadow-2xl backdrop-blur-2xl overflow-hidden group">
+            <div className="relative mx-auto max-w-md lg:max-w-none rounded-3xl border border-slate-200 dark:border-white/15 bg-white/95 dark:bg-alpine-900/95 p-6 shadow-2xl shadow-brand-cyan/10 backdrop-blur-2xl overflow-hidden group hover:border-brand-cyan/40 transition-colors duration-500">
+              <div className="pointer-events-none absolute -top-24 -right-16 h-48 w-48 rounded-full bg-brand-cyan/20 blur-3xl opacity-70 group-hover:opacity-100 transition-opacity" />
               
               {/* Header Bar */}
               <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-white/10">

@@ -3,10 +3,12 @@ import { NicheProductsModule } from "@/modules/NicheProductsModule";
 import { Badge } from "@/components/ui/Badge";
 
 export const metadata = {
-  title: "Turnkey Products & Market Pricing | Himnova Technologies",
+  title: "Himnova Solutions | Turnkey Software Products & Pricing",
   description:
-    "Explore 18+ turnkey software products and ready-to-deploy web platforms with transparent standard market pricing: Multi-Vendor E-Commerce, Hotel PMS, Restaurant POS, Hospital EHR, Real Estate, and FinTech.",
+    "Himnova Technologies turnkey products (himnovatech.com): e-commerce, hotel PMS, restaurant POS, hospital EHR, real estate, and FinTech platforms with market pricing.",
   keywords: [
+    "Himnova",
+    "Himnova Technologies",
     "Ready Software Products",
     "Turnkey Web Platforms",
     "E-Commerce SaaS Software",

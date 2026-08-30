@@ -2,15 +2,18 @@ import React from "react";
 import { siteData } from "@/config/siteData";
 import { VisionMission } from "@/modules/VisionMission";
 import { DirectorMessage } from "@/modules/DirectorMessage";
+import { GovernanceModule } from "@/modules/GovernanceModule";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Building2, Globe2, ShieldCheck, Cpu } from "lucide-react";
 
 export const metadata = {
-  title: "About Himnova Technologies | Premier IT & Software Engineering Company",
+  title: "Himnova Technologies | Official IT Company Profile",
   description:
-    "Learn about Himnova Technologies Private Limited (www.himnovatech.com): Enterprise IT company, software development leadership, vision, and engineering pillars.",
+    "About Himnova Technologies Private Limited (himnovatech.com): the official Himnova IT company in Kathmandu for enterprise software, cloud, and AI engineering.",
   keywords: [
+    "Himnova",
+    "Himnova Technologies",
     "About Himnova Technologies",
     "IT Company Kathmandu",
     "Software Engineering Agency",
@@ -79,6 +82,9 @@ export default function AboutPage() {
 
       {/* Director's Statement */}
       <DirectorMessage />
+
+      {/* Corporate Governance & Legal */}
+      <GovernanceModule />
 
     </div>
   );

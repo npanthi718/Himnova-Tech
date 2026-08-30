@@ -1,4 +1,12 @@
 User-agent: *
 Allow: /
+Disallow: /api/
 
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+Host: https://www.himnovatech.com
 Sitemap: https://www.himnovatech.com/sitemap.xml

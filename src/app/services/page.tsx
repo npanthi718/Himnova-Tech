@@ -3,10 +3,13 @@ import { ServicesModule } from "@/modules/ServicesModule";
 import { Badge } from "@/components/ui/Badge";
 
 export const metadata = {
-  title: "14 Specialized IT Services & Software Solutions | Himnova Technologies",
+  title: "Himnova IT Services | Custom Software, Cloud & AI",
   description:
-    "Explore 14 specialized IT services by Himnova Technologies: Custom Software Development, Cloud DevOps, Web Applications, Mobile App Development, Agentic AI, and 24/7 IT Support.",
+    "Himnova Technologies (himnovatech.com) offers 14 IT services: custom software, cloud DevOps, web platforms, mobile apps, agentic AI, and 24/7 support.",
   keywords: [
+    "Himnova",
+    "Himnova Technologies",
+    "Himnova IT services",
     "IT Services Nepal",
     "Software Development Services",
     "Custom Software Solutions",

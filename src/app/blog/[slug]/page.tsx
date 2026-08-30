@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${post.title} | Himnova Technologies`,
     description: post.excerpt,
-    keywords: [...post.tags, "Himnova Tech", "Software Architecture", "AI Engineering"],
+    keywords: [...post.tags, "Himnova", "Himnova Technologies", "Himnova Tech", "Software Architecture", "AI Engineering"],
     openGraph: {
       title: post.title,
       description: post.excerpt,

@@ -2,13 +2,12 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { nicheProducts, NicheProduct } from "@/data/nicheProducts";
-import { VisualProductGraphic } from "@/components/ui/VisualProductGraphic";
 import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
-import { Button } from "@/components/ui/Button";
+import { VisualProductGraphic } from "@/components/ui/VisualProductGraphic";
 import {
   ShoppingCart,
   Hotel,
@@ -28,19 +27,17 @@ import {
   Pill,
   Ticket,
   HeartHandshake,
-  ArrowRight,
   CheckCircle2,
+  ArrowRight,
   Clock,
-  DollarSign,
-  Layers,
-  Sparkles,
   Zap,
+  Sparkles,
   ShieldCheck,
 } from "lucide-react";
 import { RevealOnScroll, StaggerContainer, StaggerItem } from "@/components/animations/RevealOnScroll";
 import { ParallaxBackground } from "@/components/animations/ParallaxLayer";
 
-const iconMap = {
+const iconMap: Record<string, React.ElementType> = {
   ShoppingCart,
   Hotel,
   Utensils,
@@ -61,72 +58,77 @@ const iconMap = {
   HeartHandshake,
 };
 
-export const NicheProductsModule: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string>("All Solutions");
+const categories = [
+  "All Products",
+  "E-Commerce & SaaS",
+  "Hospitality & Food",
+  "Healthcare & Wellness",
+  "Enterprise & ERP",
+  "FinTech & Real Estate",
+  "EdTech & Services",
+];
+
+interface NicheProductsProps {
+  limit?: number;
+  showViewAll?: boolean;
+}
+
+export const NicheProductsModule: React.FC<NicheProductsProps> = ({ limit, showViewAll }) => {
+  const [selectedCategory, setSelectedCategory] = useState("All Products");
   const [selectedProduct, setSelectedProduct] = useState<NicheProduct | null>(null);
 
-  const categories = [
-    "All Solutions",
-    "E-Commerce & SaaS",
-    "Hospitality & Food",
-    "Healthcare & Wellness",
-    "Enterprise & ERP",
-    "FinTech & Real Estate",
-    "EdTech & Services",
-  ];
-
   const filteredProducts =
-    selectedCategory === "All Solutions"
+    selectedCategory === "All Products"
       ? nicheProducts
-      : nicheProducts.filter((p) => p.category === selectedCategory);
+      : nicheProducts.filter((p: NicheProduct) => p.category === selectedCategory);
+
+  const displayedProducts = limit ? filteredProducts.slice(0, limit) : filteredProducts;
 
   return (
-    <section
-      id="solutions"
-      className="section-padding relative overflow-hidden bg-slate-50 dark:bg-alpine-950 border-t border-slate-200 dark:border-white/5"
-    >
+    <section id="solutions" className="section-padding relative overflow-hidden bg-slate-50 dark:bg-alpine-950 border-t border-slate-200 dark:border-white/5">
+      {/* Background Radial Glow */}
       <ParallaxBackground
-        speed={0.15}
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-brand-cyan/10 rounded-full blur-[150px]"
+        speed={0.12}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[450px] bg-brand-cyan/10 rounded-full blur-[170px] pointer-events-none"
       />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Header Title Section */}
-        <RevealOnScroll className="text-center max-w-3xl mx-auto space-y-5 mb-12 sm:mb-14">
+        {/* Section Header */}
+        <RevealOnScroll className="text-center max-w-3xl mx-auto space-y-4 mb-10 sm:mb-12">
           <Badge variant="cyan" className="uppercase tracking-widest px-4 py-1">
-            READY-TO-DEPLOY SOLUTIONS
+            TURNKEY NICHE PRODUCTS & PLATFORMS
           </Badge>
-
           <h2 className="section-heading">
-            Turnkey Products & <span className="text-brand-cyan">Market Pricing</span>
+            Pre-Built <span className="text-brand-cyan">Industry Solutions</span> Ready to Deploy
           </h2>
-
           <p className="section-subtext">
-            Battle-tested software systems with transparent pricing and fast turnaround. From multi-vendor e-commerce and hospital EHRs to hotel PMS and fleet logistics — tailored to your exact brand.
+            18 specialized software products engineered with production-ready microservices, mobile apps, and transparent Nepalese market pricing.
           </p>
         </RevealOnScroll>
 
-        {/* Filter Category Pills */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`px-4 py-2 text-xs font-bold rounded-full transition-all duration-300 ${
-                selectedCategory === cat
-                  ? "bg-brand-cyan text-white shadow-lg shadow-brand-cyan/25 scale-105"
-                  : "bg-white text-slate-700 border border-slate-300 hover:border-brand-cyan/50 dark:bg-alpine-900/80 dark:text-slate-300 dark:border-white/10"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
+        {/* Filter Pill Buttons */}
+        {!limit && (
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
+            {categories.map((cat: string) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-4 py-2 text-xs font-bold rounded-full transition-all duration-300 ${
+                  selectedCategory === cat
+                    ? "bg-brand-cyan text-white shadow-lg shadow-brand-cyan/25 scale-105"
+                    : "bg-white text-slate-700 border border-slate-300 hover:border-brand-cyan/50 dark:bg-alpine-900/80 dark:text-slate-300 dark:border-white/10"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Products Grid */}
         <StaggerContainer key={selectedCategory} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7" stagger={0.06}>
-          {filteredProducts.map((product) => {
+          {displayedProducts.map((product: NicheProduct) => {
             const IconComponent = iconMap[product.iconName] || Boxes;
             return (
               <StaggerItem key={product.id}>
@@ -142,7 +144,7 @@ export const NicheProductsModule: React.FC = () => {
                         category={product.category}
                         iconName={product.iconName}
                         type="solution"
-                        badge={product.badge}
+                        badge={product.deliveryTime}
                         metricsText={product.deliveryTime}
                       />
                     </div>
@@ -155,7 +157,7 @@ export const NicheProductsModule: React.FC = () => {
                             <IconComponent className="h-4 w-4" />
                           </div>
                           <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-                            Himnova Turnkey Solution
+                            Himnova Turnkey Platform
                           </span>
                         </div>
                         <h3 className="text-base sm:text-lg font-bold font-display text-slate-900 dark:text-white group-hover:text-brand-cyan transition-colors leading-snug">
@@ -166,38 +168,24 @@ export const NicheProductsModule: React.FC = () => {
                         </p>
                       </div>
 
-                      {/* Pricing Box */}
-                      <div className="p-3.5 rounded-xl bg-slate-100 dark:bg-alpine-850/90 border border-slate-200 dark:border-white/5 space-y-1">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-                            Standard Package Rate
-                          </span>
-                          <span className="flex items-center gap-1 text-[11px] font-bold text-slate-600 dark:text-slate-300">
-                            <Clock className="h-3 w-3 text-brand-cyan" />
-                            {product.deliveryTime}
-                          </span>
+                      {/* Turnkey SLA & Scope Indicator Box */}
+                      <div className="p-3.5 rounded-xl bg-slate-100 dark:bg-alpine-850/90 border border-slate-200 dark:border-white/5 flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-300">
+                          <Clock className="h-4 w-4 text-brand-cyan shrink-0" />
+                          <span>Turnaround SLA: <strong className="text-slate-900 dark:text-white">{product.deliveryTime}</strong></span>
                         </div>
-                        <div className="flex items-baseline justify-between pt-0.5">
-                          <span className="text-lg sm:text-xl font-extrabold font-display text-slate-900 dark:text-white">
-                            {product.priceRange.usd}
-                          </span>
-                          <span className="text-[11px] font-bold text-brand-cyan">
-                            {product.priceRange.localEstimated}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 pt-0.5 font-medium">
-                          <span>Model: {product.priceRange.model}</span>
-                          <span className="font-semibold text-brand-cyan/90">@ 155/USD</span>
-                        </div>
+                        <span className="text-[11px] font-bold text-brand-cyan uppercase tracking-wider">
+                          {product.priceRange.model}
+                        </span>
                       </div>
 
-                      {/* Features Preview */}
+                      {/* Key Highlights */}
                       <div className="space-y-2 pt-1">
                         <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
                           Included Key Highlights
                         </p>
                         <ul className="space-y-1.5">
-                          {product.keyFeatures.slice(0, 3).map((feat, fIdx) => (
+                          {product.keyFeatures.slice(0, 3).map((feat: string, fIdx: number) => (
                             <li key={fIdx} className="flex items-start gap-2 text-xs text-slate-700 dark:text-slate-300">
                               <CheckCircle2 className="h-3.5 w-3.5 text-brand-cyan shrink-0 mt-0.5" />
                               <span className="line-clamp-1">{feat}</span>
@@ -205,53 +193,56 @@ export const NicheProductsModule: React.FC = () => {
                           ))}
                         </ul>
                       </div>
+
                     </div>
-
                   </div>
 
-                  {/* Footer Card Action */}
-                  <div className="px-5 sm:px-6 pb-5 pt-3 border-t border-slate-200 dark:border-white/10 flex items-center justify-between text-xs font-bold text-brand-cyan group-hover:translate-x-0.5 transition-all">
-                    <span>View Architecture & Deliverables</span>
-                    <ArrowRight className="h-4 w-4" />
+                  {/* Card Action Footer */}
+                  <div className="p-5 sm:p-6 pt-0">
+                    <div className="pt-4 border-t border-slate-200 dark:border-white/10 flex items-center justify-between text-xs font-bold text-slate-600 dark:text-slate-400 group-hover:text-brand-cyan transition-colors">
+                      <span>View Turnkey Specs & Rate Card</span>
+                      <ArrowRight className="h-3.5 w-3.5 text-brand-cyan group-hover:translate-x-1 transition-transform" />
+                    </div>
                   </div>
+
                 </Card>
               </StaggerItem>
             );
           })}
         </StaggerContainer>
 
+        {/* View All Button on Homepage Teaser */}
+        {(showViewAll || limit) && (
+          <div className="mt-12 text-center">
+            <Link href="/solutions">
+              <Button size="lg" icon={<ArrowRight className="h-4 w-4" />}>
+                Explore All 18 Turnkey Niche Products
+              </Button>
+            </Link>
+          </div>
+        )}
+
       </div>
 
-      {/* Product Deep-Dive Modal */}
+      {/* Product Detail Modal */}
       {selectedProduct && (
         <Modal
           isOpen={!!selectedProduct}
           onClose={() => setSelectedProduct(null)}
           title={selectedProduct.title}
-          maxWidth="lg"
         >
           <div className="space-y-6">
             
-            {/* Modal SVG Image Banner */}
-            <div className="relative h-56 sm:h-64 w-full rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 bg-slate-900 shadow-xl">
-              <img
-                src={selectedProduct.imagePlaceholder}
-                alt={selectedProduct.title}
-                className="h-full w-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            
-            {/* Header Callout with Pricing */}
-            <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-brand-cyan/15 to-brand-teal/10 border border-brand-cyan/30 space-y-3">
+            {/* Transparent Rate & Setup SLA Card */}
+            <div className="p-4 sm:p-5 rounded-xl bg-slate-100 dark:bg-alpine-850 border border-slate-200 dark:border-white/10 space-y-3">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <Badge variant="cyan">{selectedProduct.category}</Badge>
-                <span className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300">
-                  <Clock className="h-4 w-4 text-brand-cyan" />
-                  Turnaround: <span className="font-bold text-slate-900 dark:text-white">{selectedProduct.deliveryTime}</span>
+                <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                  <Clock className="h-3.5 w-3.5 text-brand-cyan" />
+                  Turnaround SLA: <span className="font-bold text-slate-900 dark:text-white">{selectedProduct.deliveryTime}</span>
                 </span>
               </div>
-              
+
               <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 pt-1">
                 <div>
                   <span className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900 dark:text-white">
@@ -262,120 +253,94 @@ export const NicheProductsModule: React.FC = () => {
                   </span>
                 </div>
                 <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">
-                  {selectedProduct.priceRange.model}
+                  Model: {selectedProduct.priceRange.model}
                 </span>
               </div>
-              <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400 border-t border-brand-cyan/20 pt-2">
-                💵 {selectedProduct.priceRange.conversionRateNote}
-              </p>
+
+              <div className="border-t border-brand-cyan/20 pt-2 flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-400">
+                <span>Deployment Scope: <strong className="text-slate-900 dark:text-white">Full Turnkey Handover</strong></span>
+                <span className="font-medium text-brand-cyan">Commercial Rate @ 155/USD</span>
+              </div>
             </div>
 
-            {/* Overview */}
+            {/* Product Overview */}
             <div className="space-y-2">
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                System Overview
+                Product Architectural Overview
               </h4>
               <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
                 {selectedProduct.description}
               </p>
             </div>
 
-            {/* Target Industry */}
-            <div className="p-3.5 rounded-xl bg-slate-100 dark:bg-alpine-850/80 border border-slate-200 dark:border-white/5 space-y-1">
-              <span className="text-xs font-bold uppercase tracking-wider text-brand-cyan">
-                Target Industries & Clients
-              </span>
-              <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">
-                {selectedProduct.targetMarket}
-              </p>
-            </div>
-
-            {/* Architectural Stack */}
-            <div className="space-y-2">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                <Layers className="h-4 w-4 text-brand-cyan" />
-                Technical Architecture & Foundation
-              </h4>
-              <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed bg-slate-100 dark:bg-alpine-850/60 p-3.5 rounded-xl border border-slate-200 dark:border-white/5">
-                {selectedProduct.fullArchitecture}
-              </p>
-            </div>
-
-            {/* Features Grid */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                Core Functional Features
-              </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                {selectedProduct.keyFeatures.map((feat, idx) => (
-                  <div key={idx} className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-100 dark:bg-alpine-850/70 border border-slate-200 dark:border-white/5 text-xs text-slate-800 dark:text-slate-200 font-medium">
-                    <CheckCircle2 className="h-4 w-4 text-brand-cyan shrink-0 mt-0.5" />
-                    <span>{feat}</span>
-                  </div>
-                ))}
+            {/* Target Audience & Stack */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="p-4 rounded-xl bg-slate-100 dark:bg-alpine-850/80 border border-slate-200 dark:border-white/5 space-y-1">
+                <span className="text-[11px] font-bold text-brand-cyan uppercase tracking-wider">
+                  Target Business Users
+                </span>
+                <p className="text-xs text-slate-800 dark:text-slate-200 font-semibold">
+                  {selectedProduct.targetMarket}
+                </p>
               </div>
-            </div>
 
-            {/* What is Included */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-500 dark:text-emerald-400 flex items-center gap-1.5">
-                <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                What is Included in This Solution Package
-              </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                {selectedProduct.included.map((inc, idx) => (
-                  <div key={idx} className="flex items-start gap-2.5 p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-slate-800 dark:text-slate-200 font-medium">
-                    <Zap className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                    <span>{inc}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* What is NOT Included (Scope Exclusions) */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-rose-500 dark:text-rose-400 flex items-center gap-1.5">
-                <ShieldCheck className="h-4 w-4 text-rose-500" />
-                What is NOT Included (Out-of-Pocket / Client Responsibilities)
-              </h4>
-              <div className="space-y-2">
-                {selectedProduct.excluded.map((exc, idx) => (
-                  <div key={idx} className="flex items-start gap-2.5 p-2.5 rounded-xl bg-rose-500/5 border border-rose-500/20 text-xs text-slate-700 dark:text-slate-300">
-                    <span className="h-1.5 w-1.5 rounded-full bg-rose-400 mt-1.5 shrink-0" />
-                    <span>{exc}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Optional Add-Ons */}
-            {selectedProduct.addOns && selectedProduct.addOns.length > 0 && (
-              <div className="space-y-3">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-brand-cyan flex items-center gap-1.5">
-                  <Sparkles className="h-4 w-4 text-brand-cyan" />
-                  Available Add-Ons & Custom Upgrades
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {selectedProduct.addOns.map((addon, idx) => (
-                    <span
-                      key={idx}
-                      className="px-3 py-1.5 text-xs font-semibold rounded-xl bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/30"
-                    >
-                      + {addon}
+              <div className="p-4 rounded-xl bg-slate-100 dark:bg-alpine-850/80 border border-slate-200 dark:border-white/5 space-y-1">
+                <span className="text-[11px] font-bold text-emerald-500 uppercase tracking-wider">
+                  Core Technology Stack
+                </span>
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {selectedProduct.techStack.map((tech: string, tIdx: number) => (
+                    <span key={tIdx} className="px-2 py-0.5 text-[10px] font-bold rounded bg-slate-200 dark:bg-white/10 text-slate-800 dark:text-slate-200">
+                      {tech}
                     </span>
                   ))}
                 </div>
               </div>
-            )}
+            </div>
 
-            {/* Action Bar */}
-            <div className="pt-4 border-t border-slate-200 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <span className="text-xs text-slate-500 text-center sm:text-left">
-                Need customizations or a tailored walkthrough demo?
+            {/* Key Module Features */}
+            <div className="space-y-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                Included Turnkey Modules & Features
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {selectedProduct.keyFeatures.map((feat: string, fIdx: number) => (
+                  <div key={fIdx} className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-100 dark:bg-alpine-850/80 border border-slate-200 dark:border-white/5">
+                    <CheckCircle2 className="h-4 w-4 text-brand-cyan shrink-0 mt-0.5" />
+                    <span className="text-xs text-slate-800 dark:text-slate-200 font-medium leading-normal">
+                      {feat}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Custom Scope Notice */}
+            <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 space-y-1 text-xs text-slate-700 dark:text-slate-300">
+              <span className="font-bold text-amber-500 dark:text-amber-400 flex items-center gap-1.5">
+                <ShieldCheck className="h-4 w-4" />
+                Custom Scope & Mutual Bilateral Agreement
               </span>
-              <Link href={`/contact?product=${encodeURIComponent(selectedProduct.id)}`} className="w-full sm:w-auto">
-                <Button className="w-full sm:w-auto" icon={<ArrowRight className="h-4 w-4" />}>
-                  Request Custom Quote & Demo
+              <p className="text-[11px] leading-normal text-slate-600 dark:text-slate-400">
+                Turnaround SLA and price ranges represent baseline turnkey benchmarks. Final contractual investments are calculated based on your custom Statement of Work (SOW), technical complexity, and bilateral agreement to guarantee 100% satisfaction.
+              </p>
+            </div>
+
+            {/* Modal Actions */}
+            <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-4 border-t border-slate-200 dark:border-white/10">
+              <Button
+                variant="secondary"
+                onClick={() => setSelectedProduct(null)}
+                className="w-full sm:w-auto"
+              >
+                Close
+              </Button>
+              <Link href="/contact" className="w-full sm:w-auto">
+                <Button
+                  className="w-full sm:w-auto"
+                  icon={<ArrowRight className="h-4 w-4" />}
+                >
+                  Schedule Demo & Custom Quote
                 </Button>
               </Link>
             </div>
