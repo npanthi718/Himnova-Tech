@@ -21,19 +21,19 @@ export const Footer: React.FC = () => {
           
           {/* Column 1 & 2: Brand & Headquarters */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Brand Logo with Official Silver Emblem */}
+            {/* Brand Logo with Official Emblem */}
             <Link href="/" className="inline-flex items-center gap-3 focus:outline-none group">
-              <div className="relative h-11 w-11 shrink-0 transition-transform duration-300 group-hover:scale-105">
+              <div className="relative h-11 w-11 shrink-0 transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_0_14px_rgba(6,182,212,0.4)]">
                 <Image
-                  src="/logos/himnova.png"
-                  alt="Himnova Technologies"
+                  src="/logos/himnova-icon.png"
+                  alt="Himnova Technologies Logo"
                   fill
                   sizes="44px"
                   className="object-contain"
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-lg font-extrabold font-display tracking-tight text-slate-900 dark:text-white leading-none">
+                <span className="text-lg font-extrabold font-display tracking-tight text-slate-900 dark:text-white leading-none group-hover:text-brand-cyan transition-colors">
                   HIMNOVA
                 </span>
                 <span className="text-[10px] font-extrabold tracking-widest text-brand-cyan uppercase mt-0.5">

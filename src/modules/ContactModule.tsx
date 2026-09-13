@@ -12,6 +12,7 @@ import { Toast } from "@/components/ui/Toast";
 import { MapPin, Mail, Phone, Clock, Send, Loader2, ShieldCheck, Sparkles } from "lucide-react";
 import { RevealOnScroll, StaggerContainer, StaggerItem } from "@/components/animations/RevealOnScroll";
 import { ParallaxBackground } from "@/components/animations/ParallaxLayer";
+import { LocationMap } from "@/components/ui/LocationMap";
 
 export const ContactModule: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -127,8 +128,8 @@ export const ContactModule: React.FC = () => {
       />
       <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-        <RevealOnScroll className="text-center max-w-3xl mx-auto space-y-5 mb-14 sm:mb-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 space-y-16">
+        <RevealOnScroll className="text-center max-w-3xl mx-auto space-y-5">
           <Badge variant="cyan">Start Your Transformation</Badge>
           <h2 className="section-heading">
             Ready to Build the Next Era of{" "}
@@ -141,7 +142,8 @@ export const ContactModule: React.FC = () => {
           </p>
         </RevealOnScroll>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
+        {/* Form and Info Cards Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           <StaggerContainer className="lg:col-span-5 space-y-6" stagger={0.1}>
             <StaggerItem>
               <Card className="p-6 sm:p-8 space-y-6 border-brand-cyan/30">
@@ -161,7 +163,7 @@ export const ContactModule: React.FC = () => {
                   <p>{siteData.company.headquarters.city}, {siteData.company.headquarters.country}</p>
                 </div>
 
-                <div className="pt-4 border-t dark:border-white/10 light:border-slate-200 space-y-3 text-sm">
+                <div className="pt-4 border-t border-slate-200 dark:border-white/10 space-y-3 text-sm">
                   <div className="flex items-center gap-3 text-slate-600 dark:text-slate-300">
                     <Mail className="h-4 w-4 text-brand-cyan shrink-0" />
                     <span>{siteData.company.contact.email}</span>
@@ -264,6 +266,19 @@ export const ContactModule: React.FC = () => {
             </Card>
           </RevealOnScroll>
         </div>
+
+        {/* Interactive Location Map & Navigation Route Section */}
+        <RevealOnScroll className="space-y-6 pt-6">
+          <div className="text-center max-w-2xl mx-auto space-y-2">
+            <h3 className="text-2xl sm:text-3xl font-extrabold font-display tracking-tight text-slate-900 dark:text-white">
+              Visit Our <span className="text-brand-cyan">Kathmandu Headquarters</span>
+            </h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              Easily navigate with turn-by-turn route directions to our physical office in Baneshwor-31.
+            </p>
+          </div>
+          <LocationMap />
+        </RevealOnScroll>
       </div>
 
       <Toast

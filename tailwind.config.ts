@@ -13,10 +13,10 @@ const config: Config = {
     extend: {
       colors: {
         alpine: {
-          950: "#0B0F19", // Deep Alpine Midnight
-          900: "#111827", // Dark Card Surface
-          850: "#1E293B", // Elevated Surface
-          800: "#334155",
+          950: "#060B17", // Deep Obsidian Sapphire Midnight (from Himnova logo background)
+          900: "#0C1322", // Dark Card Surface
+          850: "#141D32", // Elevated Surface
+          800: "#1E293B",
         },
         frost: {
           50: "#F8FAFC",  // Pure Frost White
@@ -24,9 +24,11 @@ const config: Config = {
           200: "#E2E8F0",
         },
         brand: {
-          cyan: "#06B6D4", // Electric Cyan
-          teal: "#0EA5E9", // Neon Teal
-          cobalt: "#1E3A8A", // Deep Cobalt Accent
+          cyan: "#00D8FF",   // Luminescent Electric Cyan (from Himnova logo swoop & halo)
+          teal: "#0EA5E9",   // Neon Sky Teal
+          blue: "#2563EB",   // Electric Sapphire Blue (from logo arrow)
+          cobalt: "#1D4ED8", // Deep Cobalt Accent
+          aqua: "#00F5D4",   // Circuit Board Aqua
         },
       },
       fontFamily: {
@@ -34,9 +36,10 @@ const config: Config = {
         display: ["var(--font-display)", "Outfit", "sans-serif"],
       },
       backgroundImage: {
-        "hero-glow": "radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.15), transparent 70%)",
-        "card-glow": "radial-gradient(circle at top right, rgba(14, 165, 233, 0.08), transparent 50%)",
-        "radial-dark": "radial-gradient(ellipse 80% 80% at 50% -20%, rgba(14, 165, 233, 0.15), rgba(255, 255, 255, 0))",
+        "hero-glow": "radial-gradient(circle at 50% 0%, rgba(0, 216, 255, 0.18), rgba(37, 99, 235, 0.08) 45%, transparent 70%)",
+        "card-glow": "radial-gradient(circle at top right, rgba(0, 216, 255, 0.12), transparent 60%)",
+        "radial-dark": "radial-gradient(ellipse 80% 80% at 50% -20%, rgba(0, 216, 255, 0.15), rgba(37, 99, 235, 0.05) 50%, transparent 100%)",
+        "logo-gradient": "linear-gradient(135deg, #00D8FF 0%, #0EA5E9 40%, #2563EB 100%)",
       },
       animation: {
         "pulse-slow": "pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite",

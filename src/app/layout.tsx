@@ -3,6 +3,7 @@ import { Inter, Outfit } from "next/font/google";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { siteData } from "@/config/siteData";
 import "./globals.css";
 
@@ -38,13 +39,14 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "48x48", type: "image/x-icon" },
+      { url: "/favicon.ico", sizes: "any", type: "image/x-icon" },
+      { url: "/logos/himnova.ico", sizes: "any" },
       { url: "/favicon-48x48.png", sizes: "48x48", type: "image/png" },
       { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
       { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
       { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
-    shortcut: "/favicon-48x48.png",
+    shortcut: "/favicon.ico",
     apple: [
       { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
@@ -130,8 +132,8 @@ const jsonLd = {
       },
       geo: {
         "@type": "GeoCoordinates",
-        latitude: 27.6944,
-        longitude: 85.3422,
+        latitude: 27.690346,
+        longitude: 85.339479,
       },
       contactPoint: {
         "@type": "ContactPoint",
@@ -191,13 +193,14 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="48x48" type="image/x-icon" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/logos/himnova.ico" sizes="any" />
         <link rel="icon" href="/favicon-48x48.png" sizes="48x48" type="image/png" />
         <link rel="icon" href="/favicon-96x96.png" sizes="96x96" type="image/png" />
         <link rel="icon" href="/icon-192.png" sizes="192x192" type="image/png" />
         <link rel="icon" href="/icon-512.png" sizes="512x512" type="image/png" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
-        <link rel="shortcut icon" href="/favicon-48x48.png" />
+        <link rel="shortcut icon" href="/favicon.ico" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -209,6 +212,7 @@ export default function RootLayout({
           <Navbar />
           <main className="flex-grow">{children}</main>
           <Footer />
+          <WhatsAppButton />
         </ThemeProvider>
       </body>
     </html>

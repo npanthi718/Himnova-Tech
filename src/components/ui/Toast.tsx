@@ -36,8 +36,8 @@ export const Toast: React.FC<ToastProps> = ({
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.9 }}
           className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-2xl border px-5 py-4 shadow-2xl backdrop-blur-xl max-w-md
-            dark:bg-alpine-900/95 dark:border-brand-cyan/40 dark:text-white
-            light:bg-white/95 light:border-brand-cobalt/30 light:text-slate-900"
+            bg-white/95 border-slate-200 text-slate-900 shadow-slate-900/10
+            dark:bg-alpine-900/95 dark:border-brand-cyan/40 dark:text-white dark:shadow-[0_0_30px_rgba(0,216,255,0.2)]"
         >
           {type === "success" ? (
             <CheckCircle2 className="h-6 w-6 text-brand-cyan shrink-0 animate-pulse" />
@@ -47,7 +47,7 @@ export const Toast: React.FC<ToastProps> = ({
           <p className="text-xs sm:text-sm font-medium leading-relaxed">{message}</p>
           <button
             onClick={onClose}
-            className="ml-auto text-slate-400 hover:text-white p-1 rounded-md transition-colors"
+            className="ml-auto text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white p-1 rounded-md transition-colors"
           >
             <X className="h-4 w-4" />
           </button>

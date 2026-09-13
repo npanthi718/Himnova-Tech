@@ -71,20 +71,20 @@ export const Navbar: React.FC = () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4">
           
-          {/* Brand Logo with Official Silver Emblem */}
+          {/* Brand Logo with Official Emblem */}
           <Link href="/" className="flex items-center gap-3 shrink-0 focus:outline-none group">
-            <div className="relative h-10 w-10 shrink-0 transition-transform duration-300 group-hover:scale-105">
+            <div className="relative h-10 w-10 sm:h-11 sm:w-11 shrink-0 transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_0_12px_rgba(6,182,212,0.4)]">
               <Image
-                src="/logos/himnova.png"
-                alt="Himnova Technologies"
+                src="/logos/himnova-icon.png"
+                alt="Himnova Technologies Logo"
                 fill
-                sizes="40px"
+                sizes="(max-width: 640px) 40px, 44px"
                 priority
                 className="object-contain"
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-base sm:text-lg font-extrabold font-display tracking-tight text-slate-900 dark:text-white leading-none">
+              <span className="text-base sm:text-lg font-extrabold font-display tracking-tight text-slate-900 dark:text-white leading-none group-hover:text-brand-cyan transition-colors">
                 HIMNOVA
               </span>
               <span className="text-[9px] font-extrabold tracking-widest text-brand-cyan uppercase mt-0.5">

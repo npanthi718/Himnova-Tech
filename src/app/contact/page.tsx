@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { Toast } from "@/components/ui/Toast";
+import { LocationMap } from "@/components/ui/LocationMap";
 import { MapPin, Mail, Phone, Clock, Send, Loader2, ShieldCheck, Sparkles } from "lucide-react";
 
 export default function ContactPage() {
@@ -109,7 +110,7 @@ export default function ContactPage() {
       console.error("EmailJS Error:", err);
       setToastState({
         isVisible: true,
-        message: "Failed to dispatch message. Please contact us directly at contact@himnova.com.",
+        message: "Failed to dispatch message. Please contact us directly at " + siteData.company.contact.email,
         type: "error",
       });
     } finally {
@@ -184,7 +185,7 @@ export default function ContactPage() {
 
           {/* Right Column: Contact Form */}
           <div className="lg:col-span-7">
-            <Card className="p-8 sm:p-10 border-white/10">
+            <Card className="p-8 sm:p-10">
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="flex items-center gap-2 mb-2">
                   <Sparkles className="h-4 w-4 text-brand-cyan" />
@@ -257,6 +258,19 @@ export default function ContactPage() {
           </div>
 
         </div>
+      </section>
+
+      {/* Location Map Section on Contact Page */}
+      <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6">
+        <div className="text-center max-w-2xl mx-auto space-y-2">
+          <h2 className="text-2xl sm:text-3xl font-extrabold font-display tracking-tight text-slate-900 dark:text-white">
+            Headquarters Location & <span className="text-brand-cyan">Turn-by-Turn Navigation</span>
+          </h2>
+          <p className="text-sm text-slate-600 dark:text-slate-400">
+            Click &ldquo;Get Directions&rdquo; to launch turn-by-turn routing directly on your phone&apos;s installed Google Maps or Apple Maps.
+          </p>
+        </div>
+        <LocationMap />
       </section>
 
       {/* Toast Notification */}

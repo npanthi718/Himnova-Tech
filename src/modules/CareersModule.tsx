@@ -364,7 +364,7 @@ export const CareersModule: React.FC = () => {
               </ul>
             </div>
 
-            <div className="pt-4 border-t dark:border-white/10 light:border-slate-200 flex justify-end gap-3">
+            <div className="pt-4 border-t border-slate-200 dark:border-white/10 flex justify-end gap-3">
               <Button variant="ghost" onClick={() => setSelectedRole(null)}>
                 Close
               </Button>

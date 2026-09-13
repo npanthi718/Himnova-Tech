@@ -47,7 +47,7 @@ export default function AboutPage() {
             <Building2 className="h-8 w-8 text-brand-cyan" />
             <h3 className="text-lg font-bold text-slate-900 dark:text-white">Kathmandu HQ</h3>
             <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-              Himnova Tech Park, Level 5, Lazimpat, Kathmandu 44600.
+              {siteData.company.headquarters.address}, {siteData.company.headquarters.city}, {siteData.company.headquarters.country}.
             </p>
           </Card>
 
