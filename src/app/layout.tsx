@@ -3,7 +3,7 @@ import { Inter, Outfit } from "next/font/google";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
+import { HimnovaAIAssistant } from "@/components/ui/HimnovaAIAssistant";
 import { siteData } from "@/config/siteData";
 import "./globals.css";
 
@@ -212,7 +212,7 @@ export default function RootLayout({
           <Navbar />
           <main className="flex-grow">{children}</main>
           <Footer />
-          <WhatsAppButton />
+          <HimnovaAIAssistant />
         </ThemeProvider>
       </body>
     </html>
