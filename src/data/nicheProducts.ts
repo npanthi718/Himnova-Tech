@@ -44,6 +44,62 @@ export interface NicheProduct {
 
 export const nicheProducts: NicheProduct[] = [
   {
+    id: "voxnova-ai-calling-platform",
+    imagePlaceholder: "/images/solutions/voxnova-ai-calling-platform.svg?v=1",
+    title: "VoxNova AI: Enterprise Voice Calling & Autonomous Agent Suite",
+    tagline: "Ultra-low latency bilingual AI voice agents for 24/7 inbound support, outbound lead calls & appointment booking.",
+    category: "Enterprise & ERP",
+    description:
+      "A complete enterprise-grade Voice AI calling and autonomous multi-agent platform. Engineered for healthcare clinics, educational consultancies, real estate agencies, hotels, logistics, and financial institutions. Replaces slow IVRs and expensive manual call centers with natural conversational voice bots fluent in English and Nepali (खस नेपाली).",
+    fullArchitecture:
+      "WebRTC & SIP Telephony Gateway, Deepgram / Whisper Streaming STT (<150ms), LangGraph & Claude / Llama-3 Agentic Orchestrator, Cartesia / ElevenLabs Neural TTS with custom Nepali voice tuning, PostgreSQL Call Recording & Sentiment Ledger, and automated webhooks for WhatsApp, SMS, Google Calendar, and CRMs.",
+    priceRange: {
+      usd: "$450 – $1,280",
+      localEstimated: "NPR 70,000 – 1,98,000",
+      conversionRateNote: "Standard Nepal market baseline rate (@ NPR 155 / USD conversion)",
+      model: "Turnkey Deployment",
+    },
+    deliveryTime: "2 – 3 Weeks",
+    targetMarket: "Clinics, study abroad consultancies, e-commerce brands, real estate firms, hotels, and customer support desks.",
+    keyFeatures: [
+      "Ultra-low latency conversational streaming voice (<380ms response time)",
+      "Bilingual fluency in English and natural Nepali conversational accents",
+      "Automated outbound lead qualification, follow-ups & order confirmation calls",
+      "Inbound 24/7 patient & client appointment booking with calendar sync",
+      "Live call warm-transfer to human agents with real-time transcript handoff",
+      "Instant post-call WhatsApp summaries, SMS booking links & CRM sync",
+      "Admin dashboard with live audio playback, transcripts & sentiment analytics",
+    ],
+    techStack: ["Python FastStream", "LangGraph", "WebRTC / SIP", "Deepgram STT", "Cartesia / ElevenLabs", "Next.js 14", "PostgreSQL", "Redis"],
+    deliverables: [
+      "Complete Voice AI Pipeline & Custom Agent Prompt Architecture with 100% IP",
+      "Admin Web Dashboard with Real-Time Call Telemetry & Audio Recordings",
+      "SIP Trunk / VoIP Telephony Gateway Configuration (Twilio / NTC / Ncell / PBX)",
+      "CRM, Google Calendar & WhatsApp Notification Automation Webhooks",
+      "6 Months SLA Technical Support, Prompt Fine-Tuning & Voice Updates",
+    ],
+    included: [
+      "100% Full Source Code, Prompt Rules & Pipeline Architecture Ownership",
+      "Custom Knowledge Base Training on Company FAQ, Services & Catalogs",
+      "SIP Trunking / Twilio / Local PBX Inbound & Outbound Integration",
+      "Voice Persona Customization (Gender, Tone, Speaking Speed & Dialect)",
+      "6 Months Free Warranty, Bug Fixes & Agent Performance Tuning",
+      "Staff Training Session & Operational Call Center Guidelines",
+    ],
+    excluded: [
+      "Third-party telephony carrier per-minute charges (billed at direct cost ~$0.01–$0.03/min)",
+      "Third-party LLM & TTS token consumption above included initial setup credit",
+      "Custom physical hardware PBX servers (cloud deployment included)",
+    ],
+    addOns: [
+      "Local Nepal Telecom (NTC / Ncell) Dedicated SIP Trunk Setup (+$200 / NPR 30,000)",
+      "Omnichannel Chatbot Sync (WhatsApp + Messenger + Instagram) (+$250 / NPR 38,000)",
+      "Custom Fine-Tuned Local Regional Dialect Voice Model (+$350 / NPR 54,000)",
+    ],
+    iconName: "Bot",
+    badge: "🔥 Top Trending Demand",
+  },
+  {
     id: "ecommerce-multivendor-saas",
     imagePlaceholder: "/images/solutions/ecommerce-multivendor-saas.svg?v=2",
     title: "OmniStore: Multi-Vendor E-Commerce SaaS Platform",

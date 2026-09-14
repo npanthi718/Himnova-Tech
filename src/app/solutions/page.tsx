@@ -3,12 +3,14 @@ import { NicheProductsModule } from "@/modules/NicheProductsModule";
 import { Badge } from "@/components/ui/Badge";
 
 export const metadata = {
-  title: "Himnova Solutions | Turnkey Software Products & Pricing",
+  title: "Himnova Solutions | Turnkey Software Products & Voice AI Suite",
   description:
-    "Himnova Technologies turnkey products (himnovatech.com): e-commerce, hotel PMS, restaurant POS, hospital EHR, real estate, and FinTech platforms with market pricing.",
+    "Himnova Technologies turnkey products (himnovatech.com): autonomous AI voice calling platform, e-commerce, hotel PMS, restaurant POS, hospital EHR, real estate, and FinTech platforms with transparent pricing.",
   keywords: [
     "Himnova",
     "Himnova Technologies",
+    "AI Voice Calling Agent Platform",
+    "VoxNova AI Agent Nepal",
     "Ready Software Products",
     "Turnkey Web Platforms",
     "E-Commerce SaaS Software",

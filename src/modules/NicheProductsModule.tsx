@@ -103,7 +103,7 @@ export const NicheProductsModule: React.FC<NicheProductsProps> = ({ limit, showV
             Pre-Built <span className="text-brand-cyan">Industry Solutions</span> Ready to Deploy
           </h2>
           <p className="section-subtext">
-            18 specialized software products engineered with production-ready microservices, mobile apps, and transparent Nepalese market pricing.
+            19 specialized software products engineered with production-ready microservices, mobile apps, and transparent Nepalese market pricing.
           </p>
         </RevealOnScroll>
 
@@ -216,7 +216,7 @@ export const NicheProductsModule: React.FC<NicheProductsProps> = ({ limit, showV
           <div className="mt-12 text-center">
             <Link href="/solutions">
               <Button size="lg" icon={<ArrowRight className="h-4 w-4" />}>
-                Explore All 18 Turnkey Niche Products
+                Explore All 19 Turnkey Niche Products
               </Button>
             </Link>
           </div>

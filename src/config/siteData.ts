@@ -19,7 +19,10 @@ export interface ServiceItem {
     | "Calendar"
     | "Share2"
     | "BarChart3"
-    | "ShieldCheck";
+    | "ShieldCheck"
+    | "Bot"
+    | "Cpu"
+    | "Zap";
   features: string[];
   metrics: string;
   priceRange: {
@@ -154,6 +157,11 @@ export const siteData: SiteConfig = {
       "Cloud Computing Solutions",
       "DevOps Automation",
       "Agentic AI Engineering",
+      "AI Calling Agents Nepal",
+      "AI Voice Calling Agent",
+      "Autonomous AI Agents Kathmandu",
+      "Bilingual Nepali AI Voice Bot",
+      "VoxNova AI Agent",
       "Enterprise IT Solutions",
     ],
     ogImage: "/images/office-hero.png",
@@ -188,7 +196,7 @@ export const siteData: SiteConfig = {
     },
     stats: [
       { label: "Uptime Reliability", value: "99.99%", suffix: "SLA" },
-      { label: "IT Services Offered", value: "14", suffix: "Specialized" },
+      { label: "IT Services Offered", value: "15", suffix: "Specialized" },
       { label: "Delivered Projects", value: "50+", suffix: "Enterprise" },
       { label: "Engineering Talent", value: "50+", suffix: "Specialists" },
     ],
@@ -228,6 +236,31 @@ export const siteData: SiteConfig = {
     },
   },
   services: [
+    {
+      id: "ai-agents-voice-calling",
+      title: "AI Agents & Autonomous Voice Calling",
+      shortDescription: "Bilingual AI voice agents for 24/7 inbound & outbound calling.",
+      fullDetails:
+        "We build human-grade conversational AI voice agents and autonomous agentic workflows. Engineered with sub-400ms streaming speech-to-speech, bilingual English and natural Nepali (खस नेपाली) synthesis, direct SIP/VoIP/telephony integration, CRM calendar booking, and seamless warm transfers to human staff.",
+      focusArea: "Conversational Voice AI, SIP Telephony & Autonomous Workflows",
+      valueCreated: "Automates 85%+ of manual phone inquiries, lead qualification, and booking at 90% lower operational cost.",
+      iconName: "Bot",
+      features: [
+        "Sub-400ms Ultra-Low Latency Conversational Voice Engine",
+        "Bilingual Nepali (नेपाली) & English Natural Accent Synthesis",
+        "Direct SIP Trunk, Telephony (Twilio / NTC / Ncell / PBX) Integration",
+        "Inbound Customer Care, 24/7 Booking & Outbound Lead Conversion",
+        "Autonomous Multi-Agent Actions (CRM, WhatsApp & SQL Database Queries)",
+        "Live Call Warm-Handoff to Human Staff with Instant Transcripts",
+      ],
+      metrics: "<380ms Voice Latency • 90% Call Center Cost Reduction",
+      priceRange: {
+        usd: "$290 – $935",
+        npr: "NPR 45,000 – 1,45,000",
+        model: "Turnkey Voice AI Setup + Pay-as-you-go VoIP",
+        turnaround: "1 – 3 Weeks",
+      },
+    },
     {
       id: "custom-software",
       title: "Custom Software Development",

@@ -108,7 +108,7 @@ export const HeroModule: React.FC = () => {
             >
               <Link href="#services" className="w-full sm:w-auto">
                 <Button size="lg" className="w-full sm:w-auto shadow-xl shadow-brand-cyan/20" icon={<ArrowRight className="h-4 w-4" />}>
-                  Explore 14 IT Services
+                  Explore 15 IT Services
                 </Button>
               </Link>
               <Link href="#solutions" className="w-full sm:w-auto">

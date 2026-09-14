@@ -27,6 +27,8 @@ import {
   ArrowRight,
   Target,
   Zap,
+  Bot,
+  Cpu,
 } from "lucide-react";
 import { RevealOnScroll, StaggerContainer, StaggerItem } from "@/components/animations/RevealOnScroll";
 import { ParallaxBackground } from "@/components/animations/ParallaxLayer";
@@ -46,6 +48,9 @@ const iconMap: Record<string, React.ElementType> = {
   Share2,
   BarChart3,
   ShieldCheck,
+  Bot,
+  Cpu,
+  Zap,
 };
 
 interface ServicesModuleProps {
@@ -57,13 +62,25 @@ export const ServicesModule: React.FC<ServicesModuleProps> = ({ limit, showViewA
   const [selectedCategory, setSelectedCategory] = useState("All Services");
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
 
-  const categories = ["All Services", "Software & Web", "Cloud & Infrastructure", "Marketing & SEO", "Support & Advisory"];
+  const categories = ["All Services", "AI & Voice Agents", "Software & Web", "Cloud & Infrastructure", "Marketing & SEO", "Support & Advisory"];
   const allServices = siteData.services;
+
+  const categoryMap: Record<string, string[]> = {
+    "All Services": [],
+    "AI & Voice Agents": ["ai-agents-voice-calling"],
+    "Software & Web": ["custom-software", "web-apps-platforms", "website-design-dev", "mobile-app-dev", "subscription-software"],
+    "Cloud & Infrastructure": ["domain-hosting-services", "deployment-cloud-support", "annual-subscription-maintenance"],
+    "Marketing & SEO": ["digital-marketing-branding", "content-creation-mgmt", "social-media-management", "seo-analytics-services"],
+    "Support & Advisory": ["it-support-maintenance", "consulting-advisory"],
+  };
 
   const filteredServices =
     selectedCategory === "All Services"
       ? allServices
-      : allServices.filter((item: ServiceItem) => item.shortDescription.toLowerCase().includes(selectedCategory.toLowerCase()));
+      : allServices.filter((item: ServiceItem) => {
+          const matchedIds = categoryMap[selectedCategory] || [];
+          return matchedIds.includes(item.id) || item.title.toLowerCase().includes(selectedCategory.toLowerCase());
+        });
 
   const displayedServices = limit ? filteredServices.slice(0, limit) : filteredServices;
 
@@ -85,7 +102,7 @@ export const ServicesModule: React.FC<ServicesModuleProps> = ({ limit, showViewA
             Production-Grade <span className="text-brand-cyan">Software & Cloud</span> Execution
           </h2>
           <p className="section-subtext">
-            14 core technology service lines engineered for enterprise scale, zero-downtime performance, and transparent Nepalese market pricing.
+            15 core technology service lines engineered for enterprise scale, zero-downtime performance, and transparent Nepalese market pricing.
           </p>
         </RevealOnScroll>
 
@@ -176,7 +193,7 @@ export const ServicesModule: React.FC<ServicesModuleProps> = ({ limit, showViewA
           <div className="mt-12 text-center">
             <Link href="/services">
               <Button size="lg" icon={<ArrowRight className="h-4 w-4" />}>
-                Explore All 14 IT & Engineering Services
+                Explore All 15 IT & Engineering Services
               </Button>
             </Link>
           </div>
