@@ -193,6 +193,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <head>
+        <meta name="facebook-domain-verification" content="r0jf0t3m40rr8lfh9ku1vz2zjy10oe" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/logos/himnova.ico" sizes="any" />
         <link rel="icon" href="/favicon-48x48.png" sizes="48x48" type="image/png" />
