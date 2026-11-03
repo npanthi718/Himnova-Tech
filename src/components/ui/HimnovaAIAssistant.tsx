@@ -41,7 +41,7 @@ export const HimnovaAIAssistant: React.FC = () => {
     {
       id: "welcome-1",
       sender: "ai",
-      text: "👋 **Namaste & Welcome to Himnova Technologies!**\n\nI am your **24/7 Live AI Voice & Messaging Consultant**, dynamically trained on our 15 specialized IT services, 19 turnkey software products, exact pricing in NPR & USD, and engineering architectures.\n\nAsk me anything in **English, Nepali (नेपाली), or Hindi (हिन्दी)** below, or switch to **Voice Call** for hands-free live conversation with instant barge-in interruption!",
+      text: "👋 **Namaste & Welcome to Himnova Technologies!**\n\nI am your **24/7 Live AI Voice & Messaging Consultant**, dynamically trained on our 15 specialized IT services, 19 turnkey software products, exact pricing in NPR & USD, and engineering architectures.\n\nAsk me anything in **English, Nepali (नेपाली), or Hindi (हिन्दी)** below, or switch to **Voice Call** for hands-free live conversation with instant sub-second response!",
       audioText:
         "Namaste and welcome to Himnova Technologies! I am your live AI Voice and Solutions Consultant. How can I assist your software, cloud, or AI project today?",
       timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
@@ -74,12 +74,11 @@ export const HimnovaAIAssistant: React.FC = () => {
   const silenceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const callTimerRef = useRef<NodeJS.Timeout | null>(null);
   const ttsSafetyTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const currentSpokenTextRef = useRef<string>("");
+  const userSpokenTranscriptRef = useRef<string>("");
   const isCallingRef = useRef(false);
   const isSpeakingRef = useRef(false);
   const isMutedRef = useRef(false);
   const isLoadingRef = useRef(false);
-  const hasGreetedCallRef = useRef(false);
   const micStreamRef = useRef<MediaStream | null>(null);
 
   // Synchronize dynamic refs
@@ -121,49 +120,6 @@ export const HimnovaAIAssistant: React.FC = () => {
     };
   }, [isCalling]);
 
-  // Safe Speech Recognition Starter (Eliminates InvalidStateError)
-  const startRecognitionSafely = useCallback(() => {
-    if (
-      typeof window === "undefined" ||
-      !recognitionRef.current ||
-      !isCallingRef.current ||
-      isMutedRef.current ||
-      isLoadingRef.current
-    ) {
-      return;
-    }
-
-    if (isRecognitionRunningRef.current) {
-      return;
-    }
-
-    try {
-      recognitionRef.current.lang =
-        languageMode === "ne" ? "ne-NP" : languageMode === "hi" ? "hi-IN" : "en-US";
-      recognitionRef.current.start();
-      isRecognitionRunningRef.current = true;
-      setIsListening(true);
-      if (!isSpeakingRef.current) {
-        setVoiceStatusText("Listening... Speak your question freely 🎙️");
-      }
-    } catch {
-      setTimeout(() => {
-        if (
-          !isRecognitionRunningRef.current &&
-          isCallingRef.current &&
-          !isMutedRef.current &&
-          !isLoadingRef.current
-        ) {
-          try {
-            recognitionRef.current.start();
-            isRecognitionRunningRef.current = true;
-            setIsListening(true);
-          } catch {}
-        }
-      }, 200);
-    }
-  }, [languageMode]);
-
   // Stop Speech Recognition cleanly
   const stopRecognitionSafely = useCallback(() => {
     if (silenceTimerRef.current) {
@@ -179,7 +135,53 @@ export const HimnovaAIAssistant: React.FC = () => {
     }
   }, []);
 
-  // Barge-In: Immediately interrupt AI speaking to listen to the user
+  // Safe Speech Recognition Starter (Eliminates InvalidStateError and pauses during TTS playback)
+  const startRecognitionSafely = useCallback(() => {
+    if (
+      typeof window === "undefined" ||
+      !recognitionRef.current ||
+      !isCallingRef.current ||
+      isSpeakingRef.current ||
+      isMutedRef.current ||
+      isLoadingRef.current
+    ) {
+      return;
+    }
+
+    if (isRecognitionRunningRef.current) {
+      return;
+    }
+
+    try {
+      recognitionRef.current.lang =
+        languageMode === "ne" ? "ne-NP" : languageMode === "hi" ? "hi-IN" : "en-US";
+      userSpokenTranscriptRef.current = "";
+      recognitionRef.current.start();
+      isRecognitionRunningRef.current = true;
+      setIsListening(true);
+      setVoiceStatusText("Listening... Speak your question freely 🎙️");
+    } catch {
+      setTimeout(() => {
+        if (
+          !isRecognitionRunningRef.current &&
+          isCallingRef.current &&
+          !isSpeakingRef.current &&
+          !isMutedRef.current &&
+          !isLoadingRef.current
+        ) {
+          try {
+            userSpokenTranscriptRef.current = "";
+            recognitionRef.current.start();
+            isRecognitionRunningRef.current = true;
+            setIsListening(true);
+            setVoiceStatusText("Listening... Speak your question freely 🎙️");
+          } catch {}
+        }
+      }, 150);
+    }
+  }, [languageMode]);
+
+  // Barge-In: Immediately interrupt AI speaking to give microphone to user
   const handleInterruptSpeech = useCallback(() => {
     if (typeof window !== "undefined") {
       window.speechSynthesis.cancel();
@@ -190,7 +192,6 @@ export const HimnovaAIAssistant: React.FC = () => {
     }
     setIsSpeaking(false);
     isSpeakingRef.current = false;
-    currentSpokenTextRef.current = "";
     (window as any)._himnovaActiveUtterance = null;
 
     if (isCallingRef.current && !isMutedRef.current) {
@@ -207,8 +208,7 @@ export const HimnovaAIAssistant: React.FC = () => {
     setIsListening(false);
     setIsSpeaking(false);
     isSpeakingRef.current = false;
-    hasGreetedCallRef.current = false;
-    currentSpokenTextRef.current = "";
+    userSpokenTranscriptRef.current = "";
     stopRecognitionSafely();
 
     if (micStreamRef.current) {
@@ -223,7 +223,7 @@ export const HimnovaAIAssistant: React.FC = () => {
     setLiveUserTranscript("");
   }, [stopRecognitionSafely]);
 
-  // Text-to-Speech (TTS) Engine with Chromium Garbage Collection Fix & Instant Barge-In Support
+  // Text-to-Speech (TTS) Engine with Chromium Garbage Collection Fix & Zero Self-Echo
   const speakText = useCallback(
     (text: string, onDone?: () => void, isFarewellCall?: boolean) => {
       if (typeof window === "undefined" || !speakerEnabled) {
@@ -231,6 +231,9 @@ export const HimnovaAIAssistant: React.FC = () => {
         if (isFarewellCall) endVoiceCall();
         return;
       }
+
+      // Crucial: Stop recognition while AI speaks so the microphone does NOT pick up speaker audio
+      stopRecognitionSafely();
 
       window.speechSynthesis.cancel();
       if (ttsSafetyTimerRef.current) clearTimeout(ttsSafetyTimerRef.current);
@@ -242,10 +245,8 @@ export const HimnovaAIAssistant: React.FC = () => {
         .replace(/NPR/g, "NPR ")
         .replace(/USD/g, "USD ");
 
-      currentSpokenTextRef.current = cleanText;
-
       const utterance = new SpeechSynthesisUtterance(cleanText);
-      utterance.rate = 1.0;
+      utterance.rate = 1.02;
       utterance.pitch = 1.0;
 
       // Retain utterance on window to prevent Chrome garbage collection bug
@@ -281,17 +282,12 @@ export const HimnovaAIAssistant: React.FC = () => {
         setIsSpeaking(true);
         isSpeakingRef.current = true;
         setVoiceStatusText("Himnova Voice AI speaking... 🔊 (Tap to Interrupt)");
-        // Keep microphone listening active so barge-in is continuously available
-        if (isCallingRef.current && !isMutedRef.current) {
-          startRecognitionSafely();
-        }
       };
 
       const handleSpeechEnd = () => {
         if (ttsSafetyTimerRef.current) clearTimeout(ttsSafetyTimerRef.current);
         setIsSpeaking(false);
         isSpeakingRef.current = false;
-        currentSpokenTextRef.current = "";
         (window as any)._himnovaActiveUtterance = null;
 
         if (isFarewellCall) {
@@ -317,15 +313,15 @@ export const HimnovaAIAssistant: React.FC = () => {
       utterance.onerror = handleSpeechEnd;
 
       // Safety timeout in case browser drops onend
-      const estimatedDurationMs = Math.max(2500, (cleanText.length / 14) * 1000 + 3000);
+      const estimatedDurationMs = Math.max(2500, (cleanText.length / 14) * 1000 + 2500);
       ttsSafetyTimerRef.current = setTimeout(handleSpeechEnd, estimatedDurationMs);
 
       window.speechSynthesis.speak(utterance);
     },
-    [speakerEnabled, languageMode, startRecognitionSafely, endVoiceCall]
+    [speakerEnabled, languageMode, stopRecognitionSafely, startRecognitionSafely, endVoiceCall]
   );
 
-  // Process User Input (Chat & Voice Handlers)
+  // Process User Input (Chat & Voice Handlers) - Immediate Sub-Second Turnaround
   const handleSendMessage = useCallback(
     async (textToSend?: string) => {
       const query = textToSend || inputValue;
@@ -356,7 +352,7 @@ export const HimnovaAIAssistant: React.FC = () => {
       setLiveUserTranscript("");
 
       if (isCallingRef.current) {
-        setVoiceStatusText(`Analyzing question: "${query.trim()}"...`);
+        setVoiceStatusText(`Answering: "${query.trim()}"... ⚡`);
       }
 
       try {
@@ -430,7 +426,7 @@ export const HimnovaAIAssistant: React.FC = () => {
     [inputValue, messages, activeTab, speakText, startRecognitionSafely]
   );
 
-  // Initialize Speech Recognition instance with silence buffer and active barge-in
+  // Initialize Speech Recognition instance with immediate sub-second silence response
   useEffect(() => {
     if (typeof window !== "undefined") {
       const SpeechRecognition =
@@ -446,74 +442,83 @@ export const HimnovaAIAssistant: React.FC = () => {
         recognition.onstart = () => {
           isRecognitionRunningRef.current = true;
           setIsListening(true);
-          if (!isSpeakingRef.current) {
-            setVoiceStatusText("Listening... Speak your question freely 🎙️");
-          }
+          userSpokenTranscriptRef.current = "";
+          setVoiceStatusText("Listening... Speak your question freely 🎙️");
         };
 
-        let accumulatedTranscript = "";
-
         recognition.onresult = (event: any) => {
-          let currentInterim = "";
+          let interim = "";
+          let final = "";
 
           for (let i = event.resultIndex; i < event.results.length; ++i) {
             const transcript = event.results[i][0].transcript;
             if (event.results[i].isFinal) {
-              accumulatedTranscript += " " + transcript;
+              final += transcript;
             } else {
-              currentInterim += transcript;
+              interim += transcript;
             }
           }
 
-          const fullCurrentSpoken = (accumulatedTranscript + " " + currentInterim).trim();
-
-          // Active Barge-In: If user speaks while AI is speaking, interrupt immediately!
-          if (isSpeakingRef.current && fullCurrentSpoken.length > 2) {
-            window.speechSynthesis.cancel();
-            if (ttsSafetyTimerRef.current) {
-              clearTimeout(ttsSafetyTimerRef.current);
-              ttsSafetyTimerRef.current = null;
-            }
-            setIsSpeaking(false);
-            isSpeakingRef.current = false;
-            setVoiceStatusText("Interrupted — Listening to you... 🎙️");
+          if (final) {
+            userSpokenTranscriptRef.current += " " + final;
           }
 
-          if (fullCurrentSpoken) {
-            setLiveUserTranscript(fullCurrentSpoken);
-            setVoiceStatusText(`Hearing: "${fullCurrentSpoken}"`);
+          const fullSpoken = (userSpokenTranscriptRef.current + " " + interim).trim();
 
-            // Debounce silence timer (1.4s): ensures user completed their whole question
-            if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
+          if (fullSpoken) {
+            setLiveUserTranscript(fullSpoken);
+            setVoiceStatusText(`Hearing: "${fullSpoken}" 🎙️`);
+
+            if (silenceTimerRef.current) {
+              clearTimeout(silenceTimerRef.current);
+            }
+
+            // Rapid response: 350ms if sentence final flag is reached, 700ms pause fallback
+            const responseDelay = final ? 350 : 700;
 
             silenceTimerRef.current = setTimeout(() => {
-              if (fullCurrentSpoken.trim()) {
+              const questionToSend = fullSpoken.trim();
+              if (questionToSend && !isLoadingRef.current) {
                 stopRecognitionSafely();
-                accumulatedTranscript = "";
-                handleSendMessage(fullCurrentSpoken.trim());
+                userSpokenTranscriptRef.current = "";
+                handleSendMessage(questionToSend);
               }
-            }, 1400);
+            }, responseDelay);
           }
         };
 
         recognition.onerror = (event: any) => {
-          isRecognitionRunningRef.current = false;
-          setIsListening(false);
-
-          if (event.error === "not-allowed") {
-            setVoiceStatusText("Microphone permission denied. Please allow microphone in your browser.");
+          if (event.error === "no-speech") {
+            // Auto restart if call is active
+            if (
+              isCallingRef.current &&
+              !isSpeakingRef.current &&
+              !isMutedRef.current &&
+              !isLoadingRef.current
+            ) {
+              setTimeout(() => startRecognitionSafely(), 150);
+            }
             return;
           }
 
-          // Restart listening smoothly on no-speech or network glitch
+          isRecognitionRunningRef.current = false;
+          setIsListening(false);
+
+          if (event.error === "not-allowed" || event.error === "service-not-allowed") {
+            setVoiceStatusText("Microphone permission denied. Please allow microphone in browser settings.");
+            return;
+          }
+
+          // Restart listening smoothly on temporary network glitch
           if (
             isCallingRef.current &&
+            !isSpeakingRef.current &&
             !isMutedRef.current &&
             !isLoadingRef.current
           ) {
             setTimeout(() => {
               startRecognitionSafely();
-            }, 300);
+            }, 200);
           }
         };
 
@@ -521,15 +526,16 @@ export const HimnovaAIAssistant: React.FC = () => {
           isRecognitionRunningRef.current = false;
           setIsListening(false);
 
-          // Auto-resume listening hands-free
+          // Auto-resume listening hands-free if call is active
           if (
             isCallingRef.current &&
+            !isSpeakingRef.current &&
             !isMutedRef.current &&
             !isLoadingRef.current
           ) {
             setTimeout(() => {
               startRecognitionSafely();
-            }, 250);
+            }, 150);
           }
         };
 
@@ -538,7 +544,7 @@ export const HimnovaAIAssistant: React.FC = () => {
     }
   }, [languageMode, startRecognitionSafely, stopRecognitionSafely, handleSendMessage]);
 
-  // Start Voice Call (Completely Autonomous Hands-Free with AEC)
+  // Start Voice Call (Immediate hands-free session)
   const startVoiceCall = () => {
     setIsCalling(true);
     isCallingRef.current = true;
@@ -546,7 +552,7 @@ export const HimnovaAIAssistant: React.FC = () => {
     setVoiceStatusText("Connecting to Himnova Voice AI Engine...");
     setLiveUserTranscript("");
 
-    // Request getUserMedia with Acoustic Echo Cancellation to suppress speaker echo
+    // Request getUserMedia with Acoustic Echo Cancellation
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
         .getUserMedia({
@@ -568,9 +574,8 @@ export const HimnovaAIAssistant: React.FC = () => {
           ? "नमस्ते! म हिमभोभा एआई भ्वाइस असिस्टेन्ट हुँ। सफ्टवेयर, भ्वाइस कलिङ वा मूल्य बारे सोध्न सक्नुहुन्छ।"
           : languageMode === "hi"
           ? "नमस्ते! मैं हिमभोभा एआई वॉइस असिस्टेंट हूँ। आप सॉफ्टवेयर डेवलपमेंट, एआई कॉलिंग या प्राइसिंग के बारे में कुछ भी पूछ सकते हैं।"
-          : "Hello! I am your Himnova AI Voice Assistant. How can I assist your software, voice calling, or cloud project today?";
+          : "Hello! I am your Himnova AI Voice Consultant. How can I assist your software, voice calling, or cloud project today?";
 
-      hasGreetedCallRef.current = true;
       speakText(welcomeVoice, () => {
         if (isCallingRef.current && !isMutedRef.current) {
           setVoiceStatusText("Listening... Speak your question freely 🎙️");
@@ -578,7 +583,7 @@ export const HimnovaAIAssistant: React.FC = () => {
           startRecognitionSafely();
         }
       });
-    }, 350);
+    }, 300);
   };
 
   const handleCopyText = (id: string, text: string) => {
@@ -627,7 +632,7 @@ export const HimnovaAIAssistant: React.FC = () => {
                       </span>
                     </h3>
                     <p className="text-[11px] text-slate-400 font-medium">
-                      Dynamic Question Analyzer & Live Voice AI
+                      Sub-Second Live AI Consultant & Voice Calling
                     </p>
                   </div>
                 </div>
@@ -784,7 +789,7 @@ export const HimnovaAIAssistant: React.FC = () => {
                     <div className="flex items-center gap-2.5 p-3.5 max-w-[70%] rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 text-xs shadow-md">
                       <Sparkles className="h-4 w-4 text-brand-cyan animate-spin" />
                       <span className="font-mono text-brand-cyan font-bold">
-                        Analyzing question & drafting response...
+                        Answering in sub-second... ⚡
                       </span>
                     </div>
                   )}
@@ -808,7 +813,7 @@ export const HimnovaAIAssistant: React.FC = () => {
                           ? "तपाईंको प्रश्न यहाँ लेख्नुहोस्..."
                           : languageMode === "hi"
                           ? "अपना प्रश्न यहाँ लिखें..."
-                          : "Type your question here (pricing, features, delivery)..."
+                          : "Type your question here (pricing, services, architecture)..."
                       }
                       value={inputValue}
                       onChange={(e) => setInputValue(e.target.value)}
@@ -845,7 +850,7 @@ export const HimnovaAIAssistant: React.FC = () => {
                 <div className="text-center space-y-2 relative z-10 pt-2">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono font-bold uppercase tracking-wider shadow-sm">
                     <span className="h-2 w-2 rounded-full bg-cyan-400 animate-ping" />
-                    Hands-Free Voice Session • {formatTimer(callDuration)}
+                    Live Voice Session • {formatTimer(callDuration)}
                   </span>
                   <h4 className="text-base font-extrabold text-white font-display flex items-center justify-center gap-2">
                     <span>Himnova Autonomous Voice AI</span>
@@ -909,7 +914,7 @@ export const HimnovaAIAssistant: React.FC = () => {
                   </div>
 
                   <p className="text-[11px] font-mono text-slate-400 mt-4 text-center">
-                    Speak questions freely • Active barge-in enabled • Say &quot;Bye&quot; to end
+                    Speak freely • Responds in &lt; 1s • Tap to interrupt anytime
                   </p>
                 </div>
 

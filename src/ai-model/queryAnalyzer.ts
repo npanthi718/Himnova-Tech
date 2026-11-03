@@ -23,6 +23,7 @@ export interface AnalyzedQuery {
   isAskingAllProducts: boolean;
   isAskingProjects: boolean;
   isAskingBlogs: boolean;
+  isAskingCompanyOverview: boolean;
   matchedProducts: NicheProduct[];
   matchedServices: ServiceItem[];
   matchedProjects: ProjectItem[];
@@ -98,7 +99,20 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
     ) ||
     (hasDevanagari && (query.includes("नमस्ते") || query.includes("नमस्कार") || query.includes("हेलो")));
 
-  // 4. Aspect Flags
+  // 4. Company Overview / What We Do / Who Are You Intent
+  const isAskingCompanyOverview =
+    /\b(what do you do|who are you|tell me about (you|himnova|company)|about himnova|what can you do|how can you help|why himnova|why choose|introduce yourself|what is himnova|company profile|company background|what kind of company|software company|what is your company)\b/i.test(
+      lower
+    ) ||
+    (hasDevanagari &&
+      (query.includes("के गर्नुहुन्छ") ||
+        query.includes("कम्पनीको बारेमा") ||
+        query.includes("तपाईं को हुनुहुन्छ") ||
+        query.includes("हिमभोभा के हो") ||
+        query.includes("के काम गर्नुहुन्छ") ||
+        query.includes("क्या करते हैं")));
+
+  // 5. Aspect Flags
   const isAskingPricing =
     /\b(price|pricing|cost|rate|rates|how much|charge|fee|fees|budget|npr|usd|dollar|kati|parcha|lagcha|kitna|kharcha|paisa|charges|quotation|quote|estimate)\b/i.test(
       lower
@@ -188,11 +202,11 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
       (query.includes("गारंटी") || query.includes("सुरक्षा") || query.includes("भरोसा") || query.includes("विश्वास")));
 
   const isAskingAllServices =
-    /(\b(all|every|15|fifteen)\b.*(services|offerings)|service\s+catalog|list\s+of\s+.*services|what\s+services|what.*do\s+you\s+offer)/i.test(
+    /(\b(all|every|15|fifteen)?\s*(services|offerings)|service\s+catalog|list\s+of\s+.*services|what\s+services|what.*do\s+you\s+offer|what.*do\s+you\s+provide|what.*can\s+you\s+build)/i.test(
       lower
     ) ||
     (hasDevanagari &&
-      (query.includes("सबै सेवा") || query.includes("सम्पूर्ण सेवा") || query.includes("सारी सर्विसेज")));
+      (query.includes("सबै सेवा") || query.includes("सम्पूर्ण सेवा") || query.includes("सारी सर्विसेज") || query.includes("सेवाहरू")));
 
   const isAskingAllProducts =
     /(\b(all|every|19|nineteen)\b.*(products|turnkey|solutions)|product\s+catalog|list\s+of\s+.*products|what.*products)/i.test(
@@ -213,7 +227,7 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
     ) ||
     (hasDevanagari && (query.includes("ब्लग") || query.includes("लेख") || query.includes("अनुसन्धान")));
 
-  // 5. Matched Products Resolution (All 19 Turnkey Products)
+  // 6. Matched Products Resolution (All 19 Turnkey Products)
   const matchedProducts: NicheProduct[] = trained.products.filter((p) => {
     const pId = p.id.toLowerCase();
     const pTitle = p.title.toLowerCase();
@@ -418,7 +432,7 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
     return false;
   });
 
-  // 6. Matched Services Resolution (All 15 IT Services)
+  // 7. Matched Services Resolution (All 15 IT Services)
   const matchedServices: ServiceItem[] = trained.services.filter((s) => {
     const sId = s.id.toLowerCase();
     const sTitle = s.title.toLowerCase();
@@ -572,7 +586,7 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
     return false;
   });
 
-  // 7. Matched Delivered Projects (All 8 Projects)
+  // 8. Matched Delivered Projects (All 8 Projects)
   const matchedProjects: ProjectItem[] = trained.projects.filter((p) => {
     const pId = p.id.toLowerCase();
     const pTitle = p.title.toLowerCase();
@@ -591,7 +605,7 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
     return false;
   });
 
-  // 8. Matched Research Blogs (All 16 Blogs)
+  // 9. Matched Research Blogs (All 16 Blogs)
   const matchedBlogs: BlogPost[] = trained.blogs.filter((b) => {
     const bSlug = b.slug.toLowerCase();
     const bTitle = b.title.toLowerCase();
@@ -610,18 +624,18 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
     return false;
   });
 
-  // 9. Detect Software / Tech Domain Relevance
+  // 10. Detect Software / Tech Domain Relevance
   const hasTechKeyword =
     /\b(software|app|application|website|web|cloud|ai|voice|agent|erp|pos|crm|tech|technology|engineering|code|database|developer|development|api|architecture|system|hire|pricing|cost|rate|quote|sushil|panthi|himnova|kathmandu|nepal|dillibazar|warranty|sla|source code|project|career|job|internship)\b/i.test(
       lower
     ) ||
     hasDevanagari;
 
-  // 10. Strict Out-of-Scope Detection
-  // If the query is not a greeting, farewell, or any site feature, AND has zero relevance to Himnova / Tech:
+  // 11. Strict Out-of-Scope Detection
   const isDirectlyMatched =
     isFarewell ||
     isGreeting ||
+    isAskingCompanyOverview ||
     isAskingLocation ||
     isAskingContact ||
     isAskingLeadership ||
@@ -680,6 +694,7 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
     isAskingAllProducts,
     isAskingProjects,
     isAskingBlogs,
+    isAskingCompanyOverview,
     matchedProducts,
     matchedServices,
     matchedProjects,

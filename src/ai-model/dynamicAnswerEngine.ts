@@ -67,7 +67,79 @@ export function draftDynamicResponse(analyzed: AnalyzedQuery): AIResponse {
   }
 
   // -------------------------------------------------------------------------
-  // 2. STRICT OUT-OF-SCOPE GUARDRAIL (When Query Is Not Found on Site)
+  // 2. COMPANY OVERVIEW & WHAT WE DO / WHO ARE YOU
+  // -------------------------------------------------------------------------
+  if (analyzed.isAskingCompanyOverview) {
+    if (lang === "ne") {
+      return {
+        reply: `### 🏢 **Himnova Technologies Private Limited बारे जानकारी**
+
+Himnova Technologies काठमाडौं, नेपालमा आधारित एक अग्रणी **इन्टरप्राइज सफ्टवेयर इन्जिनियरिङ तथा क्लाउड सोलुसन्स कम्पनी** हो। हामी Silicon Valley मापदण्डको क्लाउड आर्किटेक्चर, AI Voice Calling Systems, र डिजिटल सोलुसन्सहरू निर्माण गर्दछौं।
+
+✨ **हाम्रा मुख्य क्षमताहरू**:
+1. 🎙️ **AI Voice Calling Agents (VoxNova)**: sub-400ms लेटन्सी भएको नेपाली, हिन्दी र अंग्रेजी कलिङ एजेन्ट्स।
+2. 💻 **कस्टम सफ्टवेयर तथा वेब एप्लिकेसनहरू**: १००% पूर्ण सोर्स कोड स्वामित्व (Full Source Code Ownership) सहित।
+3. 📱 **मोबाइल एप्लिकेशन्स**: Flutter र React Native मा नेटिभ-पर्फर्मेन्स iOS र Android एप्स।
+4. 🚀 **१९ वटा टर्नकी सफ्टवेयर प्लेटफर्महरू**: स्कूल ERP, अस्पताल EMR, रेस्टुरेन्ट POS, होटल PMS, र ईकमर्स।
+5. 🛡️ **इन्जिनियरिङ ग्यारेन्टी**: ९९.९९% Cloud SLA, ६ महिनाको नि:शुल्क वारेन्टी, र शून्य भेन्डर लक-इन।
+
+📍 **कर्पोरेट कार्यालय**: २ तला, डिल्लीबजार-३०, काठमाडौं (पद्मकन्या विद्याश्रम अगाडि) *(एकमात्र कर्पोरेट कार्यालय)*
+📞 **सम्पर्क**: **${company.contact.phonePrimary}** | \`${company.contact.email}\``,
+        audioText:
+          "हिमभोभा टेक्नोलोजिज काठमाडौंमा अवस्थित इन्टरप्राइज सफ्टवेयर, मोबाइल एप्स र एआई भ्वाइस कलिङ सोलुसन्स निर्माण गर्ने अग्रणी कम्पनी हो। हाम्रा सबै प्रोजेक्टमा पूर्ण सोर्स कोड स्वामित्व र ६ महिनाको वारेन्टी समावेश छ।",
+        suggestedActions: ["15 IT Services", "19 Turnkey Products", "Office Location", "WhatsApp Er. Sushil Panthi"],
+        isFarewell: false,
+        language: lang,
+      };
+    }
+
+    if (lang === "hi") {
+      return {
+        reply: `### 🏢 **Himnova Technologies Private Limited के बारे में**
+
+Himnova Technologies काठमांडू, नेपाल स्थित एक प्रमुख **एंटरप्राइज सॉफ्टवेयर इंजीनियरिंग और क्लाउड इंटेलिजेंस कंपनी** है।
+
+✨ **हमारी मुख्य सेवाएं**:
+1. 🎙️ **AI Voice Calling Agents (VoxNova)**: हिंदी, नेपाली और अंग्रेजी में ऑटोमेटेड वॉइस कॉलिंग।
+2. 💻 **कस्टम एंटरप्राइज सॉफ्टवेयर**: १००% फुल सोर्स कोड ओनरशिप के साथ।
+3. 📱 **मोबाइल ऐप्स**: iOS और Android के लिए Flutter और React Native ऐप्स।
+4. 🚀 **१९ टर्नकी सॉफ्टवेयर सॉल्यूशंस**: हॉस्पिटल EMR, स्कूल ERP, रेस्टोरेंट POS, होटल PMS।
+5. 🛡️ **विश्वसनीयता**: ९९.९९% क्लाउड SLA और ६ महीने की फ्री वारंटी।
+
+📍 **कॉर्पोरेट ऑफिस**: सेकंड फ्लोर, डिल्लीबजार-३०, काठमांडू (पद्मकन्या विद्याश्रम के सामने)
+📞 **संपर्क**: **${company.contact.phonePrimary}**`,
+        audioText:
+          "हिमभोभा टेक्नोलॉजीज कस्टम सॉफ्टवेयर, मोबाइल ऐप्स, क्लाउड आर्किटेक्चर और एआई वॉइस कॉलिंग में विशेषज्ञता रखता है। हम १००% सोर्स कोड ओनरशिप प्रदान करते हैं।",
+        suggestedActions: ["15 Services", "19 Products", "Office Location", "WhatsApp Architect"],
+        isFarewell: false,
+        language: lang,
+      };
+    }
+
+    return {
+      reply: `### 🏢 **About Himnova Technologies Private Limited**
+
+**Himnova Technologies** is an enterprise-grade software engineering, cloud architecture, and artificial intelligence firm headquartered in **Kathmandu, Nepal** (Dillibazar-30). Led by Executive Director & Chief Architect **Er. Sushil Panthi**, we engineer Silicon Valley-standard distributed software systems.
+
+✨ **Our Core Pillars & What We Deliver**:
+1. 🎙️ **AI Voice Calling Agents & VoxNova Platform**: Autonomous sub-400ms voice agents capable of conducting human-like customer service, sales, and inbound/outbound calls in English, Nepali, and Hindi.
+2. 💻 **Custom Software & Web Application Development**: High-throughput distributed platforms built on Next.js, Go, Node.js, and Python with **100% full source code ownership**.
+3. 📱 **Cross-Platform Mobile Apps**: Native-performance mobile apps for iOS and Android using Flutter and React Native.
+4. 🚀 **19 Pre-Built Turnkey Platforms**: Production-ready School ERP, Hospital EMR, Restaurant POS & KDS, Hotel PMS, Multi-vendor E-Commerce, and Real Estate CRM deployable in 1 to 3 weeks.
+5. 🛡️ **Uncompromising SLA Guarantees**: 99.99% cloud uptime SLA, 6 months complimentary post-deployment warranty, and zero proprietary vendor lock-in.
+
+🏢 **Corporate Office**: 2nd Floor, Opposite to Padmakanya Vidhyashram Secondary School, Dillibazar-30, Kathmandu 44600, Nepal *(Sole Corporate Location — No Branch Offices)*
+📞 **WhatsApp / Direct Line**: **${company.contact.phonePrimary}** | ✉️ **Email**: \`${company.contact.email}\``,
+      audioText:
+        "Himnova Technologies is an enterprise software engineering and AI firm in Kathmandu. We build custom software, mobile apps, and autonomous AI voice agents with 100% source code ownership and a 6-month warranty.",
+      suggestedActions: ["15 Specialized Services", "19 Turnkey Products", "Office Location & Map", "WhatsApp Er. Sushil Panthi"],
+      isFarewell: false,
+      language: lang,
+    };
+  }
+
+  // -------------------------------------------------------------------------
+  // 3. STRICT OUT-OF-SCOPE GUARDRAIL (When Query Is Not Found on Site)
   // -------------------------------------------------------------------------
   if (analyzed.isOutOfScope) {
     const topicLabel = analyzed.extractedTopic ? `"${analyzed.extractedTopic}"` : "this topic";
@@ -138,7 +210,7 @@ If this inquiry relates to a custom engineering requirement, software developmen
   }
 
   // -------------------------------------------------------------------------
-  // 3. LOCATION, DIRECTIONS & SOLE CORPORATE OFFICE (Dillibazar-30)
+  // 4. LOCATION, DIRECTIONS & SOLE CORPORATE OFFICE (Dillibazar-30)
   // -------------------------------------------------------------------------
   if (analyzed.isAskingLocation) {
     if (lang === "ne") {
@@ -197,7 +269,7 @@ If this inquiry relates to a custom engineering requirement, software developmen
   }
 
   // -------------------------------------------------------------------------
-  // 4. LEADERSHIP & FOUNDER INQUIRY (Er. Sushil Panthi)
+  // 5. LEADERSHIP & FOUNDER INQUIRY (Er. Sushil Panthi)
   // -------------------------------------------------------------------------
   if (analyzed.isAskingLeadership) {
     if (lang === "ne") {
@@ -261,7 +333,7 @@ Er. Sushil Panthi leads Himnova Technologies with a mission to engineer Silicon 
   }
 
   // -------------------------------------------------------------------------
-  // 5. CONTACT & PHONE / WHATSAPP INQUIRY
+  // 6. CONTACT & PHONE / WHATSAPP INQUIRY
   // -------------------------------------------------------------------------
   if (analyzed.isAskingContact) {
     return {
@@ -282,7 +354,7 @@ Connect with us anytime on [WhatsApp (+977 9823009467)](${whatsappUrl}) for inst
   }
 
   // -------------------------------------------------------------------------
-  // 6. SPECIFIC PRODUCT MATCH (19 Turnkey Products)
+  // 7. SPECIFIC PRODUCT MATCH (19 Turnkey Products)
   // -------------------------------------------------------------------------
   if (analyzed.matchedProducts.length > 0) {
     const p = analyzed.matchedProducts[0];
@@ -346,7 +418,7 @@ ${p.keyFeatures.map((f) => `- ${f}`).join("\n")}
   }
 
   // -------------------------------------------------------------------------
-  // 7. SPECIFIC SERVICE MATCH (15 IT Services)
+  // 8. SPECIFIC SERVICE MATCH (15 IT Services)
   // -------------------------------------------------------------------------
   if (analyzed.matchedServices.length > 0) {
     const s = analyzed.matchedServices[0];
@@ -400,7 +472,7 @@ ${s.features.map((f) => `- ${f}`).join("\n")}
   }
 
   // -------------------------------------------------------------------------
-  // 8. DELIVERED PROJECTS & CASE STUDIES MATCH (All 8 Projects)
+  // 9. DELIVERED PROJECTS & CASE STUDIES MATCH (All 8 Projects)
   // -------------------------------------------------------------------------
   if (analyzed.matchedProjects.length > 0 || analyzed.isAskingProjects) {
     const project = analyzed.matchedProjects[0] || trained.projects[0];
@@ -422,7 +494,7 @@ Ask me about our other deployed systems: **AlgoCare (Triage AI)**, **LumbiniCare
   }
 
   // -------------------------------------------------------------------------
-  // 9. TECHNICAL RESEARCH BLOGS MATCH (All 16 Blogs)
+  // 10. TECHNICAL RESEARCH BLOGS MATCH (All 16 Blogs)
   // -------------------------------------------------------------------------
   if (analyzed.matchedBlogs.length > 0 || analyzed.isAskingBlogs) {
     const blog = analyzed.matchedBlogs[0] || trained.blogs[0];
@@ -445,7 +517,7 @@ You can read the complete publication on our **Technical Blog** page!`,
   }
 
   // -------------------------------------------------------------------------
-  // 10. GUARANTEES, SOURCE CODE OWNERSHIP & SLA
+  // 11. GUARANTEES, SOURCE CODE OWNERSHIP & SLA
   // -------------------------------------------------------------------------
   if (analyzed.isAskingGuarantees || analyzed.isAskingDeliverables) {
     const g = trained.guarantees;
@@ -475,7 +547,7 @@ You can read the complete publication on our **Technical Blog** page!`,
   }
 
   // -------------------------------------------------------------------------
-  // 11. TECH STACK & FRAMEWORKS INQUIRY
+  // 12. TECH STACK & FRAMEWORKS INQUIRY
   // -------------------------------------------------------------------------
   if (analyzed.isAskingTechStack) {
     const ts = trained.techStacks;
@@ -499,7 +571,7 @@ You can read the complete publication on our **Technical Blog** page!`,
   }
 
   // -------------------------------------------------------------------------
-  // 12. GENERAL PRICING INQUIRY
+  // 13. GENERAL PRICING INQUIRY
   // -------------------------------------------------------------------------
   if (analyzed.isAskingPricing) {
     if (lang === "ne") {
@@ -546,7 +618,7 @@ You can read the complete publication on our **Technical Blog** page!`,
   }
 
   // -------------------------------------------------------------------------
-  // 13. ALL 19 PRODUCTS CATALOG
+  // 14. ALL 19 PRODUCTS CATALOG
   // -------------------------------------------------------------------------
   if (analyzed.isAskingAllProducts) {
     return {
@@ -569,7 +641,7 @@ ${trained.products
   }
 
   // -------------------------------------------------------------------------
-  // 14. ALL 15 SERVICES CATALOG
+  // 15. ALL 15 SERVICES CATALOG
   // -------------------------------------------------------------------------
   if (analyzed.isAskingAllServices) {
     return {
@@ -592,7 +664,7 @@ ${trained.services
   }
 
   // -------------------------------------------------------------------------
-  // 15. CAREERS & HIRING
+  // 16. CAREERS & HIRING
   // -------------------------------------------------------------------------
   if (analyzed.isAskingCareers) {
     return {
@@ -617,7 +689,7 @@ ${trained.careers
   }
 
   // -------------------------------------------------------------------------
-  // 16. GREETINGS & DEFAULT KNOWLEDGE SUMMARY
+  // 17. GREETINGS & DEFAULT KNOWLEDGE SUMMARY
   // -------------------------------------------------------------------------
   if (lang === "ne") {
     return {
