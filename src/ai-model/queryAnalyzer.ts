@@ -1,6 +1,7 @@
 import { loadTrainedKnowledge } from "./trainingData";
-import { ServiceItem } from "@/config/siteData";
+import { ServiceItem, ProjectItem } from "@/config/siteData";
 import { NicheProduct } from "@/data/nicheProducts";
+import { BlogPost } from "@/data/blogs/types";
 
 export interface AnalyzedQuery {
   rawQuery: string;
@@ -20,13 +21,20 @@ export interface AnalyzedQuery {
   isAskingGuarantees: boolean;
   isAskingAllServices: boolean;
   isAskingAllProducts: boolean;
+  isAskingProjects: boolean;
+  isAskingBlogs: boolean;
   matchedProducts: NicheProduct[];
   matchedServices: ServiceItem[];
+  matchedProjects: ProjectItem[];
+  matchedBlogs: BlogPost[];
+  isOutOfScope: boolean;
+  extractedTopic: string;
   confidence: number;
 }
 
 /**
  * Deep linguistic & semantic analyzer for user queries across English, Nepali, and Hindi.
+ * Evaluates live site knowledge with sub-millisecond execution.
  */
 export function analyzeUserQuery(query: string): AnalyzedQuery {
   const trimmed = query.trim();
@@ -70,7 +78,7 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
 
   const language: "en" | "ne" | "hi" = isHindi ? "hi" : isNepali ? "ne" : "en";
 
-  // 2. Farewell / Exit / Gratitude Intent (Crucial for Voice Agent Call Termination)
+  // 2. Farewell / Exit / Gratitude Intent (Crucial for Voice Call Auto-Hangup)
   const isFarewell =
     /\b(bye|goodbye|see you|thank you|thanks|thank u|tq|ty|dhanyabad|dhanyawad|shukriya|alvida|ok bye|okay bye|call end|end call|hang up|pugyo|enough|exit|quit|stop call|bhetla)\b/i.test(
       lower
@@ -85,14 +93,14 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
 
   // 3. Greeting Intent
   const isGreeting =
-    /^(hi|hello|hey|namaste|namaskar|good morning|good afternoon|good evening|k cha|kaise ho|how are you|kasto cha)\b/i.test(
+    /^(hi|hello|hey|namaste|namaskar|good morning|good afternoon|good evening|k cha|kaise ho|how are you|kasto cha|what's up|sup)\b/i.test(
       lower
     ) ||
     (hasDevanagari && (query.includes("नमस्ते") || query.includes("नमस्कार") || query.includes("हेलो")));
 
   // 4. Aspect Flags
   const isAskingPricing =
-    /\b(price|pricing|cost|rate|rates|how much|charge|fee|fees|budget|npr|usd|dollar|kati|parcha|lagcha|kitna|kharcha|paisa|charges)\b/i.test(
+    /\b(price|pricing|cost|rate|rates|how much|charge|fee|fees|budget|npr|usd|dollar|kati|parcha|lagcha|kitna|kharcha|paisa|charges|quotation|quote|estimate)\b/i.test(
       lower
     ) ||
     (hasDevanagari &&
@@ -123,7 +131,7 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
       (query.includes("विशेषता") || query.includes("सुविधा") || query.includes("फीचर्स") || query.includes("काम गर्छ")));
 
   const isAskingTechStack =
-    /\b(tech stack|technology|technologies|framework|frameworks|database|stack|react|nextjs|flutter|node|python|aws|tools|prabidhi)\b/i.test(
+    /\b(tech stack|technology|technologies|framework|frameworks|database|stack|react|nextjs|flutter|node|python|aws|tools|prabidhi|golang|kubernetes|docker|fastapi)\b/i.test(
       lower
     ) || (hasDevanagari && (query.includes("प्रविधि") || query.includes("टेक स्टैक") || query.includes("टेक्नोलॉजी")));
 
@@ -135,7 +143,7 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
       (query.includes("सोर्स कोड") || query.includes("स्वामित्व") || query.includes("वारेन्टी") || query.includes("वारंटी")));
 
   const isAskingLocation =
-    /\b(location|address|office|headquarter|corporate office|branch|branches|where|map|google map|directions|visit|dillibazar|padmakanya|baneshwor|kaha cha|kaha hai|kata ho|thegana)\b/i.test(
+    /\b(location|address|office|headquarter|headquarters|corporate office|branch|branches|where|map|google map|directions|visit|dillibazar|padmakanya|kaha cha|kaha hai|kata ho|thegana)\b/i.test(
       lower
     ) ||
     (hasDevanagari &&
@@ -148,14 +156,14 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
         query.includes("नक्सा")));
 
   const isAskingContact =
-    /\b(contact|phone|email|whatsapp|number|call|reach|message|samparka|fon|numbar)\b/i.test(
+    /\b(contact|phone|email|whatsapp|number|call|reach|message|samparka|fon|numbar|telephone)\b/i.test(
       lower
     ) ||
     (hasDevanagari &&
       (query.includes("सम्पर्क") || query.includes("फोन") || query.includes("नम्बर") || query.includes("ईमेल")));
 
   const isAskingLeadership =
-    /\b(director|founder|ceo|chairman|sushil|panthi|leader|leadership|who owns|who runs|owner|malik|nirdeshak)\b/i.test(
+    /\b(director|founder|ceo|chairman|sushil|panthi|leader|leadership|who owns|who runs|owner|malik|nirdeshak|architect)\b/i.test(
       lower
     ) ||
     (hasDevanagari &&
@@ -167,7 +175,7 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
         query.includes("सीईओ")));
 
   const isAskingCareers =
-    /\b(job|career|careers|vacancy|vacancies|hiring|internship|apply|salary|jagir|naukri)\b/i.test(
+    /\b(job|career|careers|vacancy|vacancies|hiring|internship|apply|salary|jagir|naukri|opening|openings)\b/i.test(
       lower
     ) ||
     (hasDevanagari &&
@@ -181,20 +189,32 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
       (query.includes("गारंटी") || query.includes("सुरक्षा") || query.includes("भरोसा") || query.includes("विश्वास")));
 
   const isAskingAllServices =
-    /(\b(all|every|15)\b.*(services|offerings)|service\s+catalog|list\s+of\s+.*services|what\s+services|what.*do\s+you\s+offer)/i.test(
+    /(\b(all|every|15|fifteen)\b.*(services|offerings)|service\s+catalog|list\s+of\s+.*services|what\s+services|what.*do\s+you\s+offer)/i.test(
       lower
     ) ||
     (hasDevanagari &&
       (query.includes("सबै सेवा") || query.includes("सम्पूर्ण सेवा") || query.includes("सारी सर्विसेज")));
 
   const isAskingAllProducts =
-    /(\b(all|every|19)\b.*(products|turnkey|solutions)|product\s+catalog|list\s+of\s+.*products|what.*products)/i.test(
+    /(\b(all|every|19|nineteen)\b.*(products|turnkey|solutions)|product\s+catalog|list\s+of\s+.*products|what.*products)/i.test(
       lower
     ) ||
     (hasDevanagari &&
       (query.includes("सबै उत्पादन") || query.includes("सम्पूर्ण उत्पादन") || query.includes("सारे प्रोडक्ट्स")));
 
-  // 5. Matched Products Resolution (19 Turnkey Products)
+  const isAskingProjects =
+    /\b(project|projects|portfolio|case study|case studies|past work|work done|delivered|client projects|skillnexus|algocare|lumbinicare|sushilgpt|facemark|stocksmart|studenttrack)\b/i.test(
+      lower
+    ) ||
+    (hasDevanagari && (query.includes("परियोजना") || query.includes("प्रोजेक्ट") || query.includes("काम")));
+
+  const isAskingBlogs =
+    /\b(blog|blogs|article|articles|insight|insights|research|paper|publication|agentic ai revolution|microservices enterprise blueprint|zero-trust cloud security|finops|rag pipelines)\b/i.test(
+      lower
+    ) ||
+    (hasDevanagari && (query.includes("ब्लग") || query.includes("लेख") || query.includes("अनुसन्धान")));
+
+  // 5. Matched Products Resolution (All 19 Turnkey Products)
   const matchedProducts: NicheProduct[] = trained.products.filter((p) => {
     const pId = p.id.toLowerCase();
     const pTitle = p.title.toLowerCase();
@@ -202,7 +222,16 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
     if (lower.includes(pId)) return true;
     if (lower.includes(pTitle.split(":")[0].toLowerCase().trim())) return true;
 
-    if (lower.includes("voxnova") && pId.includes("voxnova")) return true;
+    // Semantic keyword mapping
+    if (
+      (lower.includes("voxnova") ||
+        lower.includes("voice bot") ||
+        lower.includes("calling platform") ||
+        lower.includes("ai phone system")) &&
+      pId.includes("voxnova")
+    )
+      return true;
+
     if (
       (lower.includes("hospital") ||
         lower.includes("clinic") ||
@@ -215,6 +244,7 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
       pId.includes("hospital")
     )
       return true;
+
     if (
       (lower.includes("ecommerce") ||
         lower.includes("e-commerce") ||
@@ -226,6 +256,7 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
       pId.includes("ecommerce")
     )
       return true;
+
     if (
       (lower.includes("hotel") ||
         lower.includes("hostel") ||
@@ -236,10 +267,12 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
       pId.includes("hotel")
     )
       return true;
+
     if (
       (lower.includes("restaurant") ||
         lower.includes("dineflow") ||
         lower.includes("table qr") ||
+        lower.includes("kds") ||
         lower.includes("food menu") ||
         lower.includes("dining") ||
         lower.includes("रेस्टुरेन्ट") ||
@@ -247,6 +280,7 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
       pId.includes("restaurant")
     )
       return true;
+
     if (
       (lower.includes("school") ||
         lower.includes("college") ||
@@ -258,6 +292,7 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
       pId.includes("school")
     )
       return true;
+
     if (
       (lower.includes("real estate") ||
         lower.includes("property") ||
@@ -267,6 +302,7 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
       pId.includes("real-estate")
     )
       return true;
+
     if (
       (lower.includes("travel") ||
         lower.includes("trekking") ||
@@ -276,6 +312,7 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
       pId.includes("travel")
     )
       return true;
+
     if (
       (lower.includes("courier") ||
         lower.includes("cargo") ||
@@ -285,14 +322,17 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
       pId.includes("logistics")
     )
       return true;
+
     if (
       (lower.includes("gym") ||
         lower.includes("fitness") ||
         lower.includes("fitpulse") ||
+        lower.includes("salon") ||
         lower.includes("जिम")) &&
       pId.includes("gym")
     )
       return true;
+
     if (
       (lower.includes("microfinance") ||
         lower.includes("cooperative") ||
@@ -303,6 +343,7 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
       pId.includes("fintech")
     )
       return true;
+
     if (
       (lower.includes("warehouse") ||
         lower.includes("inventory pos") ||
@@ -311,73 +352,74 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
       pId.includes("inventory")
     )
       return true;
+
     if (
-      (lower.includes("garage") ||
-        lower.includes("auto repair") ||
-        lower.includes("autodesk") ||
-        lower.includes("workshop pos") ||
-        lower.includes("ग्यारेज")) &&
-      pId.includes("auto")
+      (lower.includes("car rental") ||
+        lower.includes("fleet") ||
+        lower.includes("vehicle rental") ||
+        lower.includes("गाडी भाडा")) &&
+      pId.includes("rental")
     )
       return true;
+
     if (
       (lower.includes("pharmacy") ||
         lower.includes("drugstore") ||
         lower.includes("pharmacare") ||
+        lower.includes("औषधि") ||
         lower.includes("फार्मेसी")) &&
       pId.includes("pharmacy")
     )
       return true;
+
     if (
       (lower.includes("ticketing") ||
         lower.includes("gate pass") ||
         lower.includes("events ticket") ||
-        lower.includes("passport") ||
+        lower.includes("qr ticket") ||
         lower.includes("टिकट")) &&
       pId.includes("ticketing")
     )
       return true;
+
     if (
-      (lower.includes("payroll") ||
-        lower.includes("attendance") ||
-        lower.includes("hr suite") ||
-        lower.includes("workpulse") ||
-        lower.includes("पेरोल")) &&
-      pId.includes("hr")
+      (lower.includes("job board") ||
+        lower.includes("recruitment") ||
+        lower.includes("ats") ||
+        lower.includes("hiring portal")) &&
+      pId.includes("job-board")
     )
       return true;
+
     if (
-      (lower.includes("krishi") ||
-        lower.includes("agritech") ||
-        lower.includes("farm") ||
-        lower.includes("agrilink") ||
-        lower.includes("कृषि")) &&
-      pId.includes("agritech")
+      (lower.includes("crowdfunding") ||
+        lower.includes("donation") ||
+        lower.includes("charity") ||
+        lower.includes("दान")) &&
+      pId.includes("crowdfunding")
     )
       return true;
+
     if (
-      (lower.includes("legal") ||
-        lower.includes("law firm") ||
-        lower.includes("court") ||
-        lower.includes("lexislaw") ||
-        lower.includes("वकील")) &&
-      pId.includes("legal")
+      (lower.includes("on-demand") ||
+        lower.includes("service booking app") ||
+        lower.includes("urban service")) &&
+      pId.includes("on-demand")
     )
       return true;
+
     if (
-      (lower.includes("course") ||
-        lower.includes("lms") ||
-        lower.includes("skillstream") ||
-        lower.includes("online class") ||
-        lower.includes("कोर्स")) &&
-      pId.includes("lms-learning")
+      (lower.includes("enterprise ai chatbot") ||
+        lower.includes("rag chatbot") ||
+        lower.includes("knowledge bot")) &&
+      pId.includes("chatbot")
     )
       return true;
 
     return false;
   });
 
-  // 6. Matched Services Resolution (15 IT Services)
+  // 6. Matched Services Resolution (All 15 IT Services)
   const matchedServices: ServiceItem[] = trained.services.filter((s) => {
     const sId = s.id.toLowerCase();
     const sTitle = s.title.toLowerCase();
@@ -449,11 +491,10 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
     if (
       (lower.includes("hosting") ||
         lower.includes("vps") ||
+        lower.includes("domain") ||
         lower.includes("server") ||
-        lower.includes("aws") ||
-        lower.includes("cloud hosting") ||
         lower.includes("होस्टिंग")) &&
-      sId.includes("cloud-hosting")
+      sId.includes("domain-hosting")
     )
       return true;
 
@@ -461,54 +502,164 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
       (lower.includes("devops") ||
         lower.includes("kubernetes") ||
         lower.includes("ci/cd") ||
-        lower.includes("docker")) &&
-      sId.includes("devops")
+        lower.includes("docker") ||
+        lower.includes("cloud deployment")) &&
+      (sId.includes("deployment-cloud") || sId.includes("devops"))
     )
       return true;
 
     if (
-      (lower.includes("payment") ||
-        lower.includes("esewa") ||
-        lower.includes("khalti") ||
-        lower.includes("connectips") ||
-        lower.includes("stripe") ||
-        lower.includes("पेमेंट")) &&
-      sId.includes("payment")
+      (lower.includes("it support") ||
+        lower.includes("maintenance") ||
+        lower.includes("helpdesk") ||
+        lower.includes("24/7 support") ||
+        lower.includes("सपोर्ट")) &&
+      sId.includes("it-support")
     )
       return true;
 
     if (
-      (lower.includes("security") ||
-        lower.includes("cybersecurity") ||
-        lower.includes("pentest") ||
-        lower.includes("audit") ||
-        lower.includes("सुरक्षा")) &&
-      sId.includes("cybersecurity")
+      (lower.includes("annual subscription") ||
+        lower.includes("amc") ||
+        lower.includes("yearly support")) &&
+      sId.includes("annual-subscription")
     )
       return true;
 
     if (
       (lower.includes("seo") ||
-        lower.includes("google ranking") ||
-        lower.includes("search engine") ||
-        lower.includes("marketing") ||
+        lower.includes("ranking") ||
+        lower.includes("google search") ||
+        lower.includes("analytics") ||
         lower.includes("एसईओ")) &&
-      sId.includes("marketing")
+      sId.includes("seo-analytics")
     )
       return true;
 
     if (
-      (lower.includes("ui/ux") ||
-        lower.includes("ui ux") ||
-        lower.includes("figma") ||
-        lower.includes("design system") ||
-        lower.includes("डिजाइन")) &&
-      sId.includes("website-design")
+      (lower.includes("social media") ||
+        lower.includes("smm") ||
+        lower.includes("facebook ads") ||
+        lower.includes("instagram marketing")) &&
+      sId.includes("social-media")
+    )
+      return true;
+
+    if (
+      (lower.includes("digital marketing") ||
+        lower.includes("branding") ||
+        lower.includes("मार्केटिङ")) &&
+      sId.includes("digital-marketing")
+    )
+      return true;
+
+    if (
+      (lower.includes("content creation") ||
+        lower.includes("copywriting") ||
+        lower.includes("content writing")) &&
+      sId.includes("content-creation")
+    )
+      return true;
+
+    if (
+      (lower.includes("consulting") ||
+        lower.includes("advisory") ||
+        lower.includes("tech consultation") ||
+        lower.includes("सलाह")) &&
+      sId.includes("consulting")
     )
       return true;
 
     return false;
   });
+
+  // 7. Matched Delivered Projects (All 8 Projects)
+  const matchedProjects: ProjectItem[] = trained.projects.filter((p) => {
+    const pId = p.id.toLowerCase();
+    const pTitle = p.title.toLowerCase();
+
+    if (lower.includes(pId)) return true;
+    if (lower.includes(pTitle.toLowerCase())) return true;
+    if (lower.includes("skillnexus") && pId.includes("skillnexus")) return true;
+    if (lower.includes("algocare") && pId.includes("algocare")) return true;
+    if (lower.includes("emotion") && pId.includes("emotion")) return true;
+    if (lower.includes("lumbinicare") && pId.includes("lumbinicare")) return true;
+    if (lower.includes("sushilgpt") && pId.includes("sushilgpt")) return true;
+    if (lower.includes("facemark") && pId.includes("facemark")) return true;
+    if (lower.includes("stocksmart") && pId.includes("stocksmart")) return true;
+    if (lower.includes("studenttrack") && pId.includes("studenttrack")) return true;
+
+    return false;
+  });
+
+  // 8. Matched Research Blogs (All 16 Blogs)
+  const matchedBlogs: BlogPost[] = trained.blogs.filter((b) => {
+    const bSlug = b.slug.toLowerCase();
+    const bTitle = b.title.toLowerCase();
+
+    if (lower.includes(bSlug)) return true;
+    if (lower.includes(bTitle.toLowerCase())) return true;
+
+    if (lower.includes("agentic ai") && bSlug.includes("agentic")) return true;
+    if (lower.includes("microservices") && bSlug.includes("microservices")) return true;
+    if (lower.includes("zero-trust") && bSlug.includes("zero-trust")) return true;
+    if (lower.includes("rag") && bSlug.includes("rag")) return true;
+    if (lower.includes("flutter vs react native") && bSlug.includes("cross-platform")) return true;
+    if (lower.includes("finops") && bSlug.includes("finops")) return true;
+    if (lower.includes("postgres") && bSlug.includes("database")) return true;
+
+    return false;
+  });
+
+  // 9. Detect Software / Tech Domain Relevance
+  const hasTechKeyword =
+    /\b(software|app|application|website|web|cloud|ai|voice|agent|erp|pos|crm|tech|technology|engineering|code|database|developer|development|api|architecture|system|hire|pricing|cost|rate|quote|sushil|panthi|himnova|kathmandu|nepal|dillibazar|warranty|sla|source code|project|career|job|internship)\b/i.test(
+      lower
+    ) ||
+    hasDevanagari;
+
+  // 10. Strict Out-of-Scope Detection
+  // If the query is not a greeting, farewell, or any site feature, AND has zero relevance to Himnova / Tech:
+  const isDirectlyMatched =
+    isFarewell ||
+    isGreeting ||
+    isAskingLocation ||
+    isAskingContact ||
+    isAskingLeadership ||
+    isAskingCareers ||
+    isAskingGuarantees ||
+    isAskingAllServices ||
+    isAskingAllProducts ||
+    isAskingProjects ||
+    isAskingBlogs ||
+    matchedProducts.length > 0 ||
+    matchedServices.length > 0 ||
+    matchedProjects.length > 0 ||
+    matchedBlogs.length > 0;
+
+  let isOutOfScope = false;
+  let extractedTopic = "";
+
+  if (!isDirectlyMatched) {
+    if (!hasTechKeyword) {
+      isOutOfScope = true;
+      extractedTopic = trimmed.replace(/[?!.,]/g, "").slice(0, 80);
+    } else if (
+      lower.includes("recipe") ||
+      lower.includes("weather") ||
+      lower.includes("movie") ||
+      lower.includes("bitcoin price") ||
+      lower.includes("stock market today") ||
+      lower.includes("cricket score") ||
+      lower.includes("football score") ||
+      lower.includes("second hand car") ||
+      lower.includes("used bike") ||
+      lower.includes("doctor appointment prescription")
+    ) {
+      isOutOfScope = true;
+      extractedTopic = trimmed.replace(/[?!.,]/g, "").slice(0, 80);
+    }
+  }
 
   return {
     rawQuery: query,
@@ -528,8 +679,14 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
     isAskingGuarantees,
     isAskingAllServices,
     isAskingAllProducts,
+    isAskingProjects,
+    isAskingBlogs,
     matchedProducts,
     matchedServices,
-    confidence: 0.95,
+    matchedProjects,
+    matchedBlogs,
+    isOutOfScope,
+    extractedTopic: extractedTopic || trimmed,
+    confidence: isOutOfScope ? 0.1 : 0.95,
   };
 }

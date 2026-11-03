@@ -19,13 +19,16 @@ function cleanUsd(price: string): string {
 
 /**
  * Dynamic AI Answer Engine.
- * Dynamically synthesizes personalized, pinpoint-accurate responses specifically answering
- * what the user asked, with zero generic template dumping.
+ * Dynamically synthesizes pinpoint-accurate responses drawing from live site data,
+ * with immediate sub-second response, comprehensive coverage, and strict out-of-scope guardrail.
  */
 export function draftDynamicResponse(analyzed: AnalyzedQuery): AIResponse {
   const trained = loadTrainedKnowledge();
   const { company, director } = trained;
   const lang = analyzed.language;
+  const whatsappUrl = `https://wa.me/9779823009467?text=${encodeURIComponent(
+    `Hello Himnova Technologies! I am inquiring regarding: "${analyzed.rawQuery}"`
+  )}`;
 
   // -------------------------------------------------------------------------
   // 1. FAREWELL & CONVERSATION CONCLUSION INTENT (Voice Call Auto-Hangup)
@@ -33,10 +36,10 @@ export function draftDynamicResponse(analyzed: AnalyzedQuery): AIResponse {
   if (analyzed.isFarewell) {
     if (lang === "ne") {
       return {
-        reply: `### 🙏 **धन्यवाद! (Thank you)**\n\nHimnova Technologies सँग कुराकानी गर्नुभएकोमा धन्यवाद। तपाईंलाई भविष्यमा कुनै पनि सफ्टवेयर वा एआई प्रोजेक्टको सहयोग चाहिएमा हामीलाई **${company.contact.phonePrimary}** मा WhatsApp वा फोन गर्न सक्नुहुन्छ। शुभ दिन!`,
+        reply: `### 🙏 **धन्यवाद! (Thank You)**\n\nHimnova Technologies सँग कुराकानी गर्नुभएकोमा धन्यवाद। तपाईंलाई भविष्यमा कुनै पनि सफ्टवेयर, एआई वा क्लाउड प्रोजेक्टको सहयोग चाहिएमा हामीलाई **${company.contact.phonePrimary}** मा WhatsApp वा फोन गर्न सक्नुहुन्छ। तपाईंको दिन शुभ रहोस्!`,
         audioText:
           "हिमभोभा टेक्नोलोजिजमा सम्पर्क गर्नुभएकोमा धेरै धेरै धन्यवाद। तपाईंको दिन शुभ रहोस्, नमस्ते!",
-        suggestedActions: ["WhatsApp Er. Sushil Panthi", "View 15 Services", "Office Location"],
+        suggestedActions: ["WhatsApp Direct (+977 9823009467)", "15 Services", "Office Location"],
         isFarewell: true,
         language: lang,
       };
@@ -44,170 +47,48 @@ export function draftDynamicResponse(analyzed: AnalyzedQuery): AIResponse {
 
     if (lang === "hi") {
       return {
-        reply: `### 🙏 **धन्यवाद! (Thank you)**\n\nHimnova Technologies से बात करने के लिए बहुत-बहुत धन्यवाद। किसी भी समय सहायता या नए प्रोजेक्ट के लिए आप हमें **${company.contact.phonePrimary}** पर WhatsApp कर सकते हैं। आपका दिन शुभ हो!`,
+        reply: `### 🙏 **धन्यवाद! (Thank You)**\n\nHimnova Technologies से बात करने के लिए बहुत-बहुत धन्यवाद। किसी भी समय सहायता या नए प्रोजेक्ट के लिए आप हमें **${company.contact.phonePrimary}** पर WhatsApp कर सकते हैं। आपका दिन शुभ और सफल हो!`,
         audioText:
           "हिमभोभा टेक्नोलॉजीज से संपर्क करने के लिए धन्यवाद। आपका दिन शुभ और सफल रहे, नमस्ते!",
-        suggestedActions: ["WhatsApp Connect", "Explore Services", "Office Map"],
+        suggestedActions: ["WhatsApp Connect (+977 9823009467)", "15 Services", "Office Location"],
         isFarewell: true,
         language: lang,
       };
     }
 
     return {
-      reply: `### 🙏 **Thank You for Connecting with Himnova!**\n\nYou're very welcome! If you have any further questions or want to discuss an upcoming software or AI project, feel free to message us on WhatsApp anytime at **${company.contact.phonePrimary}**. Have a wonderful day!`,
+      reply: `### 🙏 **Thank You for Connecting with Himnova!**\n\nYou are very welcome! If you have any further questions or wish to discuss an upcoming software or AI project, feel free to message our engineering team on WhatsApp anytime at **${company.contact.phonePrimary}**.\n\nHave a wonderful day!`,
       audioText:
         "You are very welcome! Thank you for contacting Himnova Technologies. Have a wonderful and productive day!",
-      suggestedActions: ["WhatsApp Connect", "Explore 15 Services", "Office Location"],
+      suggestedActions: ["WhatsApp Direct (+977 9823009467)", "15 Services & Pricing", "Office Location"],
       isFarewell: true,
       language: lang,
     };
   }
 
   // -------------------------------------------------------------------------
-  // 2. SPECIFIC PRODUCT MATCH (e.g. MedPulse, OmniStore, DineFlow, etc.)
+  // 2. STRICT OUT-OF-SCOPE GUARDRAIL (When Query Is Not Found on Site)
   // -------------------------------------------------------------------------
-  if (analyzed.matchedProducts.length > 0) {
-    const p = analyzed.matchedProducts[0];
-    const npr = cleanNpr(p.priceRange.localEstimated);
-    const usd = cleanUsd(p.priceRange.usd);
+  if (analyzed.isOutOfScope) {
+    const topicLabel = analyzed.extractedTopic ? `"${analyzed.extractedTopic}"` : "this topic";
 
-    // If user asked about pricing/timeline of this product
-    if (analyzed.isAskingPricing && !analyzed.isAskingFeatures) {
-      if (lang === "ne") {
-        return {
-          reply: `### 💰 **${p.title} — मूल्य र डेलिभरी समय**
-
-- **लागत (Price)**: **NPR ${npr}** (USD **$${usd}**) [${p.priceRange.model}]
-- **तयारी समय (Turnaround)**: **${p.deliveryTime}** (Turnkey Deployment)
-- **समावेश**: १००% Full Source Code Ownership, ६ महिनाको नि:शुल्क सपोर्ट, र Deployment Setup.`,
-          audioText: `${p.title} को मूल्य एनपीआर ${npr} वा ${usd} डलर रहेको छ र यो ${p.deliveryTime} भित्र तयार हुन्छ। यसमा पूर्ण सोर्स कोड स्वामित्व समावेश छ।`,
-          suggestedActions: [`Demo of ${p.title.split(" ")[0]}`, "Request Quotation", "WhatsApp Connect"],
-          isFarewell: false,
-          language: lang,
-        };
-      }
-
-      if (lang === "hi") {
-        return {
-          reply: `### 💰 **${p.title} — लागत और डिलीवरी समय**
-
-- **अनुमानित मूल्य**: **NPR ${npr}** (USD **$${usd}**) [${p.priceRange.model}]
-- **डिलीवरी समय**: **${p.deliveryTime}**
-- **गारंटी**: १००% Full Source Code Ownership और ६ महीने की मुफ्त SLA वारंटी।`,
-          audioText: `${p.title} की कीमत एनपीआर ${npr} या ${usd} डॉलर है और यह ${p.deliveryTime} में पूरी तरह तैयार हो जाता है।`,
-          suggestedActions: [`Demo: ${p.title.split(" ")[0]}`, "Request Quotation", "WhatsApp Chat"],
-          isFarewell: false,
-          language: lang,
-        };
-      }
-
-      return {
-        reply: `### 💰 **${p.title} — Investment & Turnaround SLA**
-
-- **Estimated Investment**: **NPR ${npr}** (USD **$${usd}**) [${p.priceRange.model}]
-- **Delivery Timeline**: **${p.deliveryTime}** (Fast Turnkey Setup)
-- **Included**: 100% Full Source Code Ownership, Zero-Lock-In, 6 Months Free SLA Warranty & Deployment.`,
-        audioText: `${p.title} is available at NPR ${npr} or ${usd} dollars with a ${p.deliveryTime} turnaround time, including complete source code ownership.`,
-        suggestedActions: [`Demo of ${p.title.split(" ")[0]}`, "Request Quotation", "WhatsApp Connect"],
-        isFarewell: false,
-        language: lang,
-      };
-    }
-
-    // Full Targeted Overview for Product
-    return {
-      reply: `### 🚀 **${p.title}** (Turnkey Product: \`${p.id}\`)
-
-- **Category**: ${p.category}
-- **Tagline**: *${p.tagline}*
-- **Target Market**: ${p.targetMarket}
-
-💰 **Investment & SLA**:
-- **Price**: **NPR ${npr}** (USD **$${usd}**) [${p.priceRange.model}]
-- **Delivery Timeline**: **${p.deliveryTime}**
-
-✨ **Core Capabilities**:
-${p.keyFeatures.map((f) => `- ${f}`).join("\n")}
-
-🛠️ **Tech Stack**: ${p.techStack.join(", ")}
-📦 **Deliverables**: Multi-tier app suite, admin portal, cloud deployment, and 100% full source code ownership.`,
-      audioText: `${p.title} is available at NPR ${npr} or ${usd} dollars, delivered in ${p.deliveryTime} with full source code ownership and 6 months warranty.`,
-      suggestedActions: [`Demo of ${p.title.split(" ")[0]}`, "Request Quotation", "View 19 Products", "WhatsApp Connect"],
-      isFarewell: false,
-      language: lang,
-    };
-  }
-
-  // -------------------------------------------------------------------------
-  // 3. SPECIFIC SERVICE MATCH (e.g. Mobile Apps, AI Voice Calling, Custom Software)
-  // -------------------------------------------------------------------------
-  if (analyzed.matchedServices.length > 0) {
-    const s = analyzed.matchedServices[0];
-    const npr = cleanNpr(s.priceRange.npr);
-    const usd = cleanUsd(s.priceRange.usd);
-
-    if (analyzed.isAskingPricing || analyzed.isAskingTimeline) {
-      return {
-        reply: `### 💰 **${s.title} — Pricing & Delivery SLA**
-
-- **Nepal Market Rate**: **NPR ${npr}**
-- **Global Rate**: **USD $${usd}** (${s.priceRange.model})
-- **Turnaround SLA**: **${s.priceRange.turnaround}**
-- **Performance SLA**: ${s.metrics}
-
-✨ **Key Deliverables Included**:
-${s.features.slice(0, 4).map((f) => `- ${f}`).join("\n")}
-✅ **Guaranteed**: 100% Unencumbered Source Code Ownership, Zero-Lock-In, 6 Months Warranty.`,
-        audioText: `${s.title} starts at NPR ${npr} or ${usd} dollars with a turnaround of ${s.priceRange.turnaround}, including complete source code ownership.`,
-        suggestedActions: [`Get Quote: ${s.title.split(" ")[0]}`, "Explore 15 Services", "WhatsApp Chat"],
-        isFarewell: false,
-        language: lang,
-      };
-    }
-
-    return {
-      reply: `### 🛠️ **${s.title}** (\`${s.id}\`)
-
-${s.fullDetails}
-
-- **Strategic Focus**: ${s.focusArea}
-- **Value Created**: ${s.valueCreated}
-
-💰 **Pricing & SLA**:
-- **Rates**: **NPR ${npr}** / **USD $${usd}** (${s.priceRange.model})
-- **Timeline**: **${s.priceRange.turnaround}**
-
-✨ **Engineering Capabilities**:
-${s.features.map((f) => `- ${f}`).join("\n")}
-
-✅ **Himnova Standard**: 100% Source Code Ownership, 99.99% Cloud SLA, 6 Months Free Warranty.`,
-      audioText: `${s.title} starts at NPR ${npr} or ${usd} dollars with a turnaround of ${s.priceRange.turnaround}. How can we tailor it for your project?`,
-      suggestedActions: [`Get Quote: ${s.title.split(" ")[0]}`, "Explore 15 Services", "WhatsApp Chat"],
-      isFarewell: false,
-      language: lang,
-    };
-  }
-
-  // -------------------------------------------------------------------------
-  // 4. LEADERSHIP & FOUNDER INQUIRY (Er. Sushil Panthi)
-  // -------------------------------------------------------------------------
-  if (analyzed.isAskingLeadership) {
     if (lang === "ne") {
       return {
-        reply: `### 👤 **${director.name}** — ${director.title}
-**Himnova Technologies Private Limited**
+        reply: `### ℹ️ **जानकारी उपलब्ध छैन (Topic Not Found)**
 
-Er. Sushil Panthi ले काठमाडौं, नेपालबाट Silicon Valley मापदण्डको क्लाउड आर्किटेक्चर, डिस्ट्रिब्युटेड सिस्टम्स र Generative AI सोलुसनहरूको नेतृत्व गरिरहनुभएको छ।
+माफ गर्नुहोला, तपाईंले सोध्नुभएको **${topicLabel}** सम्बन्धी कुनै पनि जानकारी हाम्रो आधिकारिक हिमभोभा प्लेटफर्म वा वेबसाइटमा उपलब्ध छैन।
 
-💬 **उहाँको भनाइ**:
-*"${director.quote}"*
+Himnova Technologies विशेष रूपमा **कस्टम सफ्टवेयर, क्लाउड आर्किटेक्चर, मोबाइल एप्स, र एआई सोलुसन्स** निर्माणमा केन्द्रित छ।
 
-- **सम्पर्क / WhatsApp**: **${company.contact.phonePrimary}**
-- **ईमेल**: **${company.contact.email}**
-- **मुख्य कार्यालय**: बानेश्वर-३१, काठमाडौं (देउराली क्लब अगाडि)`,
+यदि तपाईंको यो कुनै नयाँ प्रविधि आवश्यकता वा सफ्टवेयर विकास सम्बन्धी हो भने, कृपया सिधै हाम्रो ईन्जिनियरिङ टोलीलाई **WhatsApp (${company.contact.phonePrimary})** मा सम्पर्क गर्नुहोस्।`,
         audioText:
-          "हिमभोभा टेक्नोलोजिजका कार्यकारी निर्देशक ईन्जिनियर सुशील पन्थी हुनुहुन्छ। उहाँलाई सन्तानब्बे अन्ठानब्बे तेइस शून्य शून्य नौ सय छयालीस मा सम्पर्क गर्न सक्नुहुन्छ।",
-        suggestedActions: ["WhatsApp Er. Sushil Panthi", "Office Location", "15 Services"],
+          "माफ गर्नुहोला, यस विषयमा हाम्रो प्लेटफर्ममा कुनै जानकारी उपलब्ध छैन। थप जानकारी वा सफ्टवेयर सम्बन्धी सोधपुछका लागि कृपया हामीलाई ह्वाट्सएपमा ९८२३००९४६७ मा सम्पर्क गर्नुहोस्।",
+        suggestedActions: [
+          "WhatsApp Team (+977 9823009467)",
+          "15 IT Services",
+          "19 Turnkey Products",
+          "Office Location",
+        ],
         isFarewell: false,
         language: lang,
       };
@@ -215,45 +96,49 @@ Er. Sushil Panthi ले काठमाडौं, नेपालबाट Sili
 
     if (lang === "hi") {
       return {
-        reply: `### 👤 **${director.name}** — ${director.title}
-**Himnova Technologies Private Limited**
+        reply: `### ℹ️ **जानकारी उपलब्ध नहीं है (Topic Not Found)**
 
-Er. Sushil Panthi काठमांडू, नेपाल से आधुनिक क्लाउड आर्किटेक्चर और जनरेटिव एआई (Generative AI) सॉल्यूशंस का नेतृत्व कर रहे हैं।
+क्षमा करें, आपके द्वारा पूछे गए **${topicLabel}** के संबंध में हमारे आधिकारिक प्लेटफ़ॉर्म पर कोई जानकारी उपलब्ध नहीं है।
 
-- **डायरेक्टर विजन**: *"${director.quote}"*
-- **डायरेक्ट लाइन / WhatsApp**: **${company.contact.phonePrimary}**
-- **ईमेल**: **${company.contact.email}**
-- **ऑफिस**: बानेश्वर-३१, काठमांडू`,
+Himnova Technologies मुख्य रूप से **कस्टम सॉफ्टवेयर, क्लाउड आर्किटेक्चर, मोबाइल ऐप्स और एआई सॉल्यूशंस** प्रदान करता है।
+
+कस्टम प्रोजेक्ट या तकनीकी सहायता के लिए आप हमारे लीड आर्किटेक्ट से सीधे **WhatsApp पर ${company.contact.phonePrimary}** पर बात कर सकते हैं।`,
         audioText:
-          "हिमभोभा टेक्नोलॉजीज के चेयरमैन और डायरेक्टर इंजीनियर सुशील पंथी हैं। आप उन्हें +977 9823009467 पर संपर्क कर सकते हैं।",
-        suggestedActions: ["WhatsApp Er. Sushil Panthi", "Office Location", "15 Services"],
+          "क्षमा करें, इस विषय की जानकारी हमारे प्लेटफ़ॉर्म पर उपलब्ध नहीं है। कस्टम तकनीकी पूछताछ के लिए आप हमारे टीम से व्हाट्सएप पर ९८२३००९४६७ पर संपर्क कर सकते हैं।",
+        suggestedActions: [
+          "WhatsApp Connect (+977 9823009467)",
+          "15 IT Services",
+          "19 Turnkey Products",
+          "Office Location",
+        ],
         isFarewell: false,
         language: lang,
       };
     }
 
     return {
-      reply: `### 👤 **${director.name}**
-**${director.title}** — Himnova Technologies Private Limited
+      reply: `### ℹ️ **Topic Not Found on Himnova Platform**
 
-Er. Sushil Panthi leads Himnova Technologies with a mission to engineer Silicon Valley-grade cloud intelligence, agentic AI workflows, and resilient distributed platforms out of Kathmandu, Nepal.
+I apologize, but we do not currently have information regarding **${topicLabel}** on our official platform or documentation.
 
-> *"${director.quote}"*
+Himnova Technologies specializes in **enterprise software engineering, cloud architecture, mobile apps, and agentic AI systems**.
 
-- **Role**: Executive Leadership, Systems Architect & Head of R&D
-- **Direct Desk Line / WhatsApp**: **${company.contact.phonePrimary}**
-- **Email**: **${company.contact.email}**
-- **Headquarters**: 2nd Floor, Dillibazar-30, Kathmandu 44600, Nepal *(Opposite Padmakanya Vidhyashram Secondary School)* *(Sole Corporate Office — No Branches)*`,
+If this inquiry relates to a custom engineering requirement, software development, or technical partnership, our engineering architects would be glad to discuss it directly with you on **WhatsApp at [${company.contact.phonePrimary}](${whatsappUrl})** or via email at \`${company.contact.email}\`.`,
       audioText:
-        "Er. Sushil Panthi is the Chairman, Executive Director, and Chief Architect of Himnova Technologies. You can reach him directly at +977 9823009467.",
-      suggestedActions: ["WhatsApp Er. Sushil Panthi", "Office Location", "Explore Services"],
+        "I apologize, but we do not have information regarding that topic on our platform. For custom software or technical inquiries, please connect directly with our engineering team on WhatsApp at +977 9823009467.",
+      suggestedActions: [
+        "WhatsApp Team (+977 9823009467)",
+        "15 Specialized Services",
+        "19 Turnkey Products",
+        "Corporate Office & Map",
+      ],
       isFarewell: false,
       language: lang,
     };
   }
 
   // -------------------------------------------------------------------------
-  // 5. LOCATION, DIRECTIONS & MAP INQUIRY
+  // 3. LOCATION, DIRECTIONS & SOLE CORPORATE OFFICE (Dillibazar-30)
   // -------------------------------------------------------------------------
   if (analyzed.isAskingLocation) {
     if (lang === "ne") {
@@ -296,13 +181,13 @@ Er. Sushil Panthi leads Himnova Technologies with a mission to engineer Silicon 
       reply: `### 📍 **Himnova Technologies Corporate Office**
 
 - **Address**: **2nd Floor, Dillibazar-30, Kathmandu 44600, Nepal** *(Opposite to Padmakanya Vidhyashram Secondary School)*
-- **Branch Note**: **Sole Corporate Location (No Branch Offices)**
+- **Branch Notice**: **Sole Corporate Location (No Branch Offices)**
 - **Primary Phone / WhatsApp**: **${company.contact.phonePrimary}**
 - **Secondary Line**: **${company.contact.phoneSecondary}**
-- **Email**: **${company.contact.email}**
-- **Working Hours**: Monday – Friday: 9:00 AM – 6:00 PM NPT (24/7 Production SLA)
+- **Official Email**: \`${company.contact.email}\`
+- **Working Hours**: Monday – Friday: 9:00 AM – 6:00 PM NPT (24/7 Cloud Support SLA)
 
-You can click **"Get Directions"** on our website to open turn-by-turn navigation in Google Maps!`,
+🗺️ You can use the **"Get Directions"** interactive map on our site to navigate directly via Google Maps!`,
       audioText:
         "Himnova Technologies is located at 2nd Floor, Dillibazar-30, Kathmandu, Nepal, opposite to Padmakanya Vidhyashram Secondary School. Our phone and WhatsApp number is +977 9823009467.",
       suggestedActions: ["Open Google Maps", "WhatsApp Chat", "Call Office"],
@@ -312,7 +197,71 @@ You can click **"Get Directions"** on our website to open turn-by-turn navigatio
   }
 
   // -------------------------------------------------------------------------
-  // 6. CONTACT & PHONE / WHATSAPP INQUIRY
+  // 4. LEADERSHIP & FOUNDER INQUIRY (Er. Sushil Panthi)
+  // -------------------------------------------------------------------------
+  if (analyzed.isAskingLeadership) {
+    if (lang === "ne") {
+      return {
+        reply: `### 👤 **${director.name}** — ${director.title}
+**Himnova Technologies Private Limited**
+
+Er. Sushil Panthi ले काठमाडौं, नेपालबाट Silicon Valley मापदण्डको क्लाउड आर्किटेक्चर, डिस्ट्रिब्युटेड सिस्टम्स र Generative AI सोलुसनहरूको नेतृत्व गरिरहनुभएको छ।
+
+💬 **उहाँको भनाइ**:
+*"${director.quote}"*
+
+- **सम्पर्क / WhatsApp**: **${company.contact.phonePrimary}**
+- **ईमेल**: **${company.contact.email}**
+- **मुख्य कार्यालय**: २ तला, डिल्लीबजार-३०, काठमाडौं (पद्मकन्या विद्याश्रम अगाडि)`,
+        audioText:
+          "हिमभोभा टेक्नोलोजिजका कार्यकारी निर्देशक र प्रमुख आर्किटेक्ट ईन्जिनियर सुशील पन्थी हुनुहुन्छ। उहाँलाई ९८२३००९४६७ मा सिधै सम्पर्क गर्न सक्नुहुन्छ।",
+        suggestedActions: ["WhatsApp Er. Sushil Panthi", "Office Location", "15 Services"],
+        isFarewell: false,
+        language: lang,
+      };
+    }
+
+    if (lang === "hi") {
+      return {
+        reply: `### 👤 **${director.name}** — ${director.title}
+**Himnova Technologies Private Limited**
+
+Er. Sushil Panthi काठमांडू, नेपाल से आधुनिक क्लाउड आर्किटेक्चर और जनरेटिव एआई (Generative AI) सॉल्यूशंस का नेतृत्व कर रहे हैं।
+
+- **डायरेक्टर विजन**: *"${director.quote}"*
+- **डायरेक्ट लाइन / WhatsApp**: **${company.contact.phonePrimary}**
+- **ईमेल**: **${company.contact.email}**
+- **ऑफिस**: २ तला, डिल्लीबजार-३०, काठमांडू (पद्मकन्या विद्याश्रम के सामने)`,
+        audioText:
+          "हिमभोभा टेक्नोलॉजीज के चेयरमैन और डायरेक्टर इंजीनियर सुशील पंथी हैं। आप उन्हें +977 9823009467 पर संपर्क कर सकते हैं।",
+        suggestedActions: ["WhatsApp Er. Sushil Panthi", "Office Location", "15 Services"],
+        isFarewell: false,
+        language: lang,
+      };
+    }
+
+    return {
+      reply: `### 👤 **${director.name}**
+**${director.title}** — Himnova Technologies Private Limited
+
+Er. Sushil Panthi leads Himnova Technologies with a mission to engineer Silicon Valley-grade cloud intelligence, agentic AI workflows, and resilient distributed platforms out of Kathmandu, Nepal.
+
+> *"${director.quote}"*
+
+- **Role**: Executive Leadership, Systems Architect & Head of R&D
+- **Direct Desk Line / WhatsApp**: **${company.contact.phonePrimary}**
+- **Email**: **${company.contact.email}**
+- **Headquarters**: 2nd Floor, Dillibazar-30, Kathmandu 44600, Nepal *(Opposite Padmakanya Vidhyashram Secondary School)* *(Sole Corporate Office — No Branches)*`,
+      audioText:
+        "Er. Sushil Panthi is the Chairman, Executive Director, and Chief Architect of Himnova Technologies. You can reach him directly at +977 9823009467.",
+      suggestedActions: ["WhatsApp Er. Sushil Panthi", "Office Location", "Explore Services"],
+      isFarewell: false,
+      language: lang,
+    };
+  }
+
+  // -------------------------------------------------------------------------
+  // 5. CONTACT & PHONE / WHATSAPP INQUIRY
   // -------------------------------------------------------------------------
   if (analyzed.isAskingContact) {
     return {
@@ -322,9 +271,9 @@ You can click **"Get Directions"** on our website to open turn-by-turn navigatio
 - ☎️ **Secondary Phone**: **${company.contact.phoneSecondary}**
 - ✉️ **General Inquiries**: \`${company.contact.email}\`
 - 💼 **Sales & Custom Quotes**: \`${company.contact.salesEmail}\`
-- 📍 **Office**: ${company.headquarters.address}, ${company.headquarters.city} 44600, Nepal
+- 🏢 **Corporate Office**: 2nd Floor, Opposite to Padmakanya Vidhyashram Secondary School, Dillibazar-30, Kathmandu 44600, Nepal *(Sole Corporate Location — No Branch Offices)*
 
-Connect with us anytime on WhatsApp for instant software consultation and architecture planning!`,
+Connect with us anytime on [WhatsApp (+977 9823009467)](${whatsappUrl}) for instant software consultation and architecture planning!`,
       audioText: `You can reach Himnova Technologies on phone or WhatsApp at +977 9823009467, or email us at ${company.contact.email}.`,
       suggestedActions: ["WhatsApp Direct", "Call Primary Line", "Office Map"],
       isFarewell: false,
@@ -333,7 +282,170 @@ Connect with us anytime on WhatsApp for instant software consultation and archit
   }
 
   // -------------------------------------------------------------------------
-  // 7. GUARANTEES, SOURCE CODE OWNERSHIP & SLA
+  // 6. SPECIFIC PRODUCT MATCH (19 Turnkey Products)
+  // -------------------------------------------------------------------------
+  if (analyzed.matchedProducts.length > 0) {
+    const p = analyzed.matchedProducts[0];
+    const npr = cleanNpr(p.priceRange.localEstimated);
+    const usd = cleanUsd(p.priceRange.usd);
+
+    if (analyzed.isAskingPricing && !analyzed.isAskingFeatures) {
+      if (lang === "ne") {
+        return {
+          reply: `### 💰 **${p.title} — लगानी तथा डेलिभरी समय**
+
+- **अनुमानित लागत (Price)**: **NPR ${npr}** (USD **$${usd}**) [${p.priceRange.model}]
+- **तयारी समय (Turnaround)**: **${p.deliveryTime}** (Turnkey Deployment)
+- **समावेश**: १००% Full Source Code Ownership, ६ महिनाको नि:शुल्क सपोर्ट, र Deployment Setup.
+
+> 📝 **नोट**: ग्राहकको आवश्यकता, फिचर्सको दायरा, र दुवै पक्षको आपसी सहमति अनुसार मूल्य कम वा बढी हुन सक्छ।`,
+          audioText: `${p.title} को मूल्य एनपीआर ${npr} वा ${usd} डलर रहेको छ र यो ${p.deliveryTime} भित्र तयार हुन्छ। यसमा पूर्ण सोर्स कोड स्वामित्व समावेश छ।`,
+          suggestedActions: [`Demo of ${p.title.split(" ")[0]}`, "Request Quotation", "WhatsApp Connect"],
+          isFarewell: false,
+          language: lang,
+        };
+      }
+
+      return {
+        reply: `### 💰 **${p.title} — Investment & Turnaround SLA**
+
+- **Estimated Investment**: **NPR ${npr}** (USD **$${usd}**) [${p.priceRange.model}]
+- **Delivery Timeline**: **${p.deliveryTime}** (Fast Turnkey Setup)
+- **Included**: 100% Full Source Code Ownership, Zero-Lock-In, 6 Months Free SLA Warranty & Deployment.
+
+> 📝 **Important Note**: *The price range may be lower or higher depending on specific project requirements, custom integrations, feature scope, and mutually agreed terms between both parties.*`,
+        audioText: `${p.title} is available at NPR ${npr} or ${usd} dollars with a ${p.deliveryTime} turnaround time, including complete source code ownership.`,
+        suggestedActions: [`Demo of ${p.title.split(" ")[0]}`, "Request Quotation", "WhatsApp Connect"],
+        isFarewell: false,
+        language: lang,
+      };
+    }
+
+    return {
+      reply: `### 🚀 **${p.title}** (Turnkey Product: \`${p.id}\`)
+
+- **Category**: ${p.category}
+- **Tagline**: *${p.tagline}*
+- **Target Market**: ${p.targetMarket}
+
+💰 **Investment & SLA**:
+- **Price Range**: **NPR ${npr}** (USD **$${usd}**) [${p.priceRange.model}]
+- **Delivery Timeline**: **${p.deliveryTime}**
+*(Note: Final pricing varies based on custom scope, features, and mutual agreement).*
+
+✨ **Core Capabilities**:
+${p.keyFeatures.map((f) => `- ${f}`).join("\n")}
+
+🛠️ **Tech Stack**: ${p.techStack.join(", ")}
+📦 **Deliverables**: Multi-tier app suite, admin portal, cloud deployment, and 100% full source code ownership.`,
+      audioText: `${p.title} is available at NPR ${npr} or ${usd} dollars, delivered in ${p.deliveryTime} with full source code ownership and 6 months warranty.`,
+      suggestedActions: [`Demo of ${p.title.split(" ")[0]}`, "Request Quotation", "View 19 Products", "WhatsApp Connect"],
+      isFarewell: false,
+      language: lang,
+    };
+  }
+
+  // -------------------------------------------------------------------------
+  // 7. SPECIFIC SERVICE MATCH (15 IT Services)
+  // -------------------------------------------------------------------------
+  if (analyzed.matchedServices.length > 0) {
+    const s = analyzed.matchedServices[0];
+    const npr = cleanNpr(s.priceRange.npr);
+    const usd = cleanUsd(s.priceRange.usd);
+
+    if (analyzed.isAskingPricing || analyzed.isAskingTimeline) {
+      return {
+        reply: `### 💰 **${s.title} — Pricing & Delivery SLA**
+
+- **Nepal Market Rate**: **NPR ${npr}**
+- **Global Rate**: **USD $${usd}** (${s.priceRange.model})
+- **Turnaround SLA**: **${s.priceRange.turnaround}**
+- **Performance SLA**: ${s.metrics}
+
+✨ **Key Deliverables Included**:
+${s.features.slice(0, 4).map((f) => `- ${f}`).join("\n")}
+
+> 📝 **Important Note**: *The price range may be lower or higher depending on specific project requirements, custom integrations, feature scope, and mutually agreed terms between both parties.*
+
+✅ **Guaranteed**: 100% Unencumbered Source Code Ownership, Zero-Lock-In, 6 Months Warranty.`,
+        audioText: `${s.title} starts at NPR ${npr} or ${usd} dollars with a turnaround of ${s.priceRange.turnaround}, including complete source code ownership.`,
+        suggestedActions: [`Get Quote: ${s.title.split(" ")[0]}`, "Explore 15 Services", "WhatsApp Chat"],
+        isFarewell: false,
+        language: lang,
+      };
+    }
+
+    return {
+      reply: `### 🛠️ **${s.title}** (\`${s.id}\`)
+
+${s.fullDetails}
+
+- **Strategic Focus**: ${s.focusArea}
+- **Value Created**: ${s.valueCreated}
+
+💰 **Pricing & SLA**:
+- **Rates**: **NPR ${npr}** / **USD $${usd}** (${s.priceRange.model})
+- **Timeline**: **${s.priceRange.turnaround}**
+*(Note: Final pricing adapts to client requirements through mutual agreement).*
+
+✨ **Engineering Capabilities**:
+${s.features.map((f) => `- ${f}`).join("\n")}
+
+✅ **Himnova Standard**: 100% Source Code Ownership, 99.99% Cloud SLA, 6 Months Free Warranty.`,
+      audioText: `${s.title} starts at NPR ${npr} or ${usd} dollars with a turnaround of ${s.priceRange.turnaround}. How can we tailor it for your project?`,
+      suggestedActions: [`Get Quote: ${s.title.split(" ")[0]}`, "Explore 15 Services", "WhatsApp Chat"],
+      isFarewell: false,
+      language: lang,
+    };
+  }
+
+  // -------------------------------------------------------------------------
+  // 8. DELIVERED PROJECTS & CASE STUDIES MATCH (All 8 Projects)
+  // -------------------------------------------------------------------------
+  if (analyzed.matchedProjects.length > 0 || analyzed.isAskingProjects) {
+    const project = analyzed.matchedProjects[0] || trained.projects[0];
+    return {
+      reply: `### 🏆 **Case Study: ${project.title}**
+
+- **Category**: ${project.category} (${project.year}) • **Status**: ${project.status}
+- **Overview**: ${project.description}
+- **Key Capabilities**:
+${project.features.map((f) => `  - ${f}`).join("\n")}
+- **Enterprise Tech Stack**: ${project.techStack.join(", ")}
+
+Ask me about our other deployed systems: **AlgoCare (Triage AI)**, **LumbiniCare (Hospital ERP)**, **SkillNexus**, or **StockSmart**!`,
+      audioText: `We engineered ${project.title}, a ${project.category} built with ${project.techStack.slice(0, 3).join(", ")}. It is currently in active production.`,
+      suggestedActions: ["View All Projects", "Request Case Study", "WhatsApp Architect"],
+      isFarewell: false,
+      language: lang,
+    };
+  }
+
+  // -------------------------------------------------------------------------
+  // 9. TECHNICAL RESEARCH BLOGS MATCH (All 16 Blogs)
+  // -------------------------------------------------------------------------
+  if (analyzed.matchedBlogs.length > 0 || analyzed.isAskingBlogs) {
+    const blog = analyzed.matchedBlogs[0] || trained.blogs[0];
+    return {
+      reply: `### 📚 **Technical Research: ${blog.title}**
+
+- **Category**: ${blog.category} • *${blog.readTime}* (${blog.publishedDate})
+- **Author**: ${blog.author.name} (${blog.author.role})
+- **Executive Abstract**: ${blog.excerpt}
+
+📌 **Core Architectural Pillars Covered**:
+${blog.tableOfContents.map((t) => `- **${t.title}**`).join("\n")}
+
+You can read the complete publication on our **Technical Blog** page!`,
+      audioText: `Our latest research paper, ${blog.title}, explores enterprise architectural patterns. You can explore the full paper on our website.`,
+      suggestedActions: ["Read Full Blog", "Technical Insights", "WhatsApp Er. Sushil Panthi"],
+      isFarewell: false,
+      language: lang,
+    };
+  }
+
+  // -------------------------------------------------------------------------
+  // 10. GUARANTEES, SOURCE CODE OWNERSHIP & SLA
   // -------------------------------------------------------------------------
   if (analyzed.isAskingGuarantees || analyzed.isAskingDeliverables) {
     const g = trained.guarantees;
@@ -363,7 +475,7 @@ Connect with us anytime on WhatsApp for instant software consultation and archit
   }
 
   // -------------------------------------------------------------------------
-  // 8. TECH STACK & FRAMEWORKS INQUIRY
+  // 11. TECH STACK & FRAMEWORKS INQUIRY
   // -------------------------------------------------------------------------
   if (analyzed.isAskingTechStack) {
     const ts = trained.techStacks;
@@ -387,7 +499,7 @@ Connect with us anytime on WhatsApp for instant software consultation and archit
   }
 
   // -------------------------------------------------------------------------
-  // 9. GENERAL PRICING INQUIRY
+  // 12. GENERAL PRICING INQUIRY
   // -------------------------------------------------------------------------
   if (analyzed.isAskingPricing) {
     if (lang === "ne") {
@@ -401,29 +513,11 @@ Connect with us anytime on WhatsApp for instant software consultation and archit
 5. 🎨 **Corporate Website & SEO**: **NPR 25,000 – 65,000** ($160 – $420) • *१-२ हप्ता*
 6. 🚀 **19 Pre-Built Turnkey Products**: **NPR 40,000 – 1,98,000** ($260 – $1,280)
 
-✅ **सबैमा समावेश**: १००% Source Code Ownership, ९९.९९% Cloud SLA, र ६ महिनाको वारेन्टी।`,
+> 📝 **महत्त्वपूर्ण नोट**: *ग्राहकको आवश्यकता, कामको दायरा, र दुवै पक्षको आपसी सहमति अनुसार मूल्य कम वा बढी हुन सक्छ। सबै कार्य दुवै पक्षको सन्तुष्टिमा गरिन्छ।*
+
+✅ **सबैमा समावेश**: १००% Source Code Ownership, ९९.९९% Cloud SLA, र ६ महिनाको नि:शुल्क वारेन्टी।`,
         audioText:
-          "हिमभोभाका सेवा दरहरू पारदर्शी छन्। एआई भ्वाइस एजेन्ट पैँतालीस हजार, वेबसाइट पच्चीस हजार, र मोबाइल एप पचासी हजार एनपीआरबाट सुरु हुन्छ।",
-        suggestedActions: ["AI Voice Calling", "Mobile Apps", "Custom Software", "WhatsApp Quote"],
-        isFarewell: false,
-        language: lang,
-      };
-    }
-
-    if (lang === "hi") {
-      return {
-        reply: `### 💰 **Himnova Technologies — पारदर्शी सेवा दरें (Transparent Rates)**:
-
-1. 🎙️ **AI Voice Calling & Agents**: **NPR 45,000 – 1,45,000** ($290 – $935) • *१-३ सप्ताह*
-2. 💻 **Custom Software Development**: **NPR 95,000 – 2,90,000** ($615 – $1,870) • *३-६ सप्ताह*
-3. 🌐 **Web Applications & SaaS**: **NPR 65,000 – 1,95,000** ($420 – $1,260) • *२-५ सप्ताह*
-4. 📱 **Mobile Apps (iOS & Android)**: **NPR 85,000 – 2,60,000** ($550 – $1,680) • *३-६ सप्ताह*
-5. 🎨 **Corporate Website & SEO**: **NPR 25,000 – 65,000** ($160 – $420) • *१-२ सप्ताह*
-6. 🚀 **19 Turnkey Pre-Built Products**: **NPR 40,000 – 1,98,000** ($260 – $1,280)
-
-✅ **गारंटी**: १००% Full Source Code Ownership और ६ महीने का मुफ्त सपोर्ट।`,
-        audioText:
-          "हिमभोभा की दरें पारदर्शी हैं। एआई कॉलिंग पैंतालीस हजार, वेबसाइट पच्चीस हजार और मोबाइल ऐप पचासी हजार एनपीआर से शुरू होता है।",
+          "हिमभोभाका सेवा दरहरू पारदर्शी छन्। एआई भ्वाइस एजेन्ट पैँतालीस हजार, वेबसाइट पच्चीस हजार, र मोबाइल एप पचासी हजार एनपीआरबाट सुरु हुन्छ। आवश्यकता अनुसार आपसी सहमतिमा मूल्य समायोजन गरिन्छ।",
         suggestedActions: ["AI Voice Calling", "Mobile Apps", "Custom Software", "WhatsApp Quote"],
         isFarewell: false,
         language: lang,
@@ -440,9 +534,11 @@ Connect with us anytime on WhatsApp for instant software consultation and archit
 - 🎨 **Corporate Website & SEO**: **NPR 25,000 – 65,000** ($160 – $420) • *1 – 2 Weeks*
 - 🚀 **19 Turnkey Pre-Built Platforms**: **NPR 40,000 – 1,98,000** ($260 – $1,280) • *1 – 3 Weeks*
 
+> 📝 **Important Note on Pricing**: *The price range may be lower or higher than listed depending on specific technical requirements, feature scope, custom third-party integrations, and mutually agreed terms between both parties. Everything is executed with bilateral satisfaction and professional agreement.*
+
 ✅ Every project includes **100% full source code ownership** and **6 months free warranty**.`,
       audioText:
-        "Our pricing is fully transparent with complete source code ownership. AI voice agents start at 45,000 NPR, websites at 25,000 NPR, and mobile apps at 85,000 NPR.",
+        "Our pricing is fully transparent with complete source code ownership. AI voice agents start at 45,000 NPR, websites at 25,000 NPR, and mobile apps at 85,000 NPR. Pricing is tailored based on your exact requirements and mutual agreement.",
       suggestedActions: ["Request Custom Quote", "Explore 19 Products", "WhatsApp Inquiry"],
       isFarewell: false,
       language: lang,
@@ -450,7 +546,7 @@ Connect with us anytime on WhatsApp for instant software consultation and archit
   }
 
   // -------------------------------------------------------------------------
-  // 10. ALL 19 PRODUCTS CATALOG
+  // 13. ALL 19 PRODUCTS CATALOG
   // -------------------------------------------------------------------------
   if (analyzed.isAskingAllProducts) {
     return {
@@ -463,7 +559,7 @@ ${trained.products
   )
   .join("\n")}
 
-*Ask me about any product above to get its complete architecture, live demo details, and feature list!*`,
+> 📝 *Note: Prices are subject to requirement adjustments through mutual agreement.*`,
       audioText:
         "Himnova offers 19 turnkey software products including VoxNova AI, Hospital EHR, Hotel PMS, School ERP, and E-commerce platforms, ready to deploy in 1 to 3 weeks.",
       suggestedActions: ["VoxNova AI Platform", "MedPulse Hospital EHR", "OmniStore E-Commerce", "WhatsApp Demo"],
@@ -473,7 +569,7 @@ ${trained.products
   }
 
   // -------------------------------------------------------------------------
-  // 11. ALL 15 SERVICES CATALOG
+  // 14. ALL 15 SERVICES CATALOG
   // -------------------------------------------------------------------------
   if (analyzed.isAskingAllServices) {
     return {
@@ -486,7 +582,7 @@ ${trained.services
   )
   .join("\n\n")}
 
-*Ask me about any service to see its complete technical scope and custom pricing!*`,
+> 📝 *Note: Prices can be customized per project specifications under mutual agreement.*`,
       audioText:
         "Himnova provides 15 specialized services including AI voice agents, custom software, mobile apps, DevOps, and cloud hosting.",
       suggestedActions: ["AI Voice Calling", "Mobile App Development", "Custom Software", "WhatsApp Inquiry"],
@@ -496,7 +592,7 @@ ${trained.services
   }
 
   // -------------------------------------------------------------------------
-  // 12. CAREERS & HIRING
+  // 15. CAREERS & HIRING
   // -------------------------------------------------------------------------
   if (analyzed.isAskingCareers) {
     return {
@@ -521,17 +617,17 @@ ${trained.careers
   }
 
   // -------------------------------------------------------------------------
-  // 13. DEFAULT CONVERSATIONAL RESPONSE DRAFTER
+  // 16. GREETINGS & DEFAULT KNOWLEDGE SUMMARY
   // -------------------------------------------------------------------------
   if (lang === "ne") {
     return {
-      reply: `नमस्ते! म **Himnova 24/7 AI Assistant** हुँ। Himnova Technologies (काठमाडौं, नेपाल) ले १५ वटा IT सेवाहरू, १९ वटा टर्नकी सफ्टवेयर उत्पादनहरू, र नेपाली/हिन्दी/अंग्रेजी AI Voice Calling Agents उपलब्ध गराउँछ।
+      reply: `नमस्ते! म **Himnova 24/7 AI Assistant** हुँ। Himnova Technologies (डिल्लीबजार-३०, काठमाडौं) ले १५ वटा IT सेवाहरू, १९ वटा टर्नकी सफ्टवेयर उत्पादनहरू, र नेपाली/हिन्दी/अंग्रेजी AI Voice Calling Agents उपलब्ध गराउँछ।
 
-तपाईंले सोध्नुभएको: *"**${analyzed.rawQuery}**"* को बारेमा हामी तपाईंलाई कसरी सहयोग गर्न सक्छौं?
-- 🎙️ **AI Voice Calling Agents & Pricing**
+तपाईंले सोध्नुभएको विषयमा हामी तपाईंलाई कसरी सहयोग गर्न सक्छौं?
+- 🎙️ **AI Voice Calling Agents & Rates**
 - 💻 **कस्टम सफ्टवेयर र मोबाइल एप्स (iOS/Android)**
 - 💰 **पारदर्शी सेवा दरहरू र डेलिभरी समय**
-- 📍 **कार्यालय (बानेश्वर-३१) वा सम्पर्क (+977 9823009467)**`,
+- 📍 **कार्यालय (डिल्लीबजार-३०) वा सम्पर्क (+977 9823009467)**`,
       audioText:
         "नमस्ते! म हिमभोभा एआई असिस्टेन्ट हुँ। तपाईँलाई हाम्रो सफ्टवेयर, भ्वाइस कलिङ वा क्लाउड सेवाको बारेमा के जानकारी चाहिन्छ?",
       suggestedActions: ["AI Voice Calling Rates", "15 IT Services", "19 Turnkey Products", "Office Location"],
@@ -542,13 +638,13 @@ ${trained.careers
 
   if (lang === "hi") {
     return {
-      reply: `नमस्ते! मैं **Himnova 24/7 AI Assistant** हूँ। Himnova Technologies (काठमांडू, नेपाल) से कस्टम सॉफ्टवेयर, मोबाइल ऐप्स, और एआई वॉइस कॉलिंग एजेंट्स प्रदान करता है।
+      reply: `नमस्ते! मैं **Himnova 24/7 AI Assistant** हूँ। Himnova Technologies (डिल्लीबजार-३०, काठमांडू) से कस्टम सॉफ्टवेयर, मोबाइल ऐप्स, और एआई वॉइस कॉलिंग एजेंट्स प्रदान करता है।
 
-आपकी पूछताछ: *"**${analyzed.rawQuery}**"* के संदर्भ में:
+आपकी सेवा में:
 - 🎙️ **AI Voice Calling Agents & Rates**
 - 💻 **कस्टम सॉफ्टवेयर और मोबाइल ऐप्स**
 - 💰 **पारदर्शी रेट्स और डिलीवरी टाइमलाइन**
-- 📍 **ऑफिस लोकेशन (बानेश्वर-३१) और व्हाट्सएप (+977 9823009467)**`,
+- 📍 **ऑफिस लोकेशन (डिल्लीबजार-३०) और व्हाट्सएप (+977 9823009467)**`,
       audioText:
         "नमस्ते! मैं हिमभोभा एआई असिस्टेंट हूँ। आप सॉफ्टवेयर डेवलपमेंट, एआई वॉइस कॉलिंग या प्राइसिंग के बारे में कुछ भी पूछ सकते हैं।",
       suggestedActions: ["AI Voice Calling Rates", "15 IT Services", "19 Turnkey Products", "Office Location"],
@@ -558,16 +654,16 @@ ${trained.careers
   }
 
   return {
-    reply: `Hello! I am the **Himnova 24/7 AI Assistant**, trained on all services, turnkey products, and engineering capabilities of **Himnova Technologies Private Limited** (Kathmandu, Nepal).
+    reply: `Hello! I am the **Himnova 24/7 AI Assistant**, trained on all live services, turnkey products, and engineering capabilities of **Himnova Technologies Private Limited** (Dillibazar-30, Kathmandu, Nepal).
 
-Regarding your inquiry: *"**${analyzed.rawQuery}**"*:
+Regarding your project:
 - 🎙️ **AI Voice Calling Agents & VoxNova Platform** (Sub-400ms latency)
 - 💻 **Custom Enterprise Software & Web Apps** (100% full source code ownership)
 - 📱 **Mobile Apps for iOS & Android** (Flutter / React Native)
 - 🚀 **19 Pre-Built Turnkey Platforms** (Deploy in 1–3 weeks)
-- 💰 **Transparent Rate Cards in NPR & USD**
+- 💰 **Transparent Rate Cards in NPR & USD** (Tailored with mutual agreement)
 
-How may our engineering architects assist your project today? Connect on WhatsApp at **${company.contact.phonePrimary}** anytime!`,
+How may our engineering architects assist your project today? Connect on [WhatsApp at ${company.contact.phonePrimary}](${whatsappUrl}) anytime!`,
     audioText:
       "Hello! I am the Himnova AI Assistant. I can help you with AI voice calling agents, custom software development, mobile apps, or pricing estimates.",
     suggestedActions: ["AI Voice Calling Specs", "15 IT Services", "19 Turnkey Products", "WhatsApp Direct"],

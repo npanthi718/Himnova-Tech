@@ -41,9 +41,9 @@ export const HimnovaAIAssistant: React.FC = () => {
     {
       id: "welcome-1",
       sender: "ai",
-      text: "👋 **Namaste & Welcome to Himnova Technologies!**\n\nI am your **24/7 Live AI Voice & Messaging Assistant**, trained on our 15 IT services, 19 turnkey software products, exact pricing in NPR & USD, and engineering architectures.\n\nAsk me anything in **English, Nepali (नेपाली), or Hindi (हिन्दी)** below, or switch to **Voice Call** for hands-free live conversation!",
+      text: "👋 **Namaste & Welcome to Himnova Technologies!**\n\nI am your **24/7 Live AI Voice & Messaging Consultant**, dynamically trained on our 15 specialized IT services, 19 turnkey software products, exact pricing in NPR & USD, and engineering architectures.\n\nAsk me anything in **English, Nepali (नेपाली), or Hindi (हिन्दी)** below, or switch to **Voice Call** for hands-free live conversation with instant barge-in interruption!",
       audioText:
-        "Namaste and welcome to Himnova Technologies! I am your 24/7 AI Voice and Messaging Assistant. How can I assist your project today?",
+        "Namaste and welcome to Himnova Technologies! I am your live AI Voice and Solutions Consultant. How can I assist your software, cloud, or AI project today?",
       timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       suggestedActions: [
         "AI Voice Calling Rates",
@@ -74,11 +74,13 @@ export const HimnovaAIAssistant: React.FC = () => {
   const silenceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const callTimerRef = useRef<NodeJS.Timeout | null>(null);
   const ttsSafetyTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const currentSpokenTextRef = useRef<string>("");
   const isCallingRef = useRef(false);
   const isSpeakingRef = useRef(false);
   const isMutedRef = useRef(false);
   const isLoadingRef = useRef(false);
   const hasGreetedCallRef = useRef(false);
+  const micStreamRef = useRef<MediaStream | null>(null);
 
   // Synchronize dynamic refs
   useEffect(() => {
@@ -125,7 +127,6 @@ export const HimnovaAIAssistant: React.FC = () => {
       typeof window === "undefined" ||
       !recognitionRef.current ||
       !isCallingRef.current ||
-      isSpeakingRef.current ||
       isMutedRef.current ||
       isLoadingRef.current
     ) {
@@ -142,14 +143,14 @@ export const HimnovaAIAssistant: React.FC = () => {
       recognitionRef.current.start();
       isRecognitionRunningRef.current = true;
       setIsListening(true);
-      setVoiceStatusText("Listening... Speak your question freely 🎙️");
+      if (!isSpeakingRef.current) {
+        setVoiceStatusText("Listening... Speak your question freely 🎙️");
+      }
     } catch {
-      // Retry safely on state transition
       setTimeout(() => {
         if (
           !isRecognitionRunningRef.current &&
           isCallingRef.current &&
-          !isSpeakingRef.current &&
           !isMutedRef.current &&
           !isLoadingRef.current
         ) {
@@ -178,6 +179,27 @@ export const HimnovaAIAssistant: React.FC = () => {
     }
   }, []);
 
+  // Barge-In: Immediately interrupt AI speaking to listen to the user
+  const handleInterruptSpeech = useCallback(() => {
+    if (typeof window !== "undefined") {
+      window.speechSynthesis.cancel();
+    }
+    if (ttsSafetyTimerRef.current) {
+      clearTimeout(ttsSafetyTimerRef.current);
+      ttsSafetyTimerRef.current = null;
+    }
+    setIsSpeaking(false);
+    isSpeakingRef.current = false;
+    currentSpokenTextRef.current = "";
+    (window as any)._himnovaActiveUtterance = null;
+
+    if (isCallingRef.current && !isMutedRef.current) {
+      setVoiceStatusText("Listening to you... Speak freely 🎙️");
+      setLiveUserTranscript("");
+      startRecognitionSafely();
+    }
+  }, [startRecognitionSafely]);
+
   // End Voice Call function
   const endVoiceCall = useCallback(() => {
     setIsCalling(false);
@@ -186,7 +208,13 @@ export const HimnovaAIAssistant: React.FC = () => {
     setIsSpeaking(false);
     isSpeakingRef.current = false;
     hasGreetedCallRef.current = false;
+    currentSpokenTextRef.current = "";
     stopRecognitionSafely();
+
+    if (micStreamRef.current) {
+      micStreamRef.current.getTracks().forEach((track) => track.stop());
+      micStreamRef.current = null;
+    }
 
     if (typeof window !== "undefined") {
       window.speechSynthesis.cancel();
@@ -195,7 +223,7 @@ export const HimnovaAIAssistant: React.FC = () => {
     setLiveUserTranscript("");
   }, [stopRecognitionSafely]);
 
-  // Text-to-Speech (TTS) Engine with Chromium Garbage Collection Fix
+  // Text-to-Speech (TTS) Engine with Chromium Garbage Collection Fix & Instant Barge-In Support
   const speakText = useCallback(
     (text: string, onDone?: () => void, isFarewellCall?: boolean) => {
       if (typeof window === "undefined" || !speakerEnabled) {
@@ -203,9 +231,6 @@ export const HimnovaAIAssistant: React.FC = () => {
         if (isFarewellCall) endVoiceCall();
         return;
       }
-
-      // Stop speech recognition while AI is speaking so it doesn't hear itself
-      stopRecognitionSafely();
 
       window.speechSynthesis.cancel();
       if (ttsSafetyTimerRef.current) clearTimeout(ttsSafetyTimerRef.current);
@@ -216,6 +241,8 @@ export const HimnovaAIAssistant: React.FC = () => {
         .replace(/\|/g, ", ")
         .replace(/NPR/g, "NPR ")
         .replace(/USD/g, "USD ");
+
+      currentSpokenTextRef.current = cleanText;
 
       const utterance = new SpeechSynthesisUtterance(cleanText);
       utterance.rate = 1.0;
@@ -253,13 +280,18 @@ export const HimnovaAIAssistant: React.FC = () => {
       utterance.onstart = () => {
         setIsSpeaking(true);
         isSpeakingRef.current = true;
-        setVoiceStatusText("Himnova Voice AI speaking... 🔊");
+        setVoiceStatusText("Himnova Voice AI speaking... 🔊 (Tap to Interrupt)");
+        // Keep microphone listening active so barge-in is continuously available
+        if (isCallingRef.current && !isMutedRef.current) {
+          startRecognitionSafely();
+        }
       };
 
       const handleSpeechEnd = () => {
         if (ttsSafetyTimerRef.current) clearTimeout(ttsSafetyTimerRef.current);
         setIsSpeaking(false);
         isSpeakingRef.current = false;
+        currentSpokenTextRef.current = "";
         (window as any)._himnovaActiveUtterance = null;
 
         if (isFarewellCall) {
@@ -290,7 +322,7 @@ export const HimnovaAIAssistant: React.FC = () => {
 
       window.speechSynthesis.speak(utterance);
     },
-    [speakerEnabled, languageMode, stopRecognitionSafely, startRecognitionSafely, endVoiceCall]
+    [speakerEnabled, languageMode, startRecognitionSafely, endVoiceCall]
   );
 
   // Process User Input (Chat & Voice Handlers)
@@ -298,6 +330,17 @@ export const HimnovaAIAssistant: React.FC = () => {
     async (textToSend?: string) => {
       const query = textToSend || inputValue;
       if (!query || !query.trim() || isLoadingRef.current) return;
+
+      // Cancel any ongoing speech when user submits a message
+      if (typeof window !== "undefined") {
+        window.speechSynthesis.cancel();
+      }
+      if (ttsSafetyTimerRef.current) {
+        clearTimeout(ttsSafetyTimerRef.current);
+        ttsSafetyTimerRef.current = null;
+      }
+      setIsSpeaking(false);
+      isSpeakingRef.current = false;
 
       const userMsg: Message = {
         id: `user-${Date.now()}`,
@@ -363,9 +406,9 @@ export const HimnovaAIAssistant: React.FC = () => {
         const errorMsg: Message = {
           id: `err-${Date.now()}`,
           sender: "ai",
-          text: "Connect directly with **Er. Sushil Panthi** and our engineering team at **+977 9823009467** on WhatsApp.",
+          text: "Connect directly with our engineering team at **+977 9823009467** on WhatsApp for immediate technical assistance.",
           timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-          suggestedActions: ["WhatsApp Direct", "Call Office", "Explore 15 Services"],
+          suggestedActions: ["WhatsApp Direct (+977 9823009467)", "15 Services", "Office Location"],
         };
         setMessages((prev) => [...prev, errorMsg]);
 
@@ -387,7 +430,7 @@ export const HimnovaAIAssistant: React.FC = () => {
     [inputValue, messages, activeTab, speakText, startRecognitionSafely]
   );
 
-  // Initialize Speech Recognition instance with silence buffer for complete questions
+  // Initialize Speech Recognition instance with silence buffer and active barge-in
   useEffect(() => {
     if (typeof window !== "undefined") {
       const SpeechRecognition =
@@ -403,7 +446,9 @@ export const HimnovaAIAssistant: React.FC = () => {
         recognition.onstart = () => {
           isRecognitionRunningRef.current = true;
           setIsListening(true);
-          setVoiceStatusText("Listening... Speak your question freely 🎙️");
+          if (!isSpeakingRef.current) {
+            setVoiceStatusText("Listening... Speak your question freely 🎙️");
+          }
         };
 
         let accumulatedTranscript = "";
@@ -422,11 +467,23 @@ export const HimnovaAIAssistant: React.FC = () => {
 
           const fullCurrentSpoken = (accumulatedTranscript + " " + currentInterim).trim();
 
+          // Active Barge-In: If user speaks while AI is speaking, interrupt immediately!
+          if (isSpeakingRef.current && fullCurrentSpoken.length > 2) {
+            window.speechSynthesis.cancel();
+            if (ttsSafetyTimerRef.current) {
+              clearTimeout(ttsSafetyTimerRef.current);
+              ttsSafetyTimerRef.current = null;
+            }
+            setIsSpeaking(false);
+            isSpeakingRef.current = false;
+            setVoiceStatusText("Interrupted — Listening to you... 🎙️");
+          }
+
           if (fullCurrentSpoken) {
             setLiveUserTranscript(fullCurrentSpoken);
             setVoiceStatusText(`Hearing: "${fullCurrentSpoken}"`);
 
-            // Debounce silence timer (1.4s): ensures user finished speaking whole question
+            // Debounce silence timer (1.4s): ensures user completed their whole question
             if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
 
             silenceTimerRef.current = setTimeout(() => {
@@ -451,7 +508,6 @@ export const HimnovaAIAssistant: React.FC = () => {
           // Restart listening smoothly on no-speech or network glitch
           if (
             isCallingRef.current &&
-            !isSpeakingRef.current &&
             !isMutedRef.current &&
             !isLoadingRef.current
           ) {
@@ -468,7 +524,6 @@ export const HimnovaAIAssistant: React.FC = () => {
           // Auto-resume listening hands-free
           if (
             isCallingRef.current &&
-            !isSpeakingRef.current &&
             !isMutedRef.current &&
             !isLoadingRef.current
           ) {
@@ -483,13 +538,29 @@ export const HimnovaAIAssistant: React.FC = () => {
     }
   }, [languageMode, startRecognitionSafely, stopRecognitionSafely, handleSendMessage]);
 
-  // Start Voice Call (Completely Autonomous Hands-Free)
+  // Start Voice Call (Completely Autonomous Hands-Free with AEC)
   const startVoiceCall = () => {
     setIsCalling(true);
     isCallingRef.current = true;
     setActiveTab("voice");
     setVoiceStatusText("Connecting to Himnova Voice AI Engine...");
     setLiveUserTranscript("");
+
+    // Request getUserMedia with Acoustic Echo Cancellation to suppress speaker echo
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices
+        .getUserMedia({
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true,
+          },
+        })
+        .then((stream) => {
+          micStreamRef.current = stream;
+        })
+        .catch(() => {});
+    }
 
     setTimeout(() => {
       const welcomeVoice =
@@ -757,9 +828,16 @@ export const HimnovaAIAssistant: React.FC = () => {
               </div>
             )}
 
-            {/* TAB 2: Live AI Voice Calling Agent (Continuous Hands-Free Conversation with Auto-Hangup) */}
+            {/* TAB 2: Live AI Voice Calling Agent (Continuous Hands-Free Conversation with Barge-In) */}
             {activeTab === "voice" && (
-              <div className="flex-1 flex flex-col justify-between p-6 bg-gradient-to-b from-slate-950 via-alpine-950 to-slate-950 relative overflow-hidden">
+              <div
+                onClick={() => {
+                  if (isSpeaking) {
+                    handleInterruptSpeech();
+                  }
+                }}
+                className="flex-1 flex flex-col justify-between p-6 bg-gradient-to-b from-slate-950 via-alpine-950 to-slate-950 relative overflow-hidden cursor-pointer"
+              >
                 {/* Glowing Ambient Background */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none animate-pulse" />
 
@@ -778,6 +856,22 @@ export const HimnovaAIAssistant: React.FC = () => {
                   </p>
                 </div>
 
+                {/* Barge-In Interrupt Callout Banner (Visible when AI is speaking) */}
+                {isSpeaking && (
+                  <div className="relative z-20 flex justify-center my-1 animate-pulse">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleInterruptSpeech();
+                      }}
+                      className="px-4 py-1.5 rounded-full bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 text-xs font-bold hover:bg-cyan-500/30 active:scale-95 transition-all shadow-lg flex items-center gap-2"
+                    >
+                      <span className="h-2 w-2 rounded-full bg-cyan-400 animate-ping" />
+                      <span>Speaking • Tap anywhere to Interrupt & Speak 🛑</span>
+                    </button>
+                  </div>
+                )}
+
                 {/* Live Transcript / Hearing Bubble */}
                 {liveUserTranscript && (
                   <div className="relative z-10 px-4 py-2 my-2 rounded-2xl bg-cyan-950/40 border border-cyan-400/30 text-cyan-200 text-xs text-center backdrop-blur-md animate-fade-in shadow-md">
@@ -787,7 +881,15 @@ export const HimnovaAIAssistant: React.FC = () => {
                 )}
 
                 {/* Visual Animated Equalizer Waves */}
-                <div className="flex flex-col items-center justify-center my-auto py-3 relative z-10">
+                <div
+                  onClick={(e) => {
+                    if (isSpeaking) {
+                      e.stopPropagation();
+                      handleInterruptSpeech();
+                    }
+                  }}
+                  className="flex flex-col items-center justify-center my-auto py-3 relative z-10"
+                >
                   <div className="relative flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-tr from-cyan-500/20 to-blue-600/20 border-2 border-brand-cyan/40 shadow-2xl shadow-cyan-500/30">
                     {isSpeaking || isListening ? (
                       <div className="flex items-center gap-1.5 h-12">
@@ -807,12 +909,15 @@ export const HimnovaAIAssistant: React.FC = () => {
                   </div>
 
                   <p className="text-[11px] font-mono text-slate-400 mt-4 text-center">
-                    Speak questions freely • Say &quot;Thank you / Bye&quot; to end call
+                    Speak questions freely • Active barge-in enabled • Say &quot;Bye&quot; to end
                   </p>
                 </div>
 
                 {/* Bottom Call Controls */}
-                <div className="flex items-center justify-center gap-4 relative z-10 pb-2">
+                <div
+                  onClick={(e) => e.stopPropagation()}
+                  className="flex items-center justify-center gap-4 relative z-10 pb-2"
+                >
                   <button
                     onClick={() => {
                       setIsMuted(!isMuted);
@@ -913,7 +1018,7 @@ export const HimnovaAIAssistant: React.FC = () => {
 
             {/* Bottom Global Status Footnote */}
             <div className="px-4 py-2 border-t border-slate-900 bg-slate-950 text-[10px] text-slate-500 flex items-center justify-between font-mono">
-              <span>Himnova Dynamic Neural Engine v5.0</span>
+              <span>Himnova Dynamic Neural Engine v6.0</span>
               <span>Kathmandu, Nepal</span>
             </div>
           </motion.div>
@@ -978,6 +1083,11 @@ function renderStructuredMarkdown(text: string): string {
       return `<h3 class="font-extrabold text-sm sm:text-base text-white mt-2.5 mb-1.5 border-b border-brand-cyan/20 pb-1">${l.replace("## ", "")}</h3>`;
     }
 
+    // Blockquote
+    if (l.startsWith("> ")) {
+      return `<div class="p-2 my-1 rounded-xl bg-cyan-950/30 border-l-2 border-brand-cyan text-slate-300 text-[11px] italic">${l.replace("> ", "")}</div>`;
+    }
+
     // Bullet points
     if (l.startsWith("- ") || l.startsWith("• ")) {
       const content = l.replace(/^[-•]\s*/, "");
@@ -997,11 +1107,12 @@ function renderStructuredMarkdown(text: string): string {
 
   let html = processedLines.join("<br/>");
 
-  // Format Bold, Italics, Code tags
+  // Format Bold, Italics, Code tags, Links
   html = html
     .replace(/\*\*(.*?)\*\*/g, "<strong class='text-white font-semibold'>$1</strong>")
     .replace(/\*(.*?)\*/g, "<em class='text-slate-300 italic'>$1</em>")
     .replace(/`([^`]+)`/g, "<code class='bg-slate-800 text-brand-cyan px-1.5 py-0.5 rounded font-mono text-[11px] border border-slate-700'>$1</code>")
+    .replace(/\[(.*?)\]\((.*?)\)/g, "<a href='$2' target='_blank' rel='noopener noreferrer' class='text-brand-cyan underline font-semibold hover:text-cyan-300'>$1</a>")
     .replace(/(<br\/>){3,}/g, "<br/><br/>");
 
   return html;

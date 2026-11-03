@@ -200,7 +200,7 @@ Er. Sushil Panthi ले काठमाडौं, नेपालबाट Sili
 - **पद**: Chairman, Executive Director & Chief Architect
 - **फोन / WhatsApp**: **${company.contact.phonePrimary}**
 - **ईमेल**: **${company.contact.email}**
-- **कार्यालय**: बानेश्वर-३१, काठमाडौं (देउराली क्लब अगाडि)`,
+- **कार्यालय**: २ तला, डिल्लीबजार-३०, काठमाडौं (पद्मकन्या विद्याश्रम अगाडि)`,
         audioText:
           "हिमभोभा टेक्नोलोजिजका कार्यकारी निर्देशक र प्रमुख आर्किटेक्ट ईन्जिनियर सुशील पन्थी हुनुहुन्छ।",
         suggestedActions: ["WhatsApp Er. Sushil Panthi", "Office Location", "About Company"],
@@ -220,7 +220,7 @@ Er. Sushil Panthi काठमांडू, नेपाल से सिलि�
 - **पद**: Chairman, Executive Director & Chief Architect
 - **फोन / WhatsApp**: **${company.contact.phonePrimary}**
 - **ईमेल**: **${company.contact.email}**
-- **ऑफिस**: बानेश्वर-३१, काठमांडू (देउराली क्लब के सामने)`,
+- **ऑफिस**: २ तला, डिल्लीबजार-३०, काठमांडू (पद्मकन्या विद्याश्रम के सामने)`,
         audioText:
           "हिमभोभा टेक्नोलॉजीज के चेयरमैन और एग्जीक्यूटिव डायरेक्टर इंजीनियर सुशील पंथी हैं।",
         suggestedActions: ["WhatsApp Er. Sushil Panthi", "Office Location", "About Company"],
@@ -555,7 +555,7 @@ All services include **100% full source code ownership**, milestone sprints, and
 2. 💻 **कस्टम सफ्टवेयर र वेब एप्लिकेसनहरू**
 3. 📱 **मोबाइल एप्स (iOS र Android)**
 4. 💰 **पारदर्शी सेवा दरहरू र लागत (NPR र USD मा)**
-5. 📍 **कार्यालय ठेगाना (बानेश्वर-३१, काठमाडौं)** वा सम्पर्क नम्बर
+5. 📍 **कार्यालय ठेगाना (डिल्लीबजार-३०, काठमाडौं)** वा सम्पर्क नम्बर
 
 तपाईंलाई कुन सेवा वा सफ्टवेयरको बारेमा जानकारी चाहिन्छ?`,
       audioText:
@@ -573,7 +573,7 @@ All services include **100% full source code ownership**, milestone sprints, and
 2. 💻 **कस्टम सॉफ्टवेयर और वेब एप्लिकेशन्स**
 3. 📱 **मोबाइल ऐप्स (iOS और Android)**
 4. 💰 **पारदर्शी रेट्स और लागत (NPR और USD में)**
-5. 📍 **ऑफिस लोकेशन (बानेश्वर-३१, काठमांडू)** और कांटेक्ट डिटेल्स
+5. 📍 **ऑफिस लोकेशन (डिल्लीबजार-३०, काठमांडू)** और कांटेक्ट डिटेल्स
 
 आप किस प्रोजेक्ट के बारे में जानकारी चाहते हैं?`,
       audioText:
