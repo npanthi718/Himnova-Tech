@@ -50,8 +50,15 @@ export const Footer: React.FC = () => {
               <div className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-brand-cyan shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-semibold text-slate-900 dark:text-white">{siteData.company.headquarters.address}</p>
-                  <p className="text-slate-600 dark:text-slate-400">{siteData.company.headquarters.landmark}, {siteData.company.headquarters.city}, {siteData.company.headquarters.country}</p>
+                  <div className="flex items-center gap-2">
+                    <p className="font-bold text-slate-900 dark:text-white">{siteData.company.headquarters.officeType}</p>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-brand-cyan/10 text-brand-cyan font-semibold border border-brand-cyan/20">
+                      Sole Office
+                    </span>
+                  </div>
+                  <p className="font-medium text-slate-800 dark:text-slate-200 mt-0.5">{siteData.company.headquarters.address}</p>
+                  <p className="text-slate-600 dark:text-slate-400">{siteData.company.headquarters.landmark}</p>
+                  <p className="text-[11px] text-brand-cyan/90 dark:text-brand-cyan/80 mt-1">{siteData.company.headquarters.note}</p>
                 </div>
               </div>
 

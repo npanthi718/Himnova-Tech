@@ -30,11 +30,11 @@ export const LocationMap: React.FC<LocationMapProps> = ({
 
   // Exact Google Maps Direction Route URL (triggers installed Maps app navigation on mobile)
   const directionsUrl =
-    "https://www.google.com/maps/dir/?api=1&destination=Himnova+Technologies+Private+Limited&destination_place_id=0x39eb19179a4e9b19:0xe0e8ad3ea3b4c8b";
+    "https://www.google.com/maps/dir/?api=1&destination=27.704843,85.326988";
 
   // Google Maps Place URL
   const googleMapsUrl =
-    "https://maps.google.com/?q=Himnova+Technologies+Private+Limited&ftid=0x39eb19179a4e9b19:0xe0e8ad3ea3b4c8b";
+    "https://maps.google.com/?q=27.704843,85.326988";
 
   const fullAddress = `${siteData.company.headquarters.address}, ${siteData.company.headquarters.landmark}, ${siteData.company.headquarters.city}, ${siteData.company.headquarters.country}`;
 
@@ -60,11 +60,11 @@ export const LocationMap: React.FC<LocationMapProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <h3 className="font-extrabold text-base sm:text-lg text-slate-900 dark:text-white tracking-tight">
-                Himnova Technologies HQ
+                Corporate Office (Headquarters)
               </h3>
               <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                Verified Location
+                Sole Location (No Branches)
               </span>
             </div>
             <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
@@ -132,7 +132,7 @@ export const LocationMap: React.FC<LocationMapProps> = ({
 
         {/* Embedded Google Map Iframe */}
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.8721512192965!2d85.33947907525312!3d27.690346076192327!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19179a4e9b19%3A0xe0e8ad3ea3b4c8b!2sHimnova%20Technologies%20Private%20Limited!5e0!3m2!1sen!2snp!4v1789299921485!5m2!1sen!2snp"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.4029346865864!2d85.3269876752536!3d27.704842876184056!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19a75b95ff19%3A0x57f730422512c5dc!2sDilli%20Bazaar%20Sadak%2C%20Kathmandu%2C%20Bagmati%20Province%2044600!5e0!3m2!1sen!2snp!4v1793686461935!5m2!1sen!2snp"
           width="100%"
           height="100%"
           style={{ border: 0 }}
@@ -141,7 +141,7 @@ export const LocationMap: React.FC<LocationMapProps> = ({
           referrerPolicy="strict-origin-when-cross-origin"
           onLoad={() => setIsMapLoaded(true)}
           className="w-full h-full grayscale-[15%] contrast-[105%] hover:grayscale-0 transition-all duration-500"
-          title="Himnova Technologies Private Limited Google Maps Location"
+          title="Himnova Technologies Corporate Office Google Maps Location"
         />
 
         {/* Floating Quick Info Badge */}
@@ -158,13 +158,16 @@ export const LocationMap: React.FC<LocationMapProps> = ({
               </div>
               <div className="space-y-1 text-xs">
                 <h4 className="font-bold text-slate-900 dark:text-white text-sm">
-                  Himnova Tech HQ
+                  Corporate Office
                 </h4>
                 <p className="text-slate-600 dark:text-slate-300">
-                  Baneshwor-31, Kathmandu
+                  {siteData.company.headquarters.address}
                 </p>
                 <p className="text-[11px] text-brand-cyan font-semibold">
-                  Opposite to Deurali Club
+                  {siteData.company.headquarters.landmark}
+                </p>
+                <p className="text-[10px] text-amber-600 dark:text-amber-400 font-medium">
+                  {siteData.company.headquarters.note}
                 </p>
                 <div className="pt-2 flex items-center justify-between gap-2 border-t border-slate-200 dark:border-white/10 text-[11px] text-slate-500 dark:text-slate-400">
                   <span className="flex items-center gap-1">
@@ -188,11 +191,11 @@ export const LocationMap: React.FC<LocationMapProps> = ({
       <div className="px-5 py-3.5 bg-slate-50 dark:bg-alpine-950/90 border-t border-slate-200 dark:border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600 dark:text-slate-400">
         <div className="flex items-center gap-2">
           <MapPin className="h-4 w-4 text-brand-cyan" />
-          <span>Coordinates: <code className="text-slate-800 dark:text-slate-200 font-mono">27.690346° N, 85.339479° E</code></span>
+          <span>Coordinates: <code className="text-slate-800 dark:text-slate-200 font-mono">27.704843° N, 85.326988° E</code></span>
         </div>
         <div className="flex items-center gap-1 text-brand-teal font-medium">
           <Sparkles className="h-3.5 w-3.5" />
-          <span>Visitors & consultation walk-ins welcome by appointment</span>
+          <span>Visitors & consultation walk-ins welcome by appointment at Dillibazar Corporate Office</span>
         </div>
       </div>
 

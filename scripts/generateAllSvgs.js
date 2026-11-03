@@ -622,3 +622,4 @@ blogs.forEach((b) => {
   fs.writeFileSync(path.join(blogDir, b.slug), svg);
 });
 console.log('Blog SVGs regenerated cleanly with XML escaping.');
+

@@ -79,10 +79,14 @@ export interface SiteConfig {
     tagline: string;
     establishedYear: number;
     headquarters: {
+      officeType: string;
       city: string;
       country: string;
+      floor: string;
       address: string;
       landmark: string;
+      note: string;
+      mapEmbedUrl: string;
     };
     contact: {
       email: string;
@@ -175,10 +179,15 @@ export const siteData: SiteConfig = {
       "From custom software and web platforms to cloud deployment, digital marketing, and 24/7 support — we build and deliver production-ready software systems.",
     establishedYear: 2024,
     headquarters: {
+      officeType: "Corporate Office",
       city: "Kathmandu",
       country: "Nepal",
-      address: "Baneshwor-31, Kathmandu 44600",
-      landmark: "Opposite to Deurali Club",
+      floor: "2nd Floor",
+      address: "2nd Floor, Dillibazar-30, Kathmandu, Nepal",
+      landmark: "Opposite to Padmakanya Vidhyashram Secondary School",
+      note: "Corporate Office (Sole Location — No Branch Offices)",
+      mapEmbedUrl:
+        "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.4029346865864!2d85.3269876752536!3d27.704842876184056!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19a75b95ff19%3A0x57f730422512c5dc!2sDilli%20Bazaar%20Sadak%2C%20Kathmandu%2C%20Bagmati%20Province%2044600!5e0!3m2!1sen!2snp!4v1793686461935!5m2!1sen!2snp",
     },
     contact: {
       email: "support.himnovatech@gmail.com",

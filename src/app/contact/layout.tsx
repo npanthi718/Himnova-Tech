@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 export const metadata: Metadata = {
   title: "Himnova Contact | Talk to Himnova Technologies",
   description:
-    "Contact Himnova Technologies Private Limited (himnovatech.com) in Baneshwor, Kathmandu for custom software, cloud, and AI engineering. Official Himnova IT company.",
+    "Contact Himnova Technologies Private Limited (himnovatech.com) at our Corporate Office in Dillibazar-30, Kathmandu for custom software, cloud, and AI engineering. Official Himnova IT company.",
   keywords: [
     "Himnova",
     "Himnova Technologies",

@@ -135,7 +135,7 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
       (query.includes("सोर्स कोड") || query.includes("स्वामित्व") || query.includes("वारेन्टी") || query.includes("वारंटी")));
 
   const isAskingLocation =
-    /\b(location|address|office|headquarter|where|map|google map|directions|visit|baneshwor|kaha cha|kaha hai|kata ho|thegana)\b/i.test(
+    /\b(location|address|office|headquarter|corporate office|branch|branches|where|map|google map|directions|visit|dillibazar|padmakanya|baneshwor|kaha cha|kaha hai|kata ho|thegana)\b/i.test(
       lower
     ) ||
     (hasDevanagari &&

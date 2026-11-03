@@ -102,6 +102,8 @@ export function retrieveIntentAndKnowledge(query: string): RetrievedIntent {
     lower.includes("kaha hai") ||
     lower.includes("kaha pe") ||
     lower.includes("kata ho") ||
+    lower.includes("dillibazar") ||
+    lower.includes("padmakanya") ||
     lower.includes("baneshwor") ||
     lower.includes("deurali") ||
     lower.includes("google map") ||

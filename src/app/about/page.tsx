@@ -45,9 +45,12 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card className="p-6 space-y-3 border-brand-cyan/20">
             <Building2 className="h-8 w-8 text-brand-cyan" />
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white">Kathmandu HQ</h3>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white">Corporate Office</h3>
             <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-              {siteData.company.headquarters.address}, {siteData.company.headquarters.city}, {siteData.company.headquarters.country}.
+              2nd Floor, Opposite to Padmakanya Vidhyashram Secondary School, Dillibazar-30, Kathmandu, Nepal.
+            </p>
+            <p className="text-[11px] font-semibold text-brand-cyan">
+              Sole Corporate Office • No Branch Offices
             </p>
           </Card>
 

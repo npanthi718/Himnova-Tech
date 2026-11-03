@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { Toast } from "@/components/ui/Toast";
-import { MapPin, Mail, Phone, Clock, Send, Loader2, ShieldCheck, Sparkles } from "lucide-react";
+import { MapPin, Mail, Phone, Clock, Send, Loader2, ShieldCheck, Sparkles, Building2, Navigation } from "lucide-react";
 import { RevealOnScroll, StaggerContainer, StaggerItem } from "@/components/animations/RevealOnScroll";
 import { ParallaxBackground } from "@/components/animations/ParallaxLayer";
 import { LocationMap } from "@/components/ui/LocationMap";
@@ -149,18 +149,32 @@ export const ContactModule: React.FC = () => {
               <Card className="p-6 sm:p-8 space-y-6 border-brand-cyan/30">
                 <div className="flex items-center gap-3">
                   <div className="rounded-xl bg-brand-cyan/15 p-3 text-brand-cyan">
-                    <MapPin className="h-6 w-6" />
+                    <Building2 className="h-6 w-6" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white">Kathmandu Headquarters</h3>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-lg font-bold text-slate-900 dark:text-white">{siteData.company.headquarters.officeType}</h3>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-brand-cyan/15 text-brand-cyan font-bold border border-brand-cyan/30 uppercase tracking-wider">
+                        Sole Office
+                      </span>
+                    </div>
                     <p className="text-xs text-brand-cyan font-semibold">{siteData.company.legalName}</p>
                   </div>
                 </div>
 
-                <div className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
-                  <p className="font-semibold text-slate-900 dark:text-white">{siteData.company.headquarters.address}</p>
-                  <p>{siteData.company.headquarters.landmark}</p>
-                  <p>{siteData.company.headquarters.city}, {siteData.company.headquarters.country}</p>
+                <div className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
+                  <p className="font-semibold text-slate-900 dark:text-white flex items-start gap-2">
+                    <MapPin className="h-4 w-4 text-brand-cyan shrink-0 mt-0.5" />
+                    <span>{siteData.company.headquarters.address}</span>
+                  </p>
+                  <p className="text-slate-600 dark:text-slate-400 pl-6">
+                    {siteData.company.headquarters.landmark}
+                  </p>
+                  <div className="mt-2 pl-6">
+                    <span className="inline-block px-2.5 py-1 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-semibold border border-amber-500/20">
+                      ℹ {siteData.company.headquarters.note}
+                    </span>
+                  </div>
                 </div>
 
                 <div className="pt-4 border-t border-slate-200 dark:border-white/10 space-y-3 text-sm">
@@ -270,11 +284,19 @@ export const ContactModule: React.FC = () => {
         {/* Interactive Location Map & Navigation Route Section */}
         <RevealOnScroll className="space-y-6 pt-6">
           <div className="text-center max-w-2xl mx-auto space-y-2">
+            <div className="inline-flex items-center gap-2 mb-1">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-brand-cyan/15 text-brand-cyan border border-brand-cyan/30">
+                Corporate Office Location
+              </span>
+              <span className="text-xs text-amber-600 dark:text-amber-400 font-medium">
+                Sole Location (No Branches)
+              </span>
+            </div>
             <h3 className="text-2xl sm:text-3xl font-extrabold font-display tracking-tight text-slate-900 dark:text-white">
-              Visit Our <span className="text-brand-cyan">Kathmandu Headquarters</span>
+              Visit Our <span className="text-brand-cyan">Corporate Office</span>
             </h3>
             <p className="text-sm text-slate-600 dark:text-slate-400">
-              Easily navigate with turn-by-turn route directions to our physical office in Baneshwor-31.
+              Easily navigate with turn-by-turn route directions to our physical office at Dillibazar-30, opposite to Padmakanya Vidhyashram Secondary School.
             </p>
           </div>
           <LocationMap />

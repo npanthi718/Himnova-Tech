@@ -238,7 +238,7 @@ Er. Sushil Panthi leads Himnova Technologies with a mission to engineer Silicon 
 - **Role**: Executive Leadership, Systems Architect & Head of R&D
 - **Direct Desk Line / WhatsApp**: **${company.contact.phonePrimary}**
 - **Email**: **${company.contact.email}**
-- **Headquarters**: Baneshwor-31, Kathmandu 44600, Nepal *(Opposite Deurali Club)*`,
+- **Headquarters**: 2nd Floor, Dillibazar-30, Kathmandu 44600, Nepal *(Opposite Padmakanya Vidhyashram Secondary School)* *(Sole Corporate Office — No Branches)*`,
       audioText:
         "Er. Sushil Panthi is the Chairman, Executive Director, and Chief Architect of Himnova Technologies, leading enterprise cloud and AI engineering.",
       suggestedActions: ["Connect with Er. Sushil Panthi", "Office Location", "View Vision & Mission"],
@@ -251,40 +251,43 @@ Er. Sushil Panthi leads Himnova Technologies with a mission to engineer Silicon 
   if (intent.type === "office-location") {
     if (lang === "ne") {
       return {
-        reply: `### 📍 **Himnova Technologies Private Limited — मुख्य कार्यालय**
+        reply: `### 📍 **Himnova Technologies Private Limited — कर्पोरेट कार्यालय**
 
-- **ठेगाना**: **${company.headquarters.address}, ${company.headquarters.city} ४४६००, ${company.headquarters.country}** *(देउराली क्लब अगाडि)*
+- **ठेगाना**: **२ तला, डिल्लीबजार-३०, काठमाडौं ४४६००, नेपाल** *(पद्मकन्या विद्याश्रम मा.वि. अगाडि)*
+- **शाखा विवरण**: **एकमात्र कर्पोरेट कार्यालय (कुनै अन्य शाखा छैन)**
 - **फोन / WhatsApp**: **${company.contact.phonePrimary}**
 - **ईमेल**: **${company.contact.email}**
 - **कार्यालय समय**: सोमबार – शुक्रबार: 9:00 AM – 6:00 PM NPT (24/7 Live Monitoring SLA)
 
 🗺️ **Google Maps**: हाम्रो वेबसाइटमा रहेको नक्सा वा "Get Directions" बटन थिचेर तपाईं सिधै कार्यालय आइपुग्ने बाटो हेर्न सक्नुहुन्छ!`,
         audioText:
-          "हाम्रो कार्यालय बानेश्वर एकतीस काठमाडौंमा देउराली क्लबको अगाडि अवस्थित छ। सम्पर्क नम्बर +977 9823009467 हो।",
+          "हाम्रो कर्पोरेट कार्यालय दोस्रो तला, डिल्लीबजार-३०, काठमाडौंमा पद्मकन्या विद्याश्रम मा.वि. अगाडि अवस्थित छ। सम्पर्क नम्बर +977 9823009467 हो।",
         suggestedActions: ["Get Google Maps Route", "WhatsApp Message", "Call +977 9823009467"],
       };
     }
 
     if (lang === "hi") {
       return {
-        reply: `### 📍 **Himnova Technologies Corporate Headquarters**
+        reply: `### 📍 **Himnova Technologies Corporate Office**
 
-- **पता (Address)**: **${company.headquarters.address}, ${company.headquarters.city} ४४६००, ${company.headquarters.country}** *(देउराली क्लब के सामने)*
+- **पता (Address)**: **द्वितीय तल, डिल्लीबजार-३०, काठमांडू ४४६००, नेपाल** *(पद्मकन्या विद्याश्रम के सामने)*
+- **शाखा विवरण**: **एकमात्र कॉर्पोरेट ऑफिस (कोई अन्य शाखा नहीं है)**
 - **फोन / WhatsApp**: **${company.contact.phonePrimary}**
 - **ईमेल**: **${company.contact.email}**
 - **समय**: सोमवार – शुक्रवार: 9:00 AM – 6:00 PM NPT (24/7 Cloud Support SLA)
 
 🗺️ **Google Maps**: आप हमारी साइट पर दिए गए मैप या 'Get Directions' बटन से सीधे ऑफिस का नेविगेशन रूट पा सकते हैं।`,
         audioText:
-          "हिमभोभा टेक्नोलॉजीज का मुख्य कार्यालय बानेश्वर-३१, काठमांडू, नेपाल में देउराली क्लब के सामने स्थित है। फोन नंबर +977 9823009467 है।",
+          "हिमभोभा टेक्नोलॉजीज का कॉर्पोरेट ऑफिस सेकंड फ्लोर, डिल्लीबजार-३०, काठमांडू, नेपाल में पद्मकन्या विद्याश्रम के सामने स्थित है। फोन नंबर +977 9823009467 है।",
         suggestedActions: ["Open Google Maps", "Start WhatsApp Chat", "Call Office"],
       };
     }
 
     return {
-      reply: `### 📍 **Himnova Technologies Corporate Headquarters**
+      reply: `### 📍 **Himnova Technologies Corporate Office**
 
-- **Address**: **${company.headquarters.address}, ${company.headquarters.city} 44600, ${company.headquarters.country}** *(Opposite Deurali Club)*
+- **Address**: **2nd Floor, Dillibazar-30, Kathmandu 44600, Nepal** *(Opposite to Padmakanya Vidhyashram Secondary School)*
+- **Branch Note**: **Sole Corporate Location (No Branch Offices)**
 - **Primary Phone / WhatsApp**: **${company.contact.phonePrimary}**
 - **Secondary Phone (Nepal/India)**: **${company.contact.phoneSecondary}**
 - **Email**: **${company.contact.email}**
@@ -292,7 +295,7 @@ Er. Sushil Panthi leads Himnova Technologies with a mission to engineer Silicon 
 
 You can view our interactive map and get real-time navigation directions on the website or open in Google Maps directly.`,
       audioText:
-        "Himnova Technologies is headquartered in Baneshwor-31, Kathmandu, Nepal, opposite Deurali Club. Phone and WhatsApp: +977 9823009467.",
+        "Himnova Technologies is headquartered at 2nd Floor, Dillibazar-30, Kathmandu, Nepal, opposite to Padmakanya Vidhyashram Secondary School. Phone and WhatsApp: +977 9823009467.",
       suggestedActions: ["Open Google Maps", "Start WhatsApp Chat", "Call Office"],
     };
   }

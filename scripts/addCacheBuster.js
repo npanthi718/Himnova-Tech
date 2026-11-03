@@ -20,3 +20,4 @@ bpContent = bpContent.replace(/\/images\/blogs\/([a-zA-Z0-9_-]+)\.svg(\?v=\d+)?/
 fs.writeFileSync(bpPath, bpContent);
 
 console.log('Successfully added ?v=2 cache-buster to all SVG image paths');
+

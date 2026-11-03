@@ -125,15 +125,15 @@ const jsonLd = {
       slogan: siteData.company.motto,
       address: {
         "@type": "PostalAddress",
-        streetAddress: "Baneshwor-31",
+        streetAddress: "2nd Floor, Opposite to Padmakanya Vidhyashram Secondary School, Dillibazar-30",
         addressLocality: "Kathmandu",
         postalCode: "44600",
         addressCountry: "NP",
       },
       geo: {
         "@type": "GeoCoordinates",
-        latitude: 27.690346,
-        longitude: 85.339479,
+        latitude: 27.704843,
+        longitude: 85.326988,
       },
       contactPoint: {
         "@type": "ContactPoint",
@@ -191,8 +191,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" className="light" suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("himnova_theme");if(t==="dark"){document.documentElement.classList.add("dark");document.documentElement.classList.remove("light");}else{document.documentElement.classList.remove("dark");document.documentElement.classList.add("light");}}catch(e){}})();`,
+          }}
+        />
         <meta name="facebook-domain-verification" content="r0jf0t3m40rr8lfh9ku1vz2zjy10oe" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/logos/himnova.ico" sizes="any" />
