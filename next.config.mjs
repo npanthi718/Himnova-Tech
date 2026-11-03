@@ -19,6 +19,12 @@ const nextConfig = {
         ],
       },
       {
+        source: "/((?!_next/static|_next/image|favicon.ico).*)",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
+        ],
+      },
+      {
         source: "/:file(favicon.ico|favicon.svg|favicon-16x16.png|favicon-32x32.png|favicon-48x48.png|icon-192.png|icon-512.png|apple-icon.png|apple-touch-icon.png|manifest.json)",
         headers: [
           { key: "Cache-Control", value: "public, max-age=86400, must-revalidate" },
