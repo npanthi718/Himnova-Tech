@@ -143,24 +143,23 @@ export function analyzeUserQuery(query: string): AnalyzedQuery {
       (query.includes("सोर्स कोड") || query.includes("स्वामित्व") || query.includes("वारेन्टी") || query.includes("वारंटी")));
 
   const isAskingLocation =
-    /\b(location|address|office|headquarter|headquarters|corporate office|branch|branches|where|map|google map|directions|visit|dillibazar|padmakanya|kaha cha|kaha hai|kata ho|thegana)\b/i.test(
+    /\b(location|address|office|headquarter|headquarters|corporate office|branch|branches|where is (your|the|himnova)?\s*(office|company|headquarter|location)|where are you located|where located|google map|directions|visit your office|dillibazar|padmakanya|kaha cha office|kata ho office|thegana)\b/i.test(
       lower
     ) ||
+    (/\b(where is|where are you)\b/i.test(lower) && /\b(office|company|himnova|located|hq)\b/i.test(lower)) ||
     (hasDevanagari &&
       (query.includes("ठेगाना") ||
         query.includes("कार्यालय") ||
-        query.includes("अफिस") ||
-        query.includes("ऑफिस") ||
-        query.includes("कहाँ छ") ||
-        query.includes("कहाँ है") ||
+        query.includes("अफिस कहाँ") ||
+        query.includes("ऑफिस कहाँ") ||
         query.includes("नक्सा")));
 
   const isAskingContact =
-    /\b(contact|phone|email|whatsapp|number|call|reach|message|samparka|fon|numbar|telephone)\b/i.test(
+    /\b(contact|contact us|phone number|official email|whatsapp|phone|call us|reach out|contact details|samparka|fon number)\b/i.test(
       lower
     ) ||
     (hasDevanagari &&
-      (query.includes("सम्पर्क") || query.includes("फोन") || query.includes("नम्बर") || query.includes("ईमेल")));
+      (query.includes("सम्पर्क") || query.includes("फोन नम्बर") || query.includes("ईमेल")));
 
   const isAskingLeadership =
     /\b(director|founder|ceo|chairman|sushil|panthi|leader|leadership|who owns|who runs|owner|malik|nirdeshak|architect)\b/i.test(
